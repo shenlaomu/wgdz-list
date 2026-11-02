@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>300kv进口版控制柜物料购买清单</title>
+<style>
+  :root{
+    --bg:#f4f5f7;
+    --card:#ffffff;
+    --ink:#191b1f;
+    --sub:#6b7280;
+    --line:#e7e9ec;
+    --brand:#ff5000;
+    --brand-soft:#fff1ea;
+    --blue:#2563eb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);
+    padding:32px 18px 130px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  /* 顶部 */
+  header{margin-bottom:18px}
+  h1{font-size:25px;font-weight:700;letter-spacing:-.5px}
+  .head-sub{color:var(--sub);font-size:13.5px;margin-top:7px;display:flex;gap:14px;flex-wrap:wrap}
+  .head-sub b{color:var(--ink)}
+
+  /* 工具条 */
+  .toolbar{
+    display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:20;
+    background:rgba(244,245,247,.88);backdrop-filter:blur(10px);
+    padding:12px 0;border-bottom:1px solid transparent;
+  }
+  .search{
+    flex:1;min-width:200px;position:relative;
+  }
+  .search input{
+    width:100%;height:40px;border:1px solid var(--line);border-radius:10px;
+    padding:0 14px 0 36px;font-size:14px;font-family:inherit;background:#fff;outline:none;
+    transition:.15s;
+  }
+  .search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+  .search svg{position:absolute;left:12px;top:11px;opacity:.4}
+  .preset{display:flex;align-items:center;gap:6px}
+  .preset span{font-size:12.5px;color:var(--sub)}
+  .preset button{
+    min-width:34px;height:34px;padding:0 9px;border:1px solid var(--line);background:#fff;
+    border-radius:8px;font-size:13px;font-family:inherit;color:var(--ink);cursor:pointer;transition:.15s;
+  }
+  .preset button:hover{border-color:var(--brand);color:var(--brand)}
+
+  /* 分类 */
+  .group{margin-bottom:26px}
+  .group-head{
+    display:flex;align-items:center;gap:10px;margin-bottom:12px;
+    position:sticky;top:64px;z-index:10;
+    background:linear-gradient(var(--bg) 62%,rgba(244,245,247,0));
+    padding:6px 0 8px;
+  }
+  .group-head h2{font-size:15px;font-weight:700;letter-spacing:-.2px;white-space:nowrap}
+  .group-head .dot{width:4px;height:16px;border-radius:2px;background:var(--brand)}
+  .group-head .cnt{font-size:12.5px;color:var(--sub)}
+  .group-head .gsub{margin-left:auto;font-size:12.5px;color:var(--sub);white-space:nowrap}
+
+  /* 卡片 */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 20px;margin-bottom:10px;
+    display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;
+    transition:.15s;
+  }
+  .card:hover{border-color:#d6d9de;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+  .card.q0{opacity:.62}
+  .card.hide{display:none}
+
+  .title{font-size:15.5px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tag{
+    font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:20px;
+    background:var(--brand-soft);color:var(--brand);letter-spacing:.3px;white-space:nowrap;
+  }
+  .tag.gray{background:#f0f1f3;color:var(--sub)}
+  .meta{color:var(--sub);font-size:12px;margin-top:5px;line-height:1.6}
+  .meta .sku{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px}
+
+  .stepper{
+    display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;
+    overflow:hidden;background:#fafbfc;
+  }
+  .stepper button{
+    width:32px;height:32px;border:0;background:transparent;cursor:pointer;
+    font-size:17px;color:var(--sub);line-height:1;transition:.15s;
+  }
+  .stepper button:hover{background:#eceef1;color:var(--brand)}
+  .stepper input{
+    width:44px;height:32px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);
+    text-align:center;font-size:14.5px;font-weight:600;color:var(--ink);background:transparent;
+    font-family:inherit;outline:none;
+  }
+  .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+  .right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+  .price{font-size:12px;color:var(--sub);white-space:nowrap}
+  .price b{color:var(--ink);font-size:15px}
+  .price .unknown{color:#b45309;font-weight:600}
+  .buy{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    background:var(--brand);color:#fff;border:0;border-radius:9px;
+    padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;
+    text-decoration:none;transition:.15s;font-family:inherit;white-space:nowrap;
+  }
+  .buy:hover{background:#e64800;transform:translateY(-1px);box-shadow:0 5px 14px rgba(255,80,0,.25)}
+  .buy:active{transform:translateY(0)}
+
+  /* 底栏 */
+  .bottom{
+    position:fixed;left:0;right:0;bottom:0;z-index:30;
+    background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  }
+  .bottom-in{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .amt-wrap{display:flex;flex-direction:column}
+  .amt-wrap .lbl{color:var(--sub);font-size:12px}
+  .amt{font-size:26px;font-weight:700;letter-spacing:-.6px;line-height:1.2}
+  .amt small{font-size:13.5px;font-weight:600;color:var(--sub);margin-left:9px}
+  .bottom .spacer{flex:1}
+  .bbtn{
+    background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 15px;
+    font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;
+  }
+  .bbtn:hover{border-color:var(--brand);color:var(--brand)}
+  .bbtn.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+  .bbtn.primary:hover{background:#e64800;color:#fff}
+
+  .note{
+    margin-top:22px;font-size:12.5px;color:var(--sub);line-height:1.95;
+    background:#fff;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;
+  }
+  .note b{color:var(--ink)}
+
+  @media (max-width:720px){
+    body{padding:22px 12px 150px}
+    .card{grid-template-columns:1fr auto;gap:12px;padding:14px 15px}
+    .right{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+    .group-head{top:60px}
+    h1{font-size:21px}
+  }
+</style>
+
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
+#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
+box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
+#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
+#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
+#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
+#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
+font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
+#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
+border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+#gate button:hover{background:#e64800}
+#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
+padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
+</style>
+</head>
+<body>
+<div id="gate">
+  <form class="card" onsubmit="return wgdzLogin(event)">
+    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <h1>WGDZ物料清单</h1>
+    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
+    <div class="err" id="gateErr">密码不正确，请重新输入</div>
+    <label for="gatePw">访问密码</label>
+    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
+    <button type="submit">进入清单</button>
+  </form>
+</div>
+<div id="app" style="display:none">
+
+<div class="wrap">
+  <header>
+    <h1>300kv进口版控制柜物料购买清单</h1>
+    <div class="head-sub">
+      <span>共 <b id="statItems">0</b> 项</span>
+      <span>已选 <b id="statPicked">0</b> 件</span>
+      <span>合计 <b id="statTop">¥0.00</b></span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="text" placeholder="搜索名称 / SKU，例如：继电器、电磁阀、5326676671637">
+    </div>
+    <div class="preset">
+      <span>全部数量</span>
+      <button data-all="0">0</button>
+      <button data-all="1">1</button>
+      <button data-all="2">2</button>
+      <button data-all="3">3</button>
+      <button data-all="5">5</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="note">
+    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>
+    标注 <span style="color:#b45309;font-weight:600">价格待确认</span> 的项目原链接未带价格参数，已按 0 计入合计，请以商品页实际价格为准。
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="bottom-in">
+    <div class="amt-wrap">
+      <span class="lbl">合计</span>
+      <div class="amt" id="grand">¥0.00<small id="grandCount">0 件</small></div>
+    </div>
+    <div class="spacer"></div>
+    <button class="bbtn" id="resetBtn">全部清零</button>
+    <button class="bbtn" id="copyBtn">复制清单</button>
+    <button class="bbtn primary" id="copyLinkBtn">复制全部链接</button>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  { key:'ctrl', name:'控制 · 信号处理', color:'#2563eb' },
+  { key:'relay', name:'继电器 · 开关电器', color:'#7c3aed' },
+  { key:'power', name:'电源 · 隔离 · 滤波', color:'#ea580c' },
+  { key:'pneu', name:'气动元件', color:'#0891b2' },
+  { key:'comm', name:'通信 · 连接器 · 线缆', color:'#059669' },
+  { key:'hw', name:'五金 · 结构件', color:'#92400e' }
+];
+
+const ITEMS = [
+  { g:'ctrl', name:"PLC", spec:"PLC 可编程控制器", price:null, sku:'5657222180582', url:"https://detail.tmall.com/item.htm?ali_refid=a3_420434_1006%3A623323748%3AH%3AVJN6rPffPqgT8wEswozUc5d3j5Fa6P9S%3A7e56019bb752f5ff4557e61f0ed2dede&ali_trackid=282_7e56019bb752f5ff4557e61f0ed2dede&id=854679191292&mi_id=0000juf4WxYNzgKrmq2qEgfccJWT4k0h2_2ZMVNsG2GkupM&mm_sceneid=1_0_4639088734_0_0&priceTId=2150488017933303363375321e1241&skuId=5657222180582&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%226ab78a77a57984d97720e2923a8e9bac%22%7D&xxc=ad_ztc" },
+  { g:'ctrl', name:"欧姆龙通讯模块", spec:"欧姆龙通讯 / 扩展模块", price:null, sku:'5688831493447', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A623323748%3AH%3AoH8tnI1LtQI3rdXLIKRrwsh9mRJGX2vs%3A9385e79c0737ceec08403250fcd24fdd&ali_trackid=282_9385e79c0737ceec08403250fcd24fdd&id=864509340285&mi_id=0000emATCyEVPakdXb8aMcVBeo0BeURq7-exH7YX0oGK_a0&mm_sceneid=1_0_4639088734_0_0&priceTId=2150488017933304815788010e1241&skuId=5688831493447&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%2230531269e908384bba18601bf9096030%22%7D&xxc=ad_ztc" },
+  { g:'ctrl', name:"信号隔离模拟器", spec:"信号隔离 / 模拟量调试模块", price:237.00, sku:'5595117567580', url:"https://item.taobao.com/item.htm?from=cart&id=794705407037&mi_id=00007MS4GqZwGZygBlrL0R_rsvZeIfFEyx06wbNpBhMoKyQ&skuId=5595117567580&spm=a1z0d.6639537%2F202410.item.d794705407037.1b4c7484yqVRQn&upStreamPrice=23700&xxc=ad_ztc" },
+  { g:'ctrl', name:"直流放大板", spec:"直流信号调理放大模块", price:235.00, sku:'5620008974560', url:"https://item.taobao.com/item.htm?from=cart&id=537869665345&mi_id=00004bi9wbRuTYxdfDYPeWnMYuL4f42sFHlt7BbYtpCgTTA&skuId=5620008974560&spm=a1z0d.6639537%2F202410.item.d537869665345.1b4c7484yqVRQn&upStreamPrice=23500&xxc=taobaoSearch" },
+  { g:'ctrl', name:"交流电压变送器", spec:"电压互感器 / 隔离变送", price:67.00, sku:'3384266433547', url:"https://item.taobao.com/item.htm?from=cart&id=552236004897&mi_id=00009BUIbjDvG-YmmE83FmB2_kwGi_nNZ9PPBOXCO16aiqQ&skuId=3384266433547&spm=a1z0d.6639537%2F202410.item.d552236004897.1b4c7484yqVRQn&upStreamPrice=6700&xxc=taobaoSearch" },
+  { g:'ctrl', name:"电流监控时间继电器", spec:"电流 / 时间监控继电器", price:96.00, sku:'6008268133084', url:"https://item.taobao.com/item.htm?from=cart&id=650436234425&mi_id=0000q0j-h1rqkv_G_rFn5eZeCuxOdSQ0Sg3pwSBgcAul4Uc&skuId=6008268133084&spm=a1z0d.6639537%2F202410.item.d650436234425.64dd7484xMvEAM&upStreamPrice=9600&xxc=taobaoSearch" },
+  { g:'relay', name:"中间继电器", spec:"中间继电器", price:20.37, sku:'6013703158199', url:"https://item.taobao.com/item.htm?from=cart&id=837280420317&mi_id=00006-hq7gkC7teucbdYsV9x9Zu86i53aqiHjbB9RQfASQM&skuId=6013703158199&spm=a1z0d.6639537%2F202410.item.d837280420317.1b4c7484yqVRQn&upStreamPrice=2037&xxc=taobaoSearch" },
+  { g:'relay', name:"中间继电器底座", spec:"继电器插座 / 底座", price:6.08, sku:'5214384543312', url:"https://item.taobao.com/item.htm?from=cart&id=726066316226&mi_id=0000_mZJo0YqNdmNJDmUNEUVjpvjBeMWAa12ggU_MjEkzHY&skuId=5214384543312&spm=a1z0d.6639537%2F202410.item.d726066316226.64dd7484xMvEAM&upStreamPrice=608&xxc=taobaoSearch" },
+  { g:'relay', name:"空气开关", spec:"小型断路器", price:64.79, sku:'5968759317180', url:"https://item.taobao.com/item.htm?from=cart&id=992805878792&mi_id=0000-hKiuc5SdllONwKg1VIHjpwRbHXcxG9SAziopV8ibhk&skuId=5968759317180&spm=a1z0d.6639537%2F202410.item.d992805878792.64dd7484xMvEAM&upStreamPrice=6479&xxc=taobaoSearch" },
+  { g:'relay', name:"熔断器", spec:"保险丝 / 熔断体", price:23.18, sku:'5349201431362', url:"https://item.taobao.com/item.htm?from=cart&id=750796886842&mi_id=0000CcqolcQCrSuCoQSxEN7BsCtaj6xqnjvPWtIY-1k8w-k&skuId=5349201431362&spm=a1z0d.6639537%2F202410.item.d750796886842.64dd7484xMvEAM&upStreamPrice=2318&xxc=ad_ztc" },
+  { g:'relay', name:"熔断器底座", spec:"熔断器配套底座", price:null, sku:'6051439792327', url:"https://item.taobao.com/item.htm?abbucket=10&id=580470140714&mi_id=0000dKAd3Vjhsroib0wl7ghgBz03gkyqOhgfHUwZCj8Fzac&ns=1&priceTId=2147826f17933316054538259e117e&skuId=6051439792327&spm=a21n57.1.hoverItem.2&utparam=%7B%22aplus_abtest%22%3A%2250835121e88e6346f27c5e32ddcbc480%22%7D&xxc=taobaoSearch" },
+  { g:'relay', name:"电源防雷器", spec:"电源浪涌保护器 / 防雷器", price:null, sku:'', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A1905733704%3AH%3A6SNl1%2Fbq5i0D5c22RjpjHX2trDRs9%2Fqc%3A6a5774c6911aa547209053ea8d094126&ali_trackid=282_6a5774c6911aa547209053ea8d094126&id=831050261418&mi_id=00008Q-pqXYjkGb4QEC78YuLjuRRLfyrDB2J4TCj3gc5Vbw&mm_sceneid=1_0_6922939887_0_0&priceTId=2147826f17933316480863138e117e&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%229b0288e3fa96e33ba8804fac679b611c%22%7D&xxc=ad_ztc" },
+  { g:'relay', name:"指示灯", spec:"LED 指示灯", price:null, sku:'4437886700032', url:"https://item.taobao.com/item.htm?ali_refid=a3_430582_1006%3A1102266660%3AH%3AxjJYJBDWBwHuAXVv5KqB7IzHsSTvu%2FrR%3A6b073b4a30f6f7f94b66671e1ee7f2d8&ali_trackid=282_6b073b4a30f6f7f94b66671e1ee7f2d8&id=530362464274&mi_id=0000wLAXODGvE38xOz-BLETIZ96sopGIxv1Ekrc3m0uxCfs&mm_sceneid=1_0_12963831_0_0&priceTId=2150488017933309906622494e1241&skuId=4437886700032&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%22343786785d417677635af2dd89172671%22%7D&xxc=ad_ztc" },
+  { g:'relay', name:"温度控制开关", spec:"温控器 / 温度开关", price:48.00, sku:'4724395488194', url:"https://detail.tmall.com/item.htm?from=cart&id=654483600530&mi_id=0000dHsek3lCidbTuSm8an0z5NxdSOXudUT6kGeqZZ-7S2s&skuId=4724395488194&spm=a1z0d.6639537%2F202410.item.d654483600530.64dd7484xMvEAM&upStreamPrice=4800&xxc=taobaoSearch" },
+  { g:'relay', name:"换向阀", spec:"二位二通电磁换向阀", price:31.50, sku:'4784967774333', url:"https://item.taobao.com/item.htm?from=cart&id=631999517519&mi_id=0000Wmnf_1WhMjoeztHCI7TD91eFAlVS9WUF5ipqVYTm0Rk&skuId=4784967774333&spm=a1z0d.6639537%2F202410.item.d631999517519.64dd7484xMvEAM&upStreamPrice=3150&xxc=ad_ztc" },
+  { g:'power', name:"单相交流双级抗干扰净化器", spec:"交流双级 EMI 净化器", price:30.00, sku:'6290504367516', url:"https://item.taobao.com/item.htm?from=cart&id=1073499983146&mi_id=0000Orwwbyuawu9qlW6WBQTmSsefAAfUPEkEozm1sIQmCvA&skuId=6290504367516&spm=a1z0d.6639537%2F202410.item.d1073499983146.1b4c7484yqVRQn&upStreamPrice=3000&xxc=taobaoSearch" },
+  { g:'power', name:"直流单级电源滤波器", spec:"直流单级滤波 EMI", price:32.00, sku:'3654551307731', url:"https://item.taobao.com/item.htm?from=cart&id=559654887673&mi_id=00003JSryFslENmYoCy3kteCPi8RJNLbYlO-gOhsp6EhUQ0&skuId=3654551307731&spm=a1z0d.6639537%2F202410.item.d559654887673.1b4c7484yqVRQn&upStreamPrice=3200&xxc=taobaoSearch" },
+  { g:'power', name:"DCDC 降压模块", spec:"DC-DC 降压电源模块", price:23.00, sku:'4112823764841', url:"https://item.taobao.com/item.htm?from=cart&id=4175918250&mi_id=0000oMLFUdUgvZi9zKUZOQZwiq7Z3PVr_CPLXL540AEHao4&skuId=4112823764841&spm=a1z0d.6639537%2F202410.item.d4175918250.1b4c7484yqVRQn&upStreamPrice=2300&xxc=ad_ztc" },
+  { g:'power', name:"开关电源", spec:"AC-DC 开关电源", price:48.50, sku:'5684471846615', url:"https://item.taobao.com/item.htm?from=cart&id=816949486138&mi_id=0000qt7R7dZjY4LtKbMiO-vz-6_RIdSqgPY8fgQbCfM-shA&skuId=5684471846615&spm=a1z0d.6639537%2F202410.item.d816949486138.64dd7484xMvEAM&upStreamPrice=4850&xxc=taobaoSearch" },
+  { g:'power', name:"单相直流电源滤波器", spec:"单相直流滤波 EMI", price:34.00, sku:'3806707808837', url:"https://item.taobao.com/item.htm?from=cart&id=563089710634&mi_id=0000ycFvHAbw45E7T1XnC3bm7PZyY_DGFYaco8UsLbkmlfU&skuId=3806707808837&spm=a1z0d.6639537%2F202410.item.d563089710634.64dd7484xMvEAM&upStreamPrice=3400&xxc=taobaoSearch" },
+  { g:'power', name:"单相单节电源滤波器", spec:"单相单节滤波 EMI", price:34.00, sku:'3806707808837', url:"https://item.taobao.com/item.htm?from=cart&id=563089710634&mi_id=0000ycFvHAbw45E7T1XnC3bm7OSX9Q7SmWSuLfbCZ6K4BJM&skuId=3806707808837&spm=a1z0d.6639537%2F202410.item.d563089710634.64dd7484xMvEAM&upStreamPrice=3400&xxc=taobaoSearch" },
+  { g:'power', name:"隔离变压器", spec:"隔离变压器", price:185.00, sku:'', url:"https://item.taobao.com/item.htm?from=cart&id=43707196822&mi_id=0000D90FMdEPSrbdNJQyU3CVLrIqF8lecoApIdGOfVt-RsQ&spm=a1z0d.6639537%2F202410.item.d43707196822.1b4c7484yqVRQn&upStreamPrice=18500&xxc=taobaoSearch" },
+  { g:'pneu', name:"电磁阀", spec:"电磁阀 / 换向阀", price:233.00, sku:'4299122545495', url:"https://item.taobao.com/item.htm?from=cart&id=35690389372&mi_id=0000Hw8e3myr6VLVrIndjymHpj8s01zhu_InEwfSwCgcIu8&skuId=4299122545495&spm=a1z0d.6639537%2F202410.item.d35690389372.64dd7484xMvEAM&upStreamPrice=23300&xxc=taobaoSearch" },
+  { g:'pneu', name:"气压传感器", spec:"气压 / 压力传感器", price:343.00, sku:'6101273880658', url:"https://item.taobao.com/item.htm?from=cart&id=675835655850&mi_id=0000kiOD0opfxnR4y6N6OOIPyru45rsB5zqHj5WEZKO87jk&skuId=6101273880658&spm=a1z0d.6639537%2F202410.item.d675835655850.64dd7484xMvEAM&upStreamPrice=34300&xxc=ad_ztc" },
+  { g:'pneu', name:"储气罐", spec:"储气罐 / 气罐", price:63.70, sku:'5268304887769', url:"https://item.taobao.com/item.htm?from=cart&id=549035878027&mi_id=00002ijHSSUchy8JRK71UP2vix4GoYvJ7p-MVNhRdAVN4qE&skuId=5268304887769&spm=a1z0d.6639537%2F202410.item.d549035878027.64dd7484xMvEAM&upStreamPrice=6370&xxc=taobaoSearch" },
+  { g:'pneu', name:"气压开关", spec:"压力开关", price:96.00, sku:'6253472558969', url:"https://detail.tmall.com/item.htm?from=cart&id=1051062903432&mi_id=0000omA99xDsYXmQm0aDqtFho1x-4C4TgITPYNT8LTwRTEY&skuId=6253472558969&spm=a1z0d.6639537%2F202410.item.d1051062903432.1b4c7484yqVRQn&upStreamPrice=9600&xxc=ad_ztc" },
+  { g:'pneu', name:"油水过滤器", spec:"气动油水分离器", price:null, sku:'5480829847789', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A1157920001%3AH%3A%2FP%2FZmVPmNgyovbcoKxa0pX2trDRs9%2Fqc%3Abdb495ef1ec15cf86aba5da1f1f27f5f&ali_trackid=282_bdb495ef1ec15cf86aba5da1f1f27f5f&id=776457983660&mi_id=0000qUIyQweED9uRmx4JR-Xjvc5bbTkItz-IjfWDYoebe3g&mm_sceneid=1_0_166350140_0_0&priceTId=2147826f17933313030647589e117e&skuId=5480829847789&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%22e66e9ba0b7bd63d6daa28636e5ebf7d5%22%7D&xxc=ad_ztc" },
+  { g:'pneu', name:"纯铜单向阀", spec:"纯铜单向阀", price:18.00, sku:'5308869017125', url:"https://item.taobao.com/item.htm?from=cart&id=776062572721&mi_id=0000TUd0zs-yNRlHaUAlkwRHDWG3vH8BgPv9qv023j6jrP8&skuId=5308869017125&spm=a1z0d.6639537%2F202410.item.d776062572721.64dd7484xMvEAM&upStreamPrice=1800&xxc=taobaoSearch" },
+  { g:'pneu', name:"单向止回阀", spec:"单向止回阀", price:18.00, sku:'5308869017125', url:"https://item.taobao.com/item.htm?from=cart&id=776062572721&mi_id=0000TUd0zs-yNRlHaUAlkwRHDW4s1qBqWSxE_gp-c5P1o2w&skuId=5308869017125&spm=a1z0d.6639537%2F202410.item.d776062572721.64dd7484xMvEAM&upStreamPrice=1800&xxc=taobaoSearch" },
+  { g:'pneu', name:"金属高压软管", spec:"高压金属软管", price:20.00, sku:'6289721899065', url:"https://detail.tmall.com/item.htm?from=cart&id=1072933639542&mi_id=0000mXl_3yjvIWw4p6Zh5rmL3QI8RZk_QOa7ZIUEuYn5PLw&skuId=6289721899065&spm=a1z0d.6639537%2F202410.item.d1072933639542.64dd7484xMvEAM&upStreamPrice=2000&xxc=ad_ztc" },
+  { g:'pneu', name:"气压表", spec:"压力表 / 气压表", price:null, sku:'4788031516357', url:"https://detail.tmall.com/item.htm?ali_refid=a3_mm_12852562_1778064_116286300242%3A1516410061%3AH%3A%E6%B0%94%E5%8E%8B%E8%A1%A8%3Adae97ceaf035017fb50ca5bc3ed6ca6a&ali_trackid=282_dae97ceaf035017fb50ca5bc3ed6ca6a&id=665056286015&mi_id=0000J3AnMwcjXIaGlncRlVAR8UxxKx6CGAQoRPFlgUUHUAE&mm_sceneid=1_0_1989450035_0_0&priceTId=2150489217933244262534045e101f&skuId=4788031516357&spm=a21n57.1.hoverItem.13&utparam=%7B%22aplus_abtest%22%3A%2212afd2b7318074282716f79534d4a143%22%7D&xxc=taobaoSearch" },
+  { g:'pneu', name:"气泵", spec:"小型气泵 / 空压机", price:33.10, sku:'6073586992844', url:"https://item.taobao.com/item.htm?from=cart&id=594266360583&mi_id=0000bT6v5wQlTOiP6BrcIdQYgpu_0fu30cS6Sg-EZzs8xpU&skuId=6073586992844&spm=a1z0d.6639537%2F202410.item.d594266360583.1b4c7484yqVRQn&upStreamPrice=3310&xxc=taobaoSearch" },
+  { g:'pneu', name:"弹簧安全阀", spec:"弹簧式安全阀 / 泄压阀", price:null, sku:'4453434148165', url:"https://item.taobao.com/item.htm?abbucket=10&id=627996814006&mi_id=0000BDvGuX2qbrROyAoc-npOQvHMieShbjee4zTgpwHg4R0&ns=1&priceTId=2147826f17933314874962135e117e&skuId=4453434148165&spm=a21n57.1.hoverItem.2&utparam=%7B%22aplus_abtest%22%3A%227ee665caa69b20a979a53d17fbbfc21b%22%7D&xxc=taobaoSearch" },
+  { g:'pneu', name:"两分螺纹气源快插", spec:"2 分螺纹气动快插接头", price:null, sku:'4157283056351', url:"https://item.taobao.com/item.htm?ali_refid=a3_430582_1006%3A1104523102%3AH%3AxZbnStcKWp%2FrfDtUUU8JHA%3D%3D%3Ade2b7f37ff9f297f0558daaa8f96e91a&ali_trackid=282_de2b7f37ff9f297f0558daaa8f96e91a&id=597875703159&mi_id=0000JN-4ro1V6Ob0lJ6pM86VFIM_F8hw6VPiHL35Ta0GGDg&mm_sceneid=1_0_19610163_0_0&priceTId=2150435917933287563741783e175c&skuId=4157283056351&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%222e34834c587c618787a3627e5fd1c2c0%22%7D&xxc=ad_ztc" },
+  { g:'comm', name:"RS232 转光纤", spec:"串口转光纤收发器", price:373.00, sku:'6041050038519', url:"https://item.taobao.com/item.htm?from=cart&id=706303513983&mi_id=00004shzuhas6JtPQEk9GmSSLv6VvmHIgdbr4fnWRCbv0JQ&skuId=6041050038519&spm=a1z0d.6639537%2F202410.item.d706303513983.64dd7484xMvEAM&upStreamPrice=37300&xxc=taobaoSearch" },
+  { g:'comm', name:"DB9 公头", spec:"D-Sub 9 针公头", price:24.24, sku:'5280227501101', url:"https://detail.tmall.com/item.htm?from=cart&id=769881372386&mi_id=0000A7dzy2tzIph8_HT1voWoMwvVOPDWVBKTOOiL5bCVETc&skuId=5280227501101&spm=a1z0d.6639537%2F202410.item.d769881372386.64dd7484xMvEAM&upStreamPrice=2424&xxc=ad_ztc" },
+  { g:'comm', name:"DB9 针 90 度弯头", spec:"D-Sub 9 针 90° 弯头", price:null, sku:'4317162251462', url:"https://detail.tmall.com/item.htm?abbucket=10&id=596344085874&mi_id=0000luihcakDcErsg5SFfKJqqDOjOQcWVjFwFP75cMHrKc0&ns=1&priceTId=2150488017933304162553231e1241&skuId=4317162251462&spm=a21n57.1.hoverItem.2&utparam=%7B%22aplus_abtest%22%3A%22ef67b3503119125a87278e66b2fdfcfa%22%7D&xxc=taobaoSearch" },
+  { g:'comm', name:"嵌入式连接器", spec:"嵌入式连接器", price:null, sku:'6270664699005', url:"https://item.taobao.com/item.htm?ali_refid=a3_430582_1006%3A1197300127%3AH%3ArJ39vJ9vj9kU7gQvfTGkuA%3D%3D%3A2ca5c8c62bfa942c8e4a8f47f6154a5b&ali_trackid=318_2ca5c8c62bfa942c8e4a8f47f6154a5b&id=679621965315&mi_id=0000UNKwzWuhU6fhZDcdkajAnMFQ1e-Zn3HmXqe54gIB3WI&mm_sceneid=0_0_315890119_0_0&priceTId=2150488017933302610477104e1241&skuId=6270664699005&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%2247f5eae406dc06983c0b786da560b5ff%22%7D&xxc=ad_ztc" },
+  { g:'comm', name:"多模双芯光纤", spec:"多模双芯跳线", price:48.00, sku:'3620681286810', url:"https://item.taobao.com/item.htm?from=cart&id=12386776744&mi_id=000046T6pJ5knTxOIrtmmjTxKW7b0fTkIHepTDPsiPdBrIA&skuId=3620681286810&spm=a1z0d.6639537%2F202410.item.d12386776744.64dd7484xMvEAM&upStreamPrice=4800&xxc=taobaoSearch" },
+  { g:'comm', name:"三芯航空插头 A", spec:"航空插头 3 芯", price:17.20, sku:'4576458848149', url:"https://item.taobao.com/item.htm?from=cart&id=638621390298&mi_id=0000NlAf9jZNI1xb7-WeNS3Qwg2MMb91kpvuaeIRSaOEl-U&skuId=4576458848149&spm=a1z0d.6639537%2F202410.item.d638621390298.64dd7484xMvEAM&upStreamPrice=1720&xxc=taobaoSearch" },
+  { g:'comm', name:"三芯航空插头 B", spec:"航空插头 3 芯（另一商品）", price:null, sku:'5847155173424', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A2127212689%3AH%3A6blweMCMkFd2t%2BJDTYbMII3seHOR9t8y%3Ac4c92d5883ebb4424c9074c7a0e7bb65&ali_trackid=318_c4c92d5883ebb4424c9074c7a0e7bb65&id=932120696102&mi_id=0000XHprpgulMAc2J_ktqcNCg6EKETMJmAYNavgxVjRSS8Y&mm_sceneid=0_0_7112558875_0_0&priceTId=2147826f17933317770822770e117e&skuId=5847155173424&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%22cbc9315dbf2c0a8588709902e5c9868f%22%7D&xxc=ad_ztc" },
+  { g:'comm', name:"三芯航空插头 C", spec:"航空插头 3 芯（同 A 商品）", price:17.20, sku:'4576458848149', url:"https://item.taobao.com/item.htm?from=cart&id=638621390298&mi_id=0000NlAf9jZNI1xb7-WeNS3Qwg2MMb91kpvuaeIRSaOEl-U&skuId=4576458848149&spm=a1z0d.6639537%2F202410.item.d638621390298.64dd7484xMvEAM&upStreamPrice=1720&xxc=taobaoSearch" },
+  { g:'comm', name:"二芯航空插头 A", spec:"航空插头 2 芯", price:14.10, sku:'5921963233527', url:"https://item.taobao.com/item.htm?from=cart&id=972141420526&mi_id=0000vwUFIdTFSeT0TIw_y0BZBZu7Wdz-S9V22Ehf0WlsE6E&skuId=5921963233527&spm=a1z0d.6639537%2F202410.item.d972141420526.64dd7484xMvEAM&upStreamPrice=1410&xxc=taobaoSearch" },
+  { g:'comm', name:"二芯航空插头 B", spec:"航空插头 2 芯（同 A 商品）", price:14.10, sku:'5921963233527', url:"https://item.taobao.com/item.htm?from=cart&id=972141420526&mi_id=0000vwUFIdTFSeT0TIw_y0BZBZu7Wdz-S9V22Ehf0WlsE6E&skuId=5921963233527&spm=a1z0d.6639537%2F202410.item.d972141420526.64dd7484xMvEAM&upStreamPrice=1410&xxc=taobaoSearch" },
+  { g:'hw', name:"304/316 不锈钢直通穿板", spec:"不锈钢管接头 直通", price:null, sku:'6150948428383', url:"https://detail.tmall.com/item.htm?ali_refid=a3_420434_1006%3A2761400102%3AH%3AuNsgC3Ynfc59FHqSzHug6oQy1kSAheBP%3A574459801ad21e44ce074eafa1d7ae7c&ali_trackid=282_574459801ad21e44ce074eafa1d7ae7c&id=1093237035715&mi_id=0000sykJuyx7hAsAYSP7-vNKeOrhvkjAqou4CY5z0u-Ejj4&mm_sceneid=1_0_10572876103_0_0&priceTId=2150489217933244901071106e101f&skuId=6150948428383&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%224c9ffbcf066efed302af52d8f5d401df%22%7D&xxc=ad_ztc" },
+  { g:'hw', name:"304 不锈钢内丝四通", spec:"304 不锈钢内丝四通接头", price:null, sku:'5499242160265', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A1254920102%3AH%3ApVJmnLQ4AvdWEwRpLGuD21j%2F5psHdQ8%2BAuXkxBX1b1c%3D%3A885a429817abdee0c4b5692fefdb2ca9&ali_trackid=282_885a429817abdee0c4b5692fefdb2ca9&id=809821247205&mi_id=0000-zmMCw-oggCdvLIH3JaxdlRcJikocDSMuce6dFUY2fE&mm_sceneid=1_0_648510122_0_0&priceTId=2150435917933288297967543e175c&skuId=5499242160265&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%225e511e418211d236a62ae83aa27ee7dc%22%7D&xxc=ad_ztc" },
+  { g:'hw', name:"304 不锈钢六角外丝直接接头", spec:"304 不锈钢六角外丝", price:null, sku:'4670697615896', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A1254920102%3AH%3AJtkYIg9KHLBdX3Drh208SV7qXlhDZXA2%3A9c931f1a5a6f19187c734bc26dbed63a&ali_trackid=282_9c931f1a5a6f19187c734bc26dbed63a&id=631691595287&mi_id=0000u3noTJsp1dPll0IwwSrtRCQy8SGQgqhCpQlS1FQ8YfQ&mm_sceneid=1_0_648510122_0_0&priceTId=2150435917933288810702963e175c&skuId=4670697615896&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%220f8cc7591386abfda1950783d6d258bb%22%7D&xxc=ad_ztc" },
+  { g:'hw', name:"304 不锈钢角码 L 型固定支架", spec:"304 不锈钢 L 型角码", price:null, sku:'5943786608613', url:"https://detail.tmall.com/item.htm?ali_refid=a3_mm_12852562_1778064_116286300242%3A1194440146%3AH%3A304%E4%B8%8D%E9%94%88%E9%92%A2%E8%A7%92%E7%A0%81L%E5%9E%8B%E5%9B%BA%E5%AE%9A%E6%94%AF%E6%9E%B6%3A45b43d2651e1e84ab99abf0484473c05&ali_trackid=318_45b43d2651e1e84ab99abf0484473c05&id=984343156943&mi_id=00005_IZQZDf02FIMzyO-Jt5pucsGl54RO5Cm56lrWaYpks&mm_sceneid=0_0_298240196_0_0&priceTId=2150435917933289150525219e175c&skuId=5943786608613&spm=a21n57.1.hoverItem.2&utparam=%7B%22aplus_abtest%22%3A%22500c23acb5ad042b566ae3577d57f5ad%22%7D&xxc=taobaoSearch" },
+  { g:'hw', name:"全螺纹牙棒牙条", spec:"全螺纹牙棒 / 牙条", price:null, sku:'4580834020231', url:"https://detail.tmall.com/item.htm?ali_refid=a3_430582_1006%3A1123480325%3AH%3AlPb5UWiEucfWr1xvtTDSWQ%3D%3D%3Aa759d7113c5981f68c8c50be00783b35&ali_trackid=282_a759d7113c5981f68c8c50be00783b35&id=639400967337&mi_id=0000WUGtdQ3x4fpmEqdk_gRmNk6XrrurFs8Om3L873bHJ1M&mm_sceneid=1_0_116096069_0_0&priceTId=2150435917933289450416835e175c&skuId=4580834020231&spm=a21n57.1.hoverItem.1&utparam=%7B%22aplus_abtest%22%3A%22572dccc4c8e5278a177a27731a497a15%22%7D&xxc=ad_ztc" }
+];
+
+const money = n => '¥' + n.toFixed(2);
+const listEl = document.getElementById('list');
+const GMAP = Object.fromEntries(GROUPS.map(g => [g.key, g]));
+
+GROUPS.forEach(g => {
+  const items = ITEMS.filter(i => i.g === g.key);
+  if (!items.length) return;
+
+  const sec = document.createElement('section');
+  sec.className = 'group';
+  sec.dataset.g = g.key;
+  sec.innerHTML = `
+    <div class="group-head">
+      <span class="dot" style="background:${g.color}"></span>
+      <h2>${g.name}</h2>
+      <span class="cnt">${items.length} 项</span>
+      <span class="gsub"></span>
+    </div>`;
+  const body = document.createElement('div');
+  body.className = 'gbody';
+  sec.appendChild(body);
+
+  items.forEach(it => {
+    const hasPrice = typeof it.price === 'number';
+    const card = document.createElement('div');
+    card.className = 'card q0';
+    card.dataset.name = (it.name + ' ' + it.spec).toLowerCase();
+    card.dataset.sku = it.sku;
+    card.innerHTML = `
+      <div>
+        <div class="title">${it.name} <span class="tag">${it.spec}</span>${hasPrice ? '' : '<span class="tag gray">价格待确认</span>'}</div>
+        <div class="meta">
+          ${hasPrice ? '单价 ' + money(it.price) : '单价 <span class="unknown">—</span>'} &nbsp;·&nbsp;
+          ${it.sku ? 'SKU <span class="sku">' + it.sku + '</span>' : 'SKU <span class="sku">未指定</span>'}<br>
+          小计 <b class="sub">—</b>
+        </div>
+      </div>
+      <div class="stepper">
+        <button data-a="-1" aria-label="减少">−</button>
+        <input type="number" min="0" max="999" value="0" aria-label="数量">
+        <button data-a="1" aria-label="增加">+</button>
+      </div>
+      <div class="right">
+        <div class="price">小计 <b class="sub">—</b></div>
+        <a class="buy" href="${it.url}" target="_blank" rel="noopener">去购买 →</a>
+      </div>`;
+    body.appendChild(card);
+
+    const input = card.querySelector('input');
+    const sub = card.querySelectorAll('.sub');
+    const qty = () => Math.max(0, parseInt(input.value || '0', 10));
+
+    const sync = () => {
+      const q = qty();
+      input.value = q;
+      const val = hasPrice ? money(it.price * q) : (q > 0 ? '待确认' : '—');
+      sub.forEach(el => el.textContent = val);
+      card.classList.toggle('q0', q === 0);
+      update();
+    };
+    input.addEventListener('input', sync);
+    input.addEventListener('change', sync);
+    card.querySelectorAll('.stepper button').forEach(b => {
+      b.addEventListener('click', () => { input.value = qty() + Number(b.dataset.a); sync(); });
+    });
+    it._card = card; it._input = input; it._sync = sync; it._qty = qty;
+    it._hasPrice = hasPrice;
+  });
+
+  listEl.appendChild(sec);
+});
+
+function visibleItems() {
+  const kw = document.getElementById('q').value.trim().toLowerCase();
+  return ITEMS.filter(it => {
+    const card = it._card;
+    if (!kw) { card.classList.remove('hide'); return true; }
+    const hit = card.dataset.name.includes(kw) || card.dataset.sku.includes(kw);
+    card.classList.toggle('hide', !hit);
+    return hit;
+  });
+}
+
+function update() {
+  const vis = visibleItems();
+  let total = 0, count = 0, kinds = 0;
+  GROUPS.forEach(g => {
+    const sec = listEl.querySelector('section[data-g="' + g.key + '"]');
+    const items = ITEMS.filter(i => i.g === g.key);
+    let gTotal = 0, gCount = 0, gVis = 0;
+    items.forEach(it => {
+      const q = it._qty();
+      if (q > 0) { gCount += q; kinds++; }
+      if (it._hasPrice) gTotal += it.price * q;
+    });
+    items.forEach(it => { if (!it._card.classList.contains('hide')) gVis++; });
+    const head = sec.querySelector('.gsub');
+    head.textContent = gVis ? `小计 ${money(gTotal)} · ${gCount} 件` : '';
+    sec.style.display = gVis ? '' : 'none';
+    total += gTotal; count += gCount;
+  });
+  document.getElementById('grand').innerHTML = money(total) + '<small>' + count + ' 件</small>';
+  document.getElementById('statItems').textContent = vis.length;
+  document.getElementById('statPicked').textContent = count;
+  document.getElementById('statTop').textContent = money(total);
+}
+
+document.getElementById('q').addEventListener('input', update);
+
+document.querySelectorAll('.preset button').forEach(b => {
+  b.addEventListener('click', () => {
+    const n = Number(b.dataset.all);
+    ITEMS.forEach(it => { it._input.value = n; it._sync(); });
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  ITEMS.forEach(it => { it._input.value = 0; it._sync(); });
+});
+
+function copy(text, btn, label) {
+  const ok = () => { const o = btn.textContent; btn.textContent = '已复制 ✓'; setTimeout(() => btn.textContent = o, 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(() => fb(text, ok));
+  else fb(text, ok);
+}
+function fb(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch (e) { alert(text); }
+  document.body.removeChild(ta);
+}
+
+document.getElementById('copyBtn').addEventListener('click', function () {
+  const lines = [];
+  GROUPS.forEach(g => {
+    const sel = ITEMS.filter(i => i.g === g.key && i._qty() > 0);
+    if (!sel.length) return;
+    lines.push(`【${g.name}】`);
+    sel.forEach(it => {
+      const p = it._hasPrice ? money(it.price * it._qty()) : '价格待确认';
+      lines.push(`  ${it.name} × ${it._qty()}   单价 ${it._hasPrice ? money(it.price) : '—'}   小计 ${p}`);
+    });
+  });
+  const picked = ITEMS.filter(i => i._qty() > 0);
+  const total = picked.reduce((s, i) => s + (i._hasPrice ? i.price * i._qty() : 0), 0);
+  lines.push('', `合计：${money(total)}（${picked.reduce((s,i)=>s+i._qty(),0)} 件，${picked.length} 个品种）`);
+  copy(lines.join('\n'), this);
+});
+
+document.getElementById('copyLinkBtn').addEventListener('click', function () {
+  const lines = ITEMS.filter(i => i._qty() > 0).map(it => `${it.name}  ${it.url}`);
+  if (!lines.length) { alert('请先设置数量'); return; }
+  copy(lines.join('\n'), this);
+});
+
+update();
+</script>
+
+<script>
+(function(){
+  var PW = '123456';
+  var KEY = 'wgdz_lock';
+  try {
+    if (localStorage.getItem(KEY) === PW) { unlock(); return; }
+  } catch(e) {}
+  function unlock(){
+    var app = document.getElementById('app');
+    var gate = document.getElementById('gate');
+    if (app) app.style.display = '';
+    if (gate) gate.remove();
+  }
+  window.wgdzLogin = function(ev){
+    ev.preventDefault();
+    var v = document.getElementById('gatePw').value;
+    if (v === PW) {
+      try { localStorage.setItem(KEY, PW); } catch(e) {}
+      unlock();
+    } else {
+      document.getElementById('gateErr').style.display = 'block';
+    }
+    return false;
+  };
+})();
+</script>
+</body>
+
+</html>

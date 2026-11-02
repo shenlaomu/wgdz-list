@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>机柜物料购买清单</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#1f2430,#3a4152);padding:32px 20px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;max-width:820px}
+  header{text-align:center;margin-bottom:34px;color:#fff}
+  h1{font-size:28px;font-weight:700;letter-spacing:-.5px}
+  .sub{font-size:14px;color:#aab3c2;margin-top:10px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .card{
+    display:block;background:#fff;border-radius:20px;padding:32px 28px;text-decoration:none;
+    box-shadow:0 14px 40px rgba(0,0,0,.22);transition:.2s;position:relative;overflow:hidden;
+  }
+  .card:hover{transform:translateY(-5px);box-shadow:0 22px 52px rgba(0,0,0,.32)}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+  .card:last-child:nth-child(odd){grid-column:1/-1;max-width:calc(50% - 10px);margin:0 auto;width:100%}
+  .badge{
+    display:inline-block;font-size:12px;font-weight:700;padding:5px 12px;border-radius:30px;
+    background:var(--soft);color:var(--c);margin-bottom:18px;letter-spacing:.5px;
+  }
+  .name{font-size:22px;font-weight:700;color:#191b1f;margin-bottom:10px;letter-spacing:-.3px}
+  .desc{font-size:13.5px;color:#6b7280;line-height:1.8;margin-bottom:22px}
+  .foot{display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid #eef0f2;padding-top:16px;font-size:13px;color:#6b7280}
+  .go{font-weight:700;color:var(--c)}
+  footer{text-align:center;margin-top:26px;font-size:12.5px;color:#8a93a5}
+  @media (max-width:680px){.cards{grid-template-columns:1fr}h1{font-size:22px}.card:last-child:nth-child(odd){max-width:none}}
+</style>
+
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
+#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
+box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
+#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
+#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
+#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
+#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
+font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
+#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
+border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+#gate button:hover{background:#e64800}
+#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
+padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
+</style>
+</head>
+<body>
+<div id="gate">
+  <form class="card" onsubmit="return wgdzLogin(event)">
+    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <h1>WGDZ物料清单</h1>
+    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
+    <div class="err" id="gateErr">密码不正确，请重新输入</div>
+    <label for="gatePw">访问密码</label>
+    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
+    <button type="submit">进入清单</button>
+  </form>
+</div>
+<div id="app" style="display:none">
+
+<div class="wrap">
+  <header>
+    <h1>机柜物料购买清单</h1>
+    <p class="sub">请选择要查看的清单版本</p>
+  </header>
+  <div class="cards">
+    <a class="card" href="./150kv-import.html" style="--c:#2563eb;--soft:#e8effd">
+      <span class="badge">150kv · 进口版</span>
+      <div class="name">150kv进口版机柜物料购买清单</div>
+      <div class="desc">欧姆龙 PLC 方案，含控制、继电器、电源滤波、气动元件及通信连接器。</div>
+      <div class="foot"><span>46 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+    <a class="card" href="./150kv-gc.html" style="--c:#ff5000;--soft:#fff1ea">
+      <span class="badge">150kv · 国产版</span>
+      <div class="name">150kv国产版机柜物料购买清单</div>
+      <div class="desc">汇川 PLC 方案，新增输出模块、ADDA 混合模块、气泵及五金结构件。</div>
+      <div class="foot"><span>47 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+    <a class="card" href="./300kv-import.html" style="--c:#0891b2;--soft:#e0f5fb">
+      <span class="badge">300kv · 进口版</span>
+      <div class="name">300kv进口版控制柜物料购买清单</div>
+      <div class="desc">新增交流净化器、电源防雷器、熔断器底座、嵌入式连接器等。</div>
+      <div class="foot"><span>49 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+    <a class="card" href="./300kv-gc.html" style="--c:#d97706;--soft:#fdf3e3">
+      <span class="badge">300kv · 国产版</span>
+      <div class="name">300kv国产版控制柜物料购买清单</div>
+      <div class="desc">汇川 PLC 方案，含净化器、滤波器、嵌入式连接器与全套五金结构件。</div>
+      <div class="foot"><span>48 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+  </div>
+  <footer>数量可在页面内增减，合计金额实时计算 · 点击「去购买」跳转淘宝对应规格</footer>
+</div>
+
+<script>
+(function(){
+  var PW = '123456';
+  var KEY = 'wgdz_lock';
+  try {
+    if (localStorage.getItem(KEY) === PW) { unlock(); return; }
+  } catch(e) {}
+  function unlock(){
+    var app = document.getElementById('app');
+    var gate = document.getElementById('gate');
+    if (app) app.style.display = '';
+    if (gate) gate.remove();
+  }
+  window.wgdzLogin = function(ev){
+    ev.preventDefault();
+    var v = document.getElementById('gatePw').value;
+    if (v === PW) {
+      try { localStorage.setItem(KEY, PW); } catch(e) {}
+      unlock();
+    } else {
+      document.getElementById('gateErr').style.display = 'block';
+    }
+    return false;
+  };
+})();
+</script>
+</body>
+
+</html>
