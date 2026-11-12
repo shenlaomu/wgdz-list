@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5000柜采购清单</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --primary: #ff5000;
+    --primary-dark: #e64800;
+    --text: #222;
+    --muted: #888;
+    --border: #e8e8e8;
+    --ok: #07c160;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 90px;
+  }
+  header {
+    background: linear-gradient(135deg, #ff5000, #ff7a2f);
+    color: #fff;
+    padding: 28px 16px 22px;
+    text-align: center;
+  }
+  header h1 { font-size: 22px; margin-bottom: 6px; }
+  header p { font-size: 13px; opacity: .9; }
+  .summary-bar {
+    display: flex; justify-content: center; gap: 24px;
+    margin-top: 14px; font-size: 14px;
+  }
+  .summary-bar b { font-size: 20px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 16px; }
+
+  .toolbar {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .toolbar button {
+    border: 1px solid var(--border); background: #fff; border-radius: 20px;
+    padding: 7px 14px; font-size: 13px; cursor: pointer; color: #555;
+  }
+  .toolbar button:hover { border-color: var(--primary); color: var(--primary); }
+
+  .category-title {
+    font-size: 15px; font-weight: 700; color: #555;
+    margin: 18px 4px 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .category-title::before {
+    content: ""; width: 4px; height: 16px; background: var(--primary); border-radius: 2px;
+  }
+
+  .item {
+    background: var(--card); border-radius: 12px; padding: 14px;
+    margin-bottom: 10px; display: flex; gap: 12px; align-items: flex-start;
+    border: 1px solid var(--border); transition: box-shadow .2s;
+  }
+  .item:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+  .item.checked { border-color: var(--ok); background: #f6fff9; }
+  .item input[type=checkbox] {
+    width: 20px; height: 20px; margin-top: 4px; accent-color: var(--ok); cursor: pointer; flex-shrink: 0;
+  }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name { font-size: 15px; font-weight: 600; }
+  .item-desc { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .item-bottom { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .price { color: var(--primary); font-size: 18px; font-weight: 700; }
+  .price small { font-size: 12px; font-weight: 400; }
+  .platform-tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: #fff0e8; color: var(--primary);
+  }
+  .actions { margin-left: auto; display: flex; gap: 8px; }
+  .btn {
+    border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px;
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .btn-buy { background: linear-gradient(135deg, #ff5000, #ff7a2f); color: #fff; }
+  .btn-buy:hover { background: var(--primary-dark); }
+  .btn-copy { background: #f0f1f3; color: #555; }
+  .btn-copy:hover { background: #e2e4e8; }
+  .qty {
+    display: inline-flex; align-items: center; gap: 0; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .qty button {
+    border: none; background: #f7f7f7; width: 28px; height: 28px; cursor: pointer; font-size: 15px; color: #555;
+  }
+  .qty span { min-width: 34px; text-align: center; font-size: 14px; }
+
+  footer-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 1px solid var(--border);
+    display: flex; align-items: center; padding: 12px 16px; gap: 14px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.06); z-index: 100;
+  }
+  footer-bar .total { font-size: 14px; color: #555; }
+  footer-bar .total b { color: var(--primary); font-size: 22px; }
+  footer-bar .total .count { color: var(--ok); font-size: 13px; margin-left: 6px; }
+  #buyAll {
+    margin-left: auto; background: linear-gradient(135deg, #ff5000, #ff7a2f);
+    color: #fff; border: none; border-radius: 24px; padding: 12px 28px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  #buyAll:disabled { background: #ccc; cursor: not-allowed; }
+  .toast {
+    position: fixed; left: 50%; bottom: 100px; transform: translateX(-50%);
+    background: rgba(0,0,0,.8); color: #fff; padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 200;
+  }
+  .toast.show { opacity: 1; }
+</style>
+
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
+#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
+box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
+#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
+#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
+#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
+#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
+font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
+#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
+border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+#gate button:hover{background:#e64800}
+#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
+padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
+.wgdz-bar{background:#1f2430;padding:9px 15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wgdz-bar a{color:#aab3c2;font-size:12.5px;text-decoration:none}
+.wgdz-bar a:hover{color:#fff}
+</style>
+</head>
+<body>
+<div id="gate" style="display:none">
+  <form class="card" onsubmit="return wgdzLogin(event)">
+    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <h1>WGDZ物料清单</h1>
+    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
+    <div class="err" id="gateErr">密码不正确，请重新输入</div>
+    <label for="gatePw">访问密码</label>
+    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
+    <button type="submit">进入清单</button>
+  </form>
+</div>
+<div class="wgdz-bar"><a href="./index.html">&larr; 返回清单首页</a></div>
+<div id="app" style="display:none">
+
+
+<header>
+  <h1>🛒 5000柜采购清单 · PLC 控制系统配套元件</h1>
+  <p>共 13 件商品 · 点击"去购买"直达淘宝/天猫 · 勾选可统计合计金额</p>
+  <div class="summary-bar">
+    <span>已选 <b id="selCount">0</b> 件</span>
+    <span>合计 ¥<b id="selTotal">0.00</b></span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <button onclick="selectAll(true)">✅ 全选</button>
+    <button onclick="selectAll(false)">⬜ 取消全选</button>
+    <button onclick="copyCheckedLinks()">📋 复制已选链接</button>
+    <button onclick="copyAllLinks()">📋 复制全部链接</button>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<footer-bar>
+  <div class="total">
+    合计：<b>¥<span id="barTotal">0.00</span></b>
+    <span class="count">（<span id="barCount">0</span>/13 件）</span>
+  </div>
+  <button id="buyAll" onclick="openChecked()" disabled>去结算已选 (0)</button>
+</footer-bar>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const items = [
+  { name: "PLC 主机", desc: "可编程逻辑控制器（含所选规格）", price: 550.00, url: "https://item.taobao.com/item.htm?id=682867183699&skuId=5058656387036", plat: "淘宝", cat: "控制核心" },
+  { name: "气压传感器", desc: "气压检测传感器（含所选规格）", price: 342.00, url: "https://item.taobao.com/item.htm?id=675835655850&skuId=6101273880658", plat: "淘宝", cat: "传感检测" },
+  { name: "PLC 扩展模块", desc: "PLC 扩展 IO 模块", price: 507.29, url: "https://item.taobao.com/item.htm?id=1096052235837", plat: "淘宝", cat: "控制核心" },
+  { name: "DC-DC 电源模块", desc: "直流降压/升压变换模块", price: 23.00, url: "https://item.taobao.com/item.htm?id=4175918250&skuId=4112823764841", plat: "淘宝", cat: "电源供电" },
+  { name: "信号隔离器", desc: "模拟量信号隔离转换", price: 237.00, url: "https://item.taobao.com/item.htm?id=794705407037&skuId=5595117567575", plat: "淘宝", cat: "信号处理" },
+  { name: "DB9 连接器", desc: "DB9 串口连接器（天猫）", price: 24.24, url: "https://detail.tmall.com/item.htm?id=769881372386&skuId=5280227501101", plat: "天猫", cat: "接口线缆" },
+  { name: "RS232 模块", desc: "RS232 通讯模块/线缆", price: 373.00, url: "https://item.taobao.com/item.htm?id=706303513983&skuId=6041050038519", plat: "淘宝", cat: "接口线缆" },
+  { name: "DBL 直流放大器", desc: "直流信号放大器", price: 152.00, url: "https://item.taobao.com/item.htm?id=537869665345&skuId=5620008974558", plat: "淘宝", cat: "信号处理" },
+  { name: "中间继电器", desc: "控制回路中间继电器", price: 20.37, url: "https://item.taobao.com/item.htm?id=837280420317&skuId=6013703158199", plat: "淘宝", cat: "执行元件" },
+  { name: "单相直流电源滤波器 ①", desc: "电源滤波器（第一路）", price: 57.00, url: "https://item.taobao.com/item.htm?id=573224396328&skuId=4066064918461", plat: "淘宝", cat: "电源供电" },
+  { name: "单相直流电源滤波器 ②", desc: "电源滤波器（第二路）", price: 56.20, url: "https://item.taobao.com/item.htm?id=1077936061953&skuId=6293739174067", plat: "淘宝", cat: "电源供电" },
+  { name: "开关电源", desc: "开关电源模块", price: 48.50, url: "https://item.taobao.com/item.htm?id=816949486138&skuId=5684471846615", plat: "淘宝", cat: "电源供电" },
+  { name: "隔离变送器", desc: "信号隔离变送器", price: 67.00, url: "https://item.taobao.com/item.htm?id=552236004897&skuId=3384266433546", plat: "淘宝", cat: "信号处理" },
+];
+
+const catOrder = ["控制核心", "传感检测", "信号处理", "接口线缆", "执行元件", "电源供电"];
+const catIcons = { "控制核心": "🧠", "传感检测": "📡", "信号处理": "🔧", "接口线缆": "🔌", "执行元件": "⚙️", "电源供电": "🔋" };
+
+function render() {
+  const listEl = document.getElementById("list");
+  catOrder.forEach(cat => {
+    const group = items.filter(i => i.cat === cat);
+    if (!group.length) return;
+    const title = document.createElement("div");
+    title.className = "category-title";
+    title.textContent = `${catIcons[cat] || ""} ${cat}`;
+    listEl.appendChild(title);
+    group.forEach(item => {
+      const idx = items.indexOf(item);
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <input type="checkbox" data-idx="${idx}">
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+          <div class="item-bottom">
+            <span class="price"><small>¥</small>${item.price.toFixed(2)}</span>
+            <span class="platform-tag">${item.plat}</span>
+            <div class="qty">
+              <button onclick="changeQty(${idx},-1)">−</button>
+              <span id="qty-${idx}">1</span>
+              <button onclick="changeQty(${idx},1)">＋</button>
+            </div>
+            <div class="actions">
+              <button class="btn btn-copy" onclick="copyLink(${idx})">复制链接</button>
+              <a class="btn btn-buy" href="${item.url}" target="_blank">去购买 →</a>
+            </div>
+          </div>
+        </div>`;
+      div.querySelector("input").addEventListener("change", updateTotals);
+      listEl.appendChild(div);
+    });
+  });
+}
+
+const qtyState = items.map(() => 1);
+function changeQty(idx, d) {
+  qtyState[idx] = Math.max(1, Math.min(99, qtyState[idx] + d));
+  document.getElementById(`qty-${idx}`).textContent = qtyState[idx];
+  updateTotals();
+}
+
+function updateTotals() {
+  let count = 0, total = 0;
+  document.querySelectorAll("#list input[type=checkbox]").forEach(cb => {
+    const idx = +cb.dataset.idx;
+    cb.closest(".item").classList.toggle("checked", cb.checked);
+    if (cb.checked) { count += qtyState[idx]; total += items[idx].price * qtyState[idx]; }
+  });
+  document.getElementById("selCount").textContent = count;
+  document.getElementById("selTotal").textContent = total.toFixed(2);
+  document.getElementById("barTotal").textContent = total.toFixed(2);
+  document.getElementById("barCount").textContent = count;
+  const btn = document.getElementById("buyAll");
+  btn.disabled = count === 0;
+  btn.textContent = count === 0 ? "去结算已选 (0)" : `去结算已选 (${count})`;
+}
+
+function selectAll(on) {
+  document.querySelectorAll("#list input[type=checkbox]").forEach(cb => { cb.checked = on; });
+  updateTotals();
+}
+
+function getCheckedIndices() {
+  return [...document.querySelectorAll("#list input[type=checkbox]")]
+    .filter(cb => cb.checked).map(cb => +cb.dataset.idx);
+}
+
+function openChecked() {
+  const idxs = getCheckedIndices();
+  if (!idxs.length) return toast("请先勾选商品");
+  idxs.forEach((i, k) => setTimeout(() => window.open(items[i].url, "_blank"), k * 300));
+}
+
+function copyText(t) {
+  navigator.clipboard.writeText(t).then(() => toast("已复制到剪贴板 ✅"))
+    .catch(() => toast("复制失败，请手动复制"));
+}
+function copyLink(idx) { copyText(items[idx].url); }
+function copyAllLinks() {
+  copyText(items.map(i => `${i.name}（¥${i.price.toFixed(2)}）：${i.url}`).join("\n\n"));
+}
+function copyCheckedLinks() {
+  const idxs = getCheckedIndices();
+  if (!idxs.length) return toast("请先勾选商品");
+  copyText(idxs.map(i => `${items[i].name} ×${qtyState[i]}（¥${(items[i].price * qtyState[i]).toFixed(2)}）：${items[i].url}`).join("\n\n"));
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+render();
+updateTotals();
+</script>
+
+<script>
+(function(){
+  var PW = '123456';
+  var KEY = 'wgdz_lock';
+  var gate = document.getElementById('gate');
+  var app  = document.getElementById('app');
+  function unlock(){
+    if (app) app.style.display = '';
+    if (gate) gate.remove();
+  }
+  window.wgdzLogin = function(ev){
+    ev.preventDefault();
+    var v = document.getElementById('gatePw').value;
+    if (v === PW) {
+      try { localStorage.setItem(KEY, PW); } catch(e) {}
+      unlock();
+    } else {
+      document.getElementById('gateErr').style.display = 'block';
+    }
+    return false;
+  };
+  try {
+    if (localStorage.getItem(KEY) === PW) { unlock(); return; }
+  } catch(e) {}
+  gate.style.display = 'flex';
+})();
+</script>
+</div>
+</body>
+
+</html>
