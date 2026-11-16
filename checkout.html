@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>购物车 · 结算</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#f4f5f7;color:#1a1d22;min-height:100vh;padding-bottom:96px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .bar{background:#1f2430;padding:10px 15px;display:flex;align-items:center;justify-content:space-between}
+  .bar a{color:#aab3c2;font-size:12.5px}
+  .bar a:hover{color:#fff}
+  .bar span{color:#fff;font-size:13px;font-weight:600}
+  .wrap{max-width:760px;margin:0 auto;padding:14px}
+
+  .tip{
+    background:#fff8ec;border:1px solid #ffe2b8;color:#8a5f10;border-radius:12px;
+    padding:11px 13px;font-size:12.5px;line-height:1.75;margin-bottom:14px;
+  }
+  .tip b{color:#6d4a06}
+
+  .card{background:#fff;border-radius:14px;border:1px solid #eceef2;overflow:hidden;margin-bottom:14px}
+  .card-hd{
+    padding:12px 15px;border-bottom:1px solid #f2f4f7;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .card-hd .from{font-weight:400;color:#8a93a3;font-size:12px}
+
+  .row{
+    display:flex;gap:12px;padding:14px 15px;border-bottom:1px solid #f6f7f9;align-items:flex-start;
+  }
+  .row:last-child{border-bottom:0}
+  .row input[type=checkbox]{
+    width:19px;height:19px;margin-top:3px;accent-color:#ff5000;flex:0 0 auto;cursor:pointer;
+  }
+  .info{flex:1;min-width:0}
+  .nm{font-size:14.5px;font-weight:600;line-height:1.45}
+  .sp{font-size:12px;color:#8a93a3;margin-top:4px;line-height:1.5}
+  .pr{font-size:13px;color:#8a93a3;margin-top:7px}
+  .pr b{color:#ff5000;font-size:15px;font-weight:700}
+  .right{text-align:right;flex:0 0 auto}
+  .sub{font-size:14px;font-weight:700;color:#1a1d22;font-variant-numeric:tabular-nums}
+  .qty{
+    display:inline-flex;border:1px solid #e6e8ec;border-radius:8px;overflow:hidden;margin-top:9px;
+  }
+  .qty button{border:0;background:#f7f8fa;width:28px;height:27px;font-size:15px;color:#5b6472;cursor:pointer}
+  .qty button:active{background:#eceef2}
+  .qty span{min-width:34px;text-align:center;line-height:27px;font-size:13.5px;font-variant-numeric:tabular-nums}
+  .del{
+    background:none;border:0;color:#a3aab6;font-size:12px;cursor:pointer;margin-top:10px;padding:2px;
+  }
+  .del:hover{color:#e5484d}
+
+  .empty{text-align:center;padding:70px 20px;color:#8a93a3}
+  .empty svg{margin-bottom:18px;opacity:.5}
+  .empty h3{font-size:16px;color:#3d4652;margin-bottom:8px}
+  .empty p{font-size:13px;line-height:1.8}
+  .empty a{
+    display:inline-block;margin-top:18px;background:#ff5000;color:#fff;padding:11px 26px;
+    border-radius:10px;font-size:14px;font-weight:600;
+  }
+
+  .bottom{
+    position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #eceef2;
+    box-shadow:0 -3px 16px rgba(0,0,0,.06);z-index:50;
+  }
+  .bottom-in{
+    max-width:760px;margin:0 auto;padding:11px 15px;display:flex;align-items:center;gap:12px;
+  }
+  .all{display:flex;align-items:center;gap:7px;font-size:13px;color:#5b6472;cursor:pointer}
+  .all input{width:19px;height:19px;accent-color:#ff5000;cursor:pointer}
+  .amt{margin-left:auto;text-align:right}
+  .amt .lbl{font-size:11.5px;color:#8a93a3}
+  .amt .v{font-size:20px;font-weight:700;color:#ff5000;font-variant-numeric:tabular-nums;line-height:1.2}
+  .amt .v small{font-size:15px}
+  .amt .c{font-size:11.5px;color:#8a93a3}
+  #pay{
+    border:0;background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;font-size:15px;font-weight:600;
+    padding:12px 26px;border-radius:24px;cursor:pointer;white-space:nowrap;
+  }
+  #pay:disabled{background:#d6d9de;cursor:not-allowed}
+
+  .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .acts button{
+    flex:1;min-width:130px;border:1px solid #e6e8ec;background:#fff;border-radius:11px;
+    padding:11px 12px;font-size:13px;color:#3d4652;cursor:pointer;
+  }
+  .acts button:hover{border-color:#ff5000;color:#ff5000}
+
+  .opened{background:#fff;border:1px solid #eceef2;border-radius:14px;padding:15px;margin-bottom:14px}
+  .opened h4{font-size:13px;margin-bottom:10px;color:#3d4652}
+  .opened .lk{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:9px 0;border-bottom:1px dashed #f0f2f5;font-size:13px;
+  }
+  .opened .lk:last-child{border-bottom:0}
+  .opened .lk a{color:#ff5000;font-weight:600;white-space:nowrap}
+
+  #toast{
+    position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:rgba(0,0,0,.84);
+    color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:.25s;
+    pointer-events:none;z-index:999;
+  }
+  #toast.on{opacity:1}
+  @media print{
+    body{background:#fff;padding:0}
+    .bar,.bottom,.acts,.tip,.del,.qty button{display:none}
+    .card{border:1px solid #ddd;page-break-inside:avoid}
+  }
+</style>
+
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
+#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
+box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
+#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
+#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
+#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
+#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
+font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
+#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
+border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
+padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
+</style>
+</head>
+<body>
+
+<div id="gate" style="display:none">
+  <form class="card" onsubmit="return wgdzLogin(event)">
+    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <h1>WGDZ物料清单</h1>
+    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
+    <div class="err" id="gateErr">密码不正确，请重新输入</div>
+    <label for="gatePw">访问密码</label>
+    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
+    <button type="submit">进入</button>
+  </form>
+</div>
+
+<div class="bar">
+  <a href="./index.html">&larr; 返回首页</a>
+  <span>购物车 · 结算</span>
+</div>
+
+<div class="wrap" id="app" style="display:none">
+  <div class="tip" id="tip" style="display:none">
+    <b>怎么完成付款：</b>淘宝 / 天猫不开放对外结算接口，网页只能帮你把商品页一个个打开。
+    在弹出来的每个页面点「加入购物车」，最后进购物车一起结算，运费和优惠也在那边算。
+  </div>
+
+  <div id="empty" class="empty" style="display:none">
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#c9ced8" stroke-width="1.6">
+      <path d="M3 5h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"/>
+      <circle cx="10" cy="20.5" r="1.4"/><circle cx="18" cy="20.5" r="1.4"/>
+    </svg>
+    <h3>购物车是空的</h3>
+    <p>回到任意一个清单页，勾选物料后点「加入购物车」。</p>
+    <a href="./index.html">去挑清单</a>
+  </div>
+
+  <div id="list"></div>
+
+  <div id="tools" style="display:none">
+    <div class="card" style="padding:15px">
+      <div class="acts">
+        <button id="btnOpenAll">依次打开已选商品页</button>
+        <button id="btnCart">打开淘宝购物车</button>
+      </div>
+      <div class="acts" style="margin-top:10px">
+        <button id="btnCopy">复制采购单文本</button>
+        <button id="btnPrint">打印采购单</button>
+      </div>
+      <div class="acts" style="margin-top:10px">
+        <button id="btnClear">清空购物车</button>
+      </div>
+    </div>
+
+    <div class="opened" id="opened" style="display:none">
+      <h4>逐个打开（浏览器若拦截弹窗，就从这里点）</h4>
+      <div id="openedList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom" id="bottom" style="display:none">
+  <div class="bottom-in">
+    <label class="all"><input type="checkbox" id="allChk" checked> 全选</label>
+    <div class="amt">
+      <div class="lbl">合计</div>
+      <div class="v"><small>¥</small><span id="total">0.00</span></div>
+      <div class="c"><span id="cnt">0</span> 件</div>
+    </div>
+    <button id="pay" disabled>去付款</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+var KEY = 'wgdz_cart_v1';
+var PW = '123456', LOCK = 'wgdz_lock';
+
+var cart = load();
+
+// 演示用：checkout.html?demo=1 且购物车为空时，塞入几条真实物料方便看效果
+if (!cart.length && /[?&]demo=1/.test(location.search)) {
+  cart = [
+    { name:'欧姆龙 PLC', spec:'可编程控制器', price:532.00,
+      url:'https://detail.tmall.com/item.htm?id=1057459854173&skuId=6265441658918',
+      qty:1, sel:true, from:'150kv进口版机柜物料购买清单' },
+    { name:'AD 模块', spec:'模拟量输入模块', price:580.00,
+      url:'https://item.taobao.com/item.htm?id=689917501828&skuId=5080415834255',
+      qty:2, sel:true, from:'150kv进口版机柜物料购买清单' },
+    { name:'信号隔离模拟器', spec:'信号隔离 / 模拟量调试模块', price:237.00,
+      url:'https://item.taobao.com/item.htm?id=794705407037&skuId=5595117567575',
+      qty:1, sel:true, from:'150kv进口版机柜物料购买清单' },
+    { name:'中间继电器', spec:'控制回路中间继电器', price:20.37,
+      url:'https://item.taobao.com/item.htm?id=837280420317&skuId=6013703158199',
+      qty:4, sel:true, from:'5000柜采购清单 · PLC 控制系统配套元件' }
+  ];
+  save();
+}
+
+function load(){
+  try {
+    var d = JSON.parse(localStorage.getItem(KEY) || '[]');
+    return Array.isArray(d) ? d : [];
+  } catch (e) { return []; }
+}
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {}
+}
+function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
+function toast(m){
+  var t = document.getElementById('toast');
+  t.textContent = m; t.classList.add('on');
+  clearTimeout(window.__tt);
+  window.__tt = setTimeout(function(){ t.classList.remove('on'); }, 1800);
+}
+
+function render(){
+  var list = document.getElementById('list');
+  var empty = document.getElementById('empty');
+  var tools = document.getElementById('tools');
+  var bottom = document.getElementById('bottom');
+  var tip = document.getElementById('tip');
+
+  list.innerHTML = '';
+
+  if (!cart.length) {
+    empty.style.display = '';
+    tools.style.display = 'none';
+    bottom.style.display = 'none';
+    tip.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+  tools.style.display = '';
+  bottom.style.display = '';
+  tip.style.display = '';
+
+  // 按来源分组
+  var groups = {};
+  cart.forEach(function(it, i){
+    var k = it.from || '物料清单';
+    (groups[k] = groups[k] || []).push(i);
+  });
+
+  Object.keys(groups).forEach(function(gname){
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    var hd = document.createElement('div');
+    hd.className = 'card-hd';
+    hd.innerHTML = '<span>' + esc(gname) + '</span><span class="from">' + groups[gname].length + ' 种</span>';
+    card.appendChild(hd);
+
+    groups[gname].forEach(function(idx){
+      card.appendChild(rowEl(cart[idx], idx));
+    });
+    list.appendChild(card);
+  });
+
+  refresh();
+  renderOpened();
+}
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+function rowEl(it, idx){
+  var row = document.createElement('div');
+  row.className = 'row';
+  var hasPrice = (it.price !== null && it.price !== undefined && !isNaN(it.price));
+  var sub = hasPrice ? money(it.price * it.qty) : '待确认';
+  row.innerHTML =
+    '<input type="checkbox" data-idx="' + idx + '"' + (it.sel === false ? '' : ' checked') + '>' +
+    '<div class="info">' +
+      '<div class="nm">' + esc(it.name) + '</div>' +
+      (it.spec ? '<div class="sp">' + esc(it.spec) + '</div>' : '') +
+      '<div class="pr">单价 ' + (hasPrice ? '¥' + money(it.price) : '以商品页为准') + '</div>' +
+      '<div class="qty">' +
+        '<button data-a="-1" data-i="' + idx + '">−</button>' +
+        '<span>' + it.qty + '</span>' +
+        '<button data-a="1" data-i="' + idx + '">＋</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="right">' +
+      '<div class="sub">' + (hasPrice ? '¥' + sub : '—') + '</div>' +
+      '<button class="del" data-del="' + idx + '">删除</button>' +
+    '</div>';
+
+  row.querySelector('input').addEventListener('change', function(){
+    cart[idx].sel = this.checked;
+    save(); refresh();
+  });
+  row.querySelectorAll('.qty button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var i = +this.dataset.i, a = +this.dataset.a;
+      cart[i].qty = Math.max(1, Math.min(99, cart[i].qty + a));
+      save(); render();
+    });
+  });
+  row.querySelector('.del').addEventListener('click', function(){
+    cart.splice(+this.dataset.del, 1);
+    save(); render();
+  });
+  return row;
+}
+
+function selected(){
+  return cart.filter(function(it){ return it.sel !== false; });
+}
+
+function refresh(){
+  var sel = selected();
+  var total = 0, cnt = 0, unknown = false;
+  sel.forEach(function(it){
+    cnt += it.qty;
+    if (it.price === null || it.price === undefined || isNaN(it.price)) { unknown = true; }
+    else total += it.price * it.qty;
+  });
+  document.getElementById('total').textContent = money(total) + (unknown ? '+' : '');
+  document.getElementById('cnt').textContent = cnt;
+
+  var pay = document.getElementById('pay');
+  pay.disabled = sel.length === 0;
+  pay.textContent = sel.length ? '去付款 (' + sel.length + ')' : '去付款';
+
+  var all = document.getElementById('allChk');
+  all.checked = cart.length > 0 && sel.length === cart.length;
+}
+
+function renderOpened(){
+  var sel = selected();
+  var box = document.getElementById('opened');
+  var wrap = document.getElementById('openedList');
+  if (!sel.length) { box.style.display = 'none'; return; }
+  box.style.display = '';
+  wrap.innerHTML = '';
+  sel.forEach(function(it, i){
+    var d = document.createElement('div');
+    d.className = 'lk';
+    d.innerHTML = '<span>' + (i + 1) + '. ' + esc(it.name) + ' × ' + it.qty + '</span>' +
+                  '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">打开 →</a>';
+    wrap.appendChild(d);
+  });
+}
+
+// 事件
+document.getElementById('allChk').addEventListener('change', function(){
+  var on = this.checked;
+  cart.forEach(function(it){ it.sel = on; });
+  save(); render();
+});
+
+document.getElementById('btnOpenAll').addEventListener('click', function(){
+  var sel = selected();
+  if (!sel.length) return;
+  var blocked = false;
+  sel.forEach(function(it, i){
+    setTimeout(function(){
+      var w = window.open(it.url, '_blank');
+      if (!w) blocked = true;
+    }, i * 700);
+  });
+  toast('正在打开 ' + sel.length + ' 个页面…');
+  setTimeout(function(){
+    if (blocked) toast('弹窗被拦截了，下面列表里手动点吧');
+    else toast('已打开，逐个点「加入购物车」');
+  }, sel.length * 700 + 400);
+});
+
+document.getElementById('btnCart').addEventListener('click', function(){
+  window.open('https://cart.taobao.com/cart.htm', '_blank');
+});
+
+document.getElementById('btnCopy').addEventListener('click', function(){
+  var sel = selected();
+  var lines = ['采购单'];
+  var total = 0, unknown = false;
+  sel.forEach(function(it, i){
+    var has = it.price !== null && it.price !== undefined && !isNaN(it.price);
+    if (has) total += it.price * it.qty; else unknown = true;
+    lines.push((i + 1) + '. ' + it.name + (it.spec ? '（' + it.spec + '）' : '') +
+               '  ×' + it.qty + '  单价 ' + (has ? '¥' + money(it.price) : '待确认') +
+               '  小计 ' + (has ? '¥' + money(it.price * it.qty) : '待确认'));
+  });
+  lines.push('');
+  lines.push('合计：¥' + money(total) + (unknown ? ' + 待确认项' : '') +
+             '（' + sel.reduce(function(s, it){ return s + it.qty; }, 0) + ' 件）');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(lines.join('\n')).then(function(){ toast('采购单已复制'); },
+      function(){ toast('复制失败，请手动选择'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = lines.join('\n'); document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('采购单已复制'); } catch(e){ toast('复制失败'); }
+    document.body.removeChild(ta);
+  }
+});
+
+document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
+
+document.getElementById('btnClear').addEventListener('click', function(){
+  if (!confirm('确定清空购物车？')) return;
+  cart = []; save(); render();
+});
+
+document.getElementById('pay').addEventListener('click', function(){
+  var sel = selected();
+  if (!sel.length) return;
+  var ok = confirm('接下来会依次打开 ' + sel.length + ' 个商品页。\n\n在每个页面点「加入购物车」，全部加完后回到淘宝购物车，勾选结算即可。\n\n继续？');
+  if (!ok) return;
+  document.getElementById('btnOpenAll').click();
+  var op = document.getElementById('opened');
+  if (op) op.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+render();
+
+// ---- 密码门 ----
+(function(){
+  var gate = document.getElementById('gate');
+  var app = document.getElementById('app');
+  function unlock(){
+    if (app) app.style.display = '';
+    if (gate) gate.remove();
+  }
+  window.wgdzLogin = function(ev){
+    ev.preventDefault();
+    if (document.getElementById('gatePw').value === PW) {
+      try { localStorage.setItem(LOCK, PW); } catch(e) {}
+      unlock();
+    } else {
+      document.getElementById('gateErr').style.display = 'block';
+    }
+    return false;
+  };
+  try {
+    if (localStorage.getItem(LOCK) === PW) { unlock(); return; }
+  } catch(e) {}
+  gate.style.display = 'flex';
+})();
+</script>
+</body>
+</html>
