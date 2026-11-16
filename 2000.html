@@ -132,7 +132,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
 
 <header>
   <h1>🛒 2000柜采购清单 · 第二批</h1>
-  <p>共 13 件商品 · 逐项独立 · 点击「去购买」直达淘宝 / 天猫</p>
+  <p>共 24 件商品 · 逐项独立 · 点击「去购买」直达淘宝 / 天猫</p>
   <div class="stats">
     <span>已选 <b id="selCount">0</b> 件</span>
     <span>合计 ¥<b id="selTotal">0.00</b></span>
@@ -145,6 +145,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     <button onclick="selectAll(false)">⬜ 取消全选</button>
     <button onclick="copyChecked()">📋 复制已选链接</button>
     <button onclick="copyAll()">📋 复制全部链接</button>
+    <button onclick="wgdzAddCart()">🛒 加入购物车</button>
   </div>
   <div id="list"></div>
 </div>
@@ -152,7 +153,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
 <footer-bar>
   <div class="total">
     合计：<b>¥<span id="barTotal">0.00</span></b>
-    <span class="cnt">（<span id="barCount">0</span>/13 件）</span>
+    <span class="cnt">（<span id="barCount">0</span>/24 件）</span>
   </div>
   <button id="buyAll" onclick="openChecked()" disabled>去结算已选 (0)</button>
 </footer-bar>
@@ -174,6 +175,17 @@ const items = [
   { name: "单相直流电源滤波器", price: 45.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=559865562324&skuId=3493645861110" },
   { name: "开关电源", price: 48.50, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=816949486138&skuId=5684471846615" },
   { name: "隔离变送器", price: 67.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=552236004897&skuId=3384266433546" }
+  { name: "空气开关", price: 33.49, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=913551813369&skuId=5814332941958" },
+  { name: "指示灯", price: 12.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=591633319215&skuId=4060227956038" },
+  { name: "电动调压机", price: 228.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=642125156058&skuId=4624824097383" },
+  { name: "小型无油空压机", price: 451.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=785010335187&skuId=5435080932535" },
+  { name: "隔离降压变压器", price: 120.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=598350685349" },
+  { name: "隔离变压器", price: 185.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=588726981966&skuId=4189219651033" },
+  { name: "干式试验变压器", price: 987.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1094607995878&skuId=6152652228704" },
+  { name: "电机综合保护继电器", price: 174.84, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1089293002211&skuId=6309693250728" },
+  { name: "熔断器底座", price: 23.18, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=750796886842&skuId=5349201431362" },
+  { name: "气动电磁阀线圈", price: 12.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=602550970415&skuId=4215875448549" },
+  { name: "直动式黄铜电磁阀", price: 60.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=995216086996&skuId=6141430535158" }
 ];
 
 const qtyState = items.map(() => 1);
@@ -293,6 +305,57 @@ updateTotals();
 })();
 </script>
 </div>
+
+<script>
+window.wgdzAddCart = function(){
+  var idxs = [];
+  try {
+    idxs = (typeof getCheckedIndices === 'function') ? getCheckedIndices() : checkedIdx();
+  } catch(e) { idxs = []; }
+  if (!idxs || !idxs.length) {
+    if (typeof toast === 'function') { toast('请先勾选要采购的物料'); } else { alert('请先勾选要采购的物料'); }
+    return;
+  }
+  var list = idxs.map(function(i){
+    var it = items[i];
+    var q = (typeof qtyState !== 'undefined' && qtyState[i]) ? qtyState[i] : 1;
+    return {
+      name: it.name,
+      spec: it.desc || '',
+      price: (it.price === null || it.price === undefined) ? null : it.price,
+      url: it.url,
+      qty: q
+    };
+  });
+
+function wgdzPushCart(list){
+  var KEY = 'wgdz_cart_v1';
+  var cart = [];
+  try { cart = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ cart = []; }
+  if (!Array.isArray(cart)) cart = [];
+  var from = document.title || '物料清单';
+  var added = 0;
+  list.forEach(function(it){
+    var idx = -1;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].url === it.url) { idx = i; break; }
+    }
+    if (idx >= 0) {
+      cart[idx].qty = Math.min(99, cart[idx].qty + it.qty);
+      cart[idx].sel = true;
+    } else {
+      cart.push({ name: it.name, spec: it.spec || '', price: it.price,
+                  url: it.url, qty: it.qty, sel: true, from: from });
+    }
+    added += it.qty;
+  });
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch(e) {}
+  location.href = './checkout.html';
+}
+
+  wgdzPushCart(list);
+};
+</script>
 </body>
 
 </html>
