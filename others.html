@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>其他采购清单</title>
+<style>
+  :root{
+    --bg:#f4f5f7;
+    --card:#ffffff;
+    --ink:#191b1f;
+    --sub:#6b7280;
+    --line:#e7e9ec;
+    --brand:#ff5000;
+    --brand-soft:#fff1ea;
+    --blue:#2563eb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);
+    padding:32px 18px 130px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+
+  /* 顶部 */
+  header{margin-bottom:18px}
+  h1{font-size:25px;font-weight:700;letter-spacing:-.5px}
+  .head-sub{color:var(--sub);font-size:13.5px;margin-top:7px;display:flex;gap:14px;flex-wrap:wrap}
+  .head-sub b{color:var(--ink)}
+
+  /* 工具条 */
+  .toolbar{
+    display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:20;
+    background:rgba(244,245,247,.88);backdrop-filter:blur(10px);
+    padding:12px 0;border-bottom:1px solid transparent;
+  }
+  .search{
+    flex:1;min-width:200px;position:relative;
+  }
+  .search input{
+    width:100%;height:40px;border:1px solid var(--line);border-radius:10px;
+    padding:0 14px 0 36px;font-size:14px;font-family:inherit;background:#fff;outline:none;
+    transition:.15s;
+  }
+  .search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,80,0,.1)}
+  .search svg{position:absolute;left:12px;top:11px;opacity:.4}
+  .preset{display:flex;align-items:center;gap:6px}
+  .preset span{font-size:12.5px;color:var(--sub)}
+  .preset button{
+    min-width:34px;height:34px;padding:0 9px;border:1px solid var(--line);background:#fff;
+    border-radius:8px;font-size:13px;font-family:inherit;color:var(--ink);cursor:pointer;transition:.15s;
+  }
+  .preset button:hover{border-color:var(--brand);color:var(--brand)}
+
+  /* 分类 */
+  .group{margin-bottom:26px}
+  .group-head{
+    display:flex;align-items:center;gap:10px;margin-bottom:12px;
+    position:sticky;top:64px;z-index:10;
+    background:linear-gradient(var(--bg) 62%,rgba(244,245,247,0));
+    padding:6px 0 8px;
+  }
+  .group-head h2{font-size:15px;font-weight:700;letter-spacing:-.2px;white-space:nowrap}
+  .group-head .dot{width:4px;height:16px;border-radius:2px;background:var(--brand)}
+  .group-head .cnt{font-size:12.5px;color:var(--sub)}
+  .group-head .gsub{margin-left:auto;font-size:12.5px;color:var(--sub);white-space:nowrap}
+
+  /* 卡片 */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 20px;margin-bottom:10px;
+    display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;
+    transition:.15s;
+  }
+  .card:hover{border-color:#d6d9de;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+  .card.q0{opacity:.62}
+  .card.hide{display:none}
+
+  .title{font-size:15.5px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tag{
+    font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:20px;
+    background:var(--brand-soft);color:var(--brand);letter-spacing:.3px;white-space:nowrap;
+  }
+  .tag.gray{background:#f0f1f3;color:var(--sub)}
+  .meta{color:var(--sub);font-size:12px;margin-top:5px;line-height:1.6}
+  .meta .sku{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px}
+
+  .stepper{
+    display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;
+    overflow:hidden;background:#fafbfc;
+  }
+  .stepper button{
+    width:32px;height:32px;border:0;background:transparent;cursor:pointer;
+    font-size:17px;color:var(--sub);line-height:1;transition:.15s;
+  }
+  .stepper button:hover{background:#eceef1;color:var(--brand)}
+  .stepper input{
+    width:44px;height:32px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);
+    text-align:center;font-size:14.5px;font-weight:600;color:var(--ink);background:transparent;
+    font-family:inherit;outline:none;
+  }
+  .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+  .right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+  .price{font-size:12px;color:var(--sub);white-space:nowrap}
+  .price b{color:var(--ink);font-size:15px}
+  .price .unknown{color:#b45309;font-weight:600}
+  .buy{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    background:var(--brand);color:#fff;border:0;border-radius:9px;
+    padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;
+    text-decoration:none;transition:.15s;font-family:inherit;white-space:nowrap;
+  }
+  .buy:hover{background:#e64800;transform:translateY(-1px);box-shadow:0 5px 14px rgba(255,80,0,.25)}
+  .buy:active{transform:translateY(0)}
+
+  /* 底栏 */
+  .bottom{
+    position:fixed;left:0;right:0;bottom:0;z-index:30;
+    background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  }
+  .bottom-in{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .amt-wrap{display:flex;flex-direction:column}
+  .amt-wrap .lbl{color:var(--sub);font-size:12px}
+  .amt{font-size:26px;font-weight:700;letter-spacing:-.6px;line-height:1.2}
+  .amt small{font-size:13.5px;font-weight:600;color:var(--sub);margin-left:9px}
+  .bottom .spacer{flex:1}
+  .bbtn{
+    background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 15px;
+    font-size:13px;color:var(--ink);cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap;
+  }
+  .bbtn:hover{border-color:var(--brand);color:var(--brand)}
+  .bbtn.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+  .bbtn.primary:hover{background:#e64800;color:#fff}
+
+  .note{
+    margin-top:22px;font-size:12.5px;color:var(--sub);line-height:1.95;
+    background:#fff;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;
+  }
+  .note b{color:var(--ink)}
+
+  @media (max-width:720px){
+    body{padding:22px 12px 150px}
+    .card{grid-template-columns:1fr auto;gap:12px;padding:14px 15px}
+    .right{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+    .group-head{top:60px}
+    h1{font-size:21px}
+  }
+</style>
+
+
+
+<style>
+.wgdz-bar{background:#1f2430;padding:10px 15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wgdz-bar a{color:#aab3c2;font-size:12.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.wgdz-bar a:hover{color:#fff}
+.wgdz-bar .home{color:#fff;font-size:12.5px;font-weight:600}
+.wgdz-bar .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+</style>
+</head>
+<body>
+<div class="wgdz-bar">
+  <div class="row">
+    <a href="./index.html">&larr; 返回清单首页</a>
+    <span class="home">其他采购</span>
+  </div>
+</div>
+
+<div id="app">
+
+<div class="wrap">
+  <header>
+    <h1>其他采购清单</h1>
+    <div class="head-sub">
+      <span>共 <b id="statItems">0</b> 项</span>
+      <span>已选 <b id="statPicked">0</b> 件</span>
+      <span>合计 <b id="statTop">¥0.00</b></span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="text" placeholder="搜索名称 / SKU，例如：气管、对丝、继电器">
+    </div>
+    <div class="preset">
+      <span>全部数量</span>
+      <button data-all="0">0</button>
+      <button data-all="1">1</button>
+      <button data-all="2">2</button>
+      <button data-all="3">3</button>
+      <button data-all="5">5</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="note">
+    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>
+    标注 <span style="color:#b45309;font-weight:600">价格待确认</span> 的项目原链接未带价格参数，已按 0 计入合计，请以商品页实际价格为准。
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="bottom-in">
+    <div class="amt-wrap">
+      <span class="lbl">合计</span>
+      <div class="amt" id="grand">¥0.00<small id="grandCount">0 件</small></div>
+    </div>
+    <div class="spacer"></div>
+    <button class="bbtn" id="resetBtn">全部清零</button>
+    <button class="bbtn" id="copyBtn">复制清单</button>
+    <button class="bbtn" id="copyLinkBtn">复制全部链接</button>
+    <button class="bbtn primary" id="cartBtn">加入购物车</button>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  { key:'pneu', name:'气动元件', color:'#0891b2' },
+  { key:'hw',   name:'五金 · 管件', color:'#b45309' },
+  { key:'power',name:'电源 · 防雷 · 滤波', color:'#ea580c' },
+  { key:'relay',name:'继电器 · 开关电器', color:'#7c3aed' },
+  { key:'comm', name:'连接器 · 线缆', color:'#059669' }
+];
+
+const ITEMS = [
+  { g:'pneu', name:"不锈钢快拧三通", spec:"气动快插三通接头", price:1.42, sku:'3187819439790', url:"https://item.taobao.com/item.htm?id=534409596920&skuId=3187819439790" },
+  { g:'pneu', name:"CV-02 单向阀 + 2 个 6mm 快拧接头", spec:"气路单向阀组件", price:5.70, sku:'6024116027497', url:"https://item.taobao.com/item.htm?id=805770167165&skuId=6024116027497" },
+  { g:'pneu', name:"PA11-6 尼龙气管 6*1 100 米白色", spec:"6mm 外径 × 1mm 壁厚，100 米", price:71.90, sku:'4351618557267', url:"https://item.taobao.com/item.htm?id=616556145207&skuId=4351618557267" },
+  { g:'pneu', name:"电磁阀支架组件", spec:"电磁阀安装支架", price:2.89, sku:'4309033408356', url:"https://item.taobao.com/item.htm?id=612754499724&skuId=4309033408356" },
+  { g:'pneu', name:"不锈钢快拧直通", spec:"气动快插直通接头", price:3.22, sku:'6234911871470', url:"https://item.taobao.com/item.htm?id=1045150030149&skuId=6234911871470" },
+  { g:'pneu', name:"2 分外丝快插 6mm 不锈钢迷你球阀", spec:"DN8 外丝转 6mm 快插", price:22.40, sku:'5056799066283', url:"https://item.taobao.com/item.htm?id=683577651153&skuId=5056799066283" },
+  { g:'pneu', name:"气管快插螺纹直通", spec:"螺纹直通快插接头", price:0.76, sku:'75318137852', url:"https://detail.tmall.com/item.htm?id=43228818204&skuId=75318137852" },
+
+  { g:'hw', name:"316 不锈钢丝杆 M8*140", spec:"M8 × 140mm，316 材质", price:3.16, sku:'4800292236966', url:"https://item.taobao.com/item.htm?id=19516240281&skuId=4800292236966" },
+  { g:'hw', name:"04 不锈钢对丝 DN8 2 分加厚高压", spec:"DN8 / 2 分，加厚高压型", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
+  { g:'hw', name:"304 不锈钢对丝 2 分 DN8 双头外丝直通", spec:"DN8 / 2 分，双头外丝", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
+  { g:'hw', name:"G1/4（2 分）304 不锈钢内丝四通", spec:"G1/4 内丝四通", price:15.68, sku:'5762319743867', url:"https://item.taobao.com/item.htm?id=836048303213&skuId=5762319743867" },
+  { g:'hw', name:"304 不锈钢细牙薄螺母根母", spec:"细牙薄螺母 / 根母", price:4.07, sku:'5595469595017', url:"https://detail.tmall.com/item.htm?id=18848050599&skuId=5595469595017" },
+  { g:'hw', name:"压力表转换接头", spec:"压力表螺纹转换", price:4.00, sku:'5918018026061', url:"https://item.taobao.com/item.htm?id=898030985539&skuId=5918018026061" },
+  { g:'hw', name:"VV 型橡胶减震器", spec:"设备减震脚垫", price:1.70, sku:'5005545767157', url:"https://detail.tmall.com/item.htm?id=671052621120&skuId=5005545767157" },
+
+  { g:'power', name:"电源防雷器", spec:"电源浪涌保护", price:38.00, sku:'', url:"https://detail.tmall.com/item.htm?id=831050261418" },
+  { g:'power', name:"单相单级电源滤波器", spec:"单相 EMI 滤波器", price:34.00, sku:'3806707808837', url:"https://item.taobao.com/item.htm?id=563089710634&skuId=3806707808837" },
+
+  { g:'relay', name:"中间继电器", spec:"中间继电器 / 电磁继电器", price:16.10, sku:'5742847225838', url:"https://detail.tmall.com/item.htm?id=893220969030&skuId=5742847225838" },
+
+  { g:'comm', name:"航空插头", spec:"航空插头 / 连接器", price:5.94, sku:'5780094367885', url:"https://item.taobao.com/item.htm?id=841215499226&skuId=5780094367885" },
+  { g:'comm', name:"DB9 公头", spec:"DB9 串口公头", price:3.99, sku:'4209330208649', url:"https://detail.tmall.com/item.htm?id=601508320698&skuId=4209330208649" }
+];
+
+const money = n => '¥' + n.toFixed(2);
+const listEl = document.getElementById('list');
+const GMAP = Object.fromEntries(GROUPS.map(g => [g.key, g]));
+
+GROUPS.forEach(g => {
+  const items = ITEMS.filter(i => i.g === g.key);
+  if (!items.length) return;
+
+  const sec = document.createElement('section');
+  sec.className = 'group';
+  sec.dataset.g = g.key;
+  sec.innerHTML = `
+    <div class="group-head">
+      <span class="dot" style="background:${g.color}"></span>
+      <h2>${g.name}</h2>
+      <span class="cnt">${items.length} 项</span>
+      <span class="gsub"></span>
+    </div>`;
+  const body = document.createElement('div');
+  body.className = 'gbody';
+  sec.appendChild(body);
+
+  items.forEach(it => {
+    const hasPrice = typeof it.price === 'number';
+    const card = document.createElement('div');
+    card.className = 'card q0';
+    card.dataset.name = (it.name + ' ' + it.spec).toLowerCase();
+    card.dataset.sku = it.sku;
+    card.innerHTML = `
+      <div>
+        <div class="title">${it.name} <span class="tag">${it.spec}</span>${hasPrice ? '' : '<span class="tag gray">价格待确认</span>'}</div>
+        <div class="meta">
+          ${hasPrice ? '单价 ' + money(it.price) : '单价 <span class="unknown">—</span>'} &nbsp;·&nbsp;
+          ${it.sku ? 'SKU <span class="sku">' + it.sku + '</span>' : 'SKU <span class="sku">未指定</span>'}<br>
+          小计 <b class="sub">—</b>
+        </div>
+      </div>
+      <div class="stepper">
+        <button data-a="-1" aria-label="减少">−</button>
+        <input type="number" min="0" max="999" value="0" aria-label="数量">
+        <button data-a="1" aria-label="增加">+</button>
+      </div>
+      <div class="right">
+        <div class="price">小计 <b class="sub">—</b></div>
+        <a class="buy" href="${it.url}" target="_blank" rel="noopener">去购买 →</a>
+      </div>`;
+    body.appendChild(card);
+
+    const input = card.querySelector('input');
+    const sub = card.querySelectorAll('.sub');
+    const qty = () => Math.max(0, parseInt(input.value || '0', 10));
+
+    const sync = () => {
+      const q = qty();
+      input.value = q;
+      const val = hasPrice ? money(it.price * q) : (q > 0 ? '待确认' : '—');
+      sub.forEach(el => el.textContent = val);
+      card.classList.toggle('q0', q === 0);
+      update();
+    };
+    input.addEventListener('input', sync);
+    input.addEventListener('change', sync);
+    card.querySelectorAll('.stepper button').forEach(b => {
+      b.addEventListener('click', () => { input.value = qty() + Number(b.dataset.a); sync(); });
+    });
+    it._card = card; it._input = input; it._sync = sync; it._qty = qty;
+    it._hasPrice = hasPrice;
+  });
+
+  listEl.appendChild(sec);
+});
+
+function visibleItems() {
+  const kw = document.getElementById('q').value.trim().toLowerCase();
+  return ITEMS.filter(it => {
+    const card = it._card;
+    if (!kw) { card.classList.remove('hide'); return true; }
+    const hit = card.dataset.name.includes(kw) || card.dataset.sku.includes(kw);
+    card.classList.toggle('hide', !hit);
+    return hit;
+  });
+}
+
+function update() {
+  const vis = visibleItems();
+  let total = 0, count = 0, kinds = 0;
+  GROUPS.forEach(g => {
+    const sec = listEl.querySelector('section[data-g="' + g.key + '"]');
+    const items = ITEMS.filter(i => i.g === g.key);
+    let gTotal = 0, gCount = 0, gVis = 0;
+    items.forEach(it => {
+      const q = it._qty();
+      if (q > 0) { gCount += q; kinds++; }
+      if (it._hasPrice) gTotal += it.price * q;
+    });
+    items.forEach(it => { if (!it._card.classList.contains('hide')) gVis++; });
+    const head = sec.querySelector('.gsub');
+    head.textContent = gVis ? `小计 ${money(gTotal)} · ${gCount} 件` : '';
+    sec.style.display = gVis ? '' : 'none';
+    total += gTotal; count += gCount;
+  });
+  document.getElementById('grand').innerHTML = money(total) + '<small>' + count + ' 件</small>';
+  document.getElementById('statItems').textContent = vis.length;
+  document.getElementById('statPicked').textContent = count;
+  document.getElementById('statTop').textContent = money(total);
+}
+
+document.getElementById('q').addEventListener('input', update);
+
+document.querySelectorAll('.preset button').forEach(b => {
+  b.addEventListener('click', () => {
+    const n = Number(b.dataset.all);
+    ITEMS.forEach(it => { it._input.value = n; it._sync(); });
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  ITEMS.forEach(it => { it._input.value = 0; it._sync(); });
+});
+
+function copy(text, btn, label) {
+  const ok = () => { const o = btn.textContent; btn.textContent = '已复制 ✓'; setTimeout(() => btn.textContent = o, 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(() => fb(text, ok));
+  else fb(text, ok);
+}
+function fb(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch (e) { alert(text); }
+  document.body.removeChild(ta);
+}
+
+document.getElementById('copyBtn').addEventListener('click', function () {
+  const lines = [];
+  GROUPS.forEach(g => {
+    const sel = ITEMS.filter(i => i.g === g.key && i._qty() > 0);
+    if (!sel.length) return;
+    lines.push(`【${g.name}】`);
+    sel.forEach(it => {
+      const p = it._hasPrice ? money(it.price * it._qty()) : '价格待确认';
+      lines.push(`  ${it.name} × ${it._qty()}   单价 ${it._hasPrice ? money(it.price) : '—'}   小计 ${p}`);
+    });
+  });
+  const picked = ITEMS.filter(i => i._qty() > 0);
+  const total = picked.reduce((s, i) => s + (i._hasPrice ? i.price * i._qty() : 0), 0);
+  lines.push('', `合计：${money(total)}（${picked.reduce((s,i)=>s+i._qty(),0)} 件，${picked.length} 个品种）`);
+  copy(lines.join('\n'), this);
+});
+
+document.getElementById('copyLinkBtn').addEventListener('click', function () {
+  const lines = ITEMS.filter(i => i._qty() > 0).map(it => `${it.name}  ${it.url}`);
+  if (!lines.length) { alert('请先设置数量'); return; }
+  copy(lines.join('\n'), this);
+});
+
+update();
+</script>
+
+<script>
+(function(){
+  var KEY = 'wgdz_cart_v1';
+  var btn = document.getElementById('cartBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var picked = ITEMS.filter(function(it){ return it._qty() > 0; });
+    if (!picked.length) { alert('请先给要采购的物料设置数量'); return; }
+    wgdzPushCart(picked.map(function(it){
+      return {
+        name: it.name,
+        spec: it.spec || '',
+        price: (it.price === null || it.price === undefined) ? null : it.price,
+        url: it.url,
+        qty: it._qty()
+      };
+    }));
+  });
+
+function wgdzPushCart(list){
+  var KEY = 'wgdz_cart_v1';
+  var cart = [];
+  try { cart = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ cart = []; }
+  if (!Array.isArray(cart)) cart = [];
+  var from = document.title || '物料清单';
+  var added = 0;
+  list.forEach(function(it){
+    var idx = -1;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].url === it.url) { idx = i; break; }
+    }
+    if (idx >= 0) {
+      cart[idx].qty = Math.min(99, cart[idx].qty + it.qty);
+      cart[idx].sel = true;
+    } else {
+      cart.push({ name: it.name, spec: it.spec || '', price: it.price,
+                  url: it.url, qty: it.qty, sel: true, from: from });
+    }
+    added += it.qty;
+  });
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch(e) {}
+  location.href = './checkout.html';
+}
+
+})();
+</script>
+</div>
+</body>
+
+</html>

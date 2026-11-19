@@ -64,7 +64,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
     </div>
     <h1>WGDZ物料清单</h1>
-    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
+    <p class="sub">每次进入本页需输入访问密码</p>
     <div class="err" id="gateErr">密码不正确，请重新输入</div>
     <label for="gatePw">访问密码</label>
     <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
@@ -79,18 +79,6 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     <p class="sub">请选择要查看的清单版本</p>
   </header>
   <div class="cards">
-    <a class="card" href="./150kv-import.html" style="--c:#2563eb;--soft:#e8effd">
-      <span class="badge">150kv · 进口版</span>
-      <div class="name">150kv进口版机柜物料购买清单</div>
-      <div class="desc">欧姆龙 PLC 方案，含控制、继电器、电源滤波、气动元件及通信连接器。</div>
-      <div class="foot"><span>46 项物料</span><span class="go">进入清单 →</span></div>
-    </a>
-    <a class="card" href="./150kv-gc.html" style="--c:#ff5000;--soft:#fff1ea">
-      <span class="badge">150kv · 国产版</span>
-      <div class="name">150kv国产版机柜物料购买清单</div>
-      <div class="desc">汇川 PLC 方案，新增输出模块、ADDA 混合模块、气泵及五金结构件。</div>
-      <div class="foot"><span>47 项物料</span><span class="go">进入清单 →</span></div>
-    </a>
     <a class="card" href="./300kv-import.html" style="--c:#0891b2;--soft:#e0f5fb">
       <span class="badge">300kv · 进口版</span>
       <div class="name">300kv进口版控制柜物料购买清单</div>
@@ -118,25 +106,31 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
       <span class="badge">2000柜 · 第二批</span>
       <div class="name">2000柜采购清单</div>
       <div class="desc">第二批采购，含 PLC、模块、隔离器件与电源配件。</div>
-      <div class="foot"><span>13 项物料</span><span class="go">进入清单 →</span></div>
+      <div class="foot"><span>24 项物料</span><span class="go">进入清单 →</span></div>
     </a>
     <a class="card" href="./5000.html" style="--c:#059669;--soft:#e1f2ed">
       <span class="badge">5000柜</span>
       <div class="name">5000柜采购清单</div>
       <div class="desc">PLC 控制系统配套元件，按控制核心、传感检测、电源等分类。</div>
-      <div class="foot"><span>13 项物料</span><span class="go">进入清单 →</span></div>
+      <div class="foot"><span>24 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+    <a class="card" href="./others.html" style="--c:#b45309;--soft:#fdf0e3">
+      <span class="badge">其他采购 · 气动五金</span>
+      <div class="name">其他采购清单</div>
+      <div class="desc">气动接头与气管、不锈钢管件、电源防雷滤波、继电器与连接器。</div>
+      <div class="foot"><span>19 项物料</span><span class="go">进入清单 →</span></div>
     </a>
   </div>
   <footer>数量可在页面内增减，合计金额实时计算 · 点击「去购买」跳转淘宝对应规格</footer>
+</div>
 </div>
 
 <script>
 (function(){
   var PW = '123456';
+  var PW_SECRET = '654321';
+  var SECRET_PAGE = './150kv.html?v=1';
   var KEY = 'wgdz_lock';
-  try {
-    if (localStorage.getItem(KEY) === PW) { unlock(); return; }
-  } catch(e) {}
   function unlock(){
     var app = document.getElementById('app');
     var gate = document.getElementById('gate');
@@ -146,8 +140,11 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
   window.wgdzLogin = function(ev){
     ev.preventDefault();
     var v = document.getElementById('gatePw').value;
+    if (v === PW_SECRET) {
+      location.replace(SECRET_PAGE);
+      return false;
+    }
     if (v === PW) {
-      try { localStorage.setItem(KEY, PW); } catch(e) {}
       unlock();
     } else {
       document.getElementById('gateErr').style.display = 'block';

@@ -84,6 +84,11 @@
     padding:12px 26px;border-radius:24px;cursor:pointer;white-space:nowrap;
   }
   #pay:disabled{background:#d6d9de;cursor:not-allowed}
+  #qrPay{
+    border:0;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-size:15px;font-weight:600;
+    padding:12px 22px;border-radius:24px;cursor:pointer;white-space:nowrap;
+  }
+  #qrPay:disabled{background:#d6d9de;cursor:not-allowed}
 
   .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
   .acts button{
@@ -112,47 +117,57 @@
     .bar,.bottom,.acts,.tip,.del,.qty button{display:none}
     .card{border:1px solid #ddd;page-break-inside:avoid}
   }
+
+  /* 扫码付款弹层 */
+  #qrMask{position:fixed;inset:0;background:rgba(15,18,25,.55);z-index:900;display:none;
+    align-items:center;justify-content:center;padding:20px}
+  #qrMask.on{display:flex}
+  .qr-card{background:#fff;border-radius:18px;max-width:340px;width:100%;padding:26px 24px;text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.25)}
+  .qr-card h3{font-size:17px;margin-bottom:6px}
+  .qr-card .who{color:#8a93a3;font-size:12px;margin-bottom:14px}
+  .qr-amount{font-size:34px;font-weight:800;color:#111;letter-spacing:-1px;margin-bottom:4px}
+  .qr-amount small{font-size:16px;font-weight:700}
+  .qr-cnt{color:#8a93a3;font-size:12.5px;margin-bottom:16px}
+  .qr-img-wrap{background:#f5f6f8;border-radius:14px;padding:14px;margin-bottom:14px}
+  .qr-img-wrap img{width:100%;max-width:230px;height:auto;display:block;margin:0 auto}
+  .qr-placeholder{color:#b0b7c3;font-size:12.5px;padding:46px 10px;line-height:1.7}
+  .qr-steps{text-align:left;background:#f5f6f8;border-radius:12px;padding:12px 14px;font-size:12.5px;
+    color:#5b6472;line-height:1.9;margin-bottom:16px}
+  .qr-steps b{color:#111}
+  .qr-btns{display:flex;gap:10px}
+  .qr-btns button{flex:1;border:0;border-radius:22px;padding:11px 0;font-size:14px;font-weight:600;cursor:pointer}
+  #qrDone{background:#059669;color:#fff}
+  #qrClose{background:#eef0f3;color:#5b6472}
+
+  /* 代付链接弹层 */
+  #shMask{position:fixed;inset:0;background:rgba(15,18,25,.55);z-index:900;display:none;
+    align-items:center;justify-content:center;padding:20px}
+  #shMask.on{display:flex}
+  .sh-card{background:#fff;border-radius:18px;max-width:420px;width:100%;padding:24px;
+    box-shadow:0 18px 50px rgba(0,0,0,.25)}
+  .sh-card h3{font-size:16px;margin-bottom:6px}
+  .sh-card .sub{color:#8a93a3;font-size:12.5px;margin-bottom:12px;line-height:1.7}
+  .sh-card textarea{width:100%;height:96px;border:1px solid #e0e3e8;border-radius:10px;
+    padding:10px;font-size:11.5px;font-family:monospace;color:#333;resize:none;word-break:break-all}
+  .sh-btns{display:flex;gap:10px;margin-top:14px}
+  .sh-btns button{flex:1;border:0;border-radius:22px;padding:11px 0;font-size:14px;font-weight:600;cursor:pointer}
+  #shCopy{background:#059669;color:#fff}
+  #shClose{background:#eef0f3;color:#5b6472}
+  .sh-tip{margin-top:12px;font-size:12px;color:#8a93a3;line-height:1.8}
+  .sh-tip b{color:#b45309}
 </style>
 
-<style>
-#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
-background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
-#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
-box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
-#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
-#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
-#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
-#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
-font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
-#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
-#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
-border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
-#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
-padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
-</style>
+
 </head>
 <body>
-
-<div id="gate" style="display:none">
-  <form class="card" onsubmit="return wgdzLogin(event)">
-    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-    </div>
-    <h1>WGDZ物料清单</h1>
-    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
-    <div class="err" id="gateErr">密码不正确，请重新输入</div>
-    <label for="gatePw">访问密码</label>
-    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
-    <button type="submit">进入</button>
-  </form>
-</div>
 
 <div class="bar">
   <a href="./index.html">&larr; 返回首页</a>
   <span>购物车 · 结算</span>
 </div>
 
-<div class="wrap" id="app" style="display:none">
+<div class="wrap" id="app">
   <div class="tip" id="tip" style="display:none">
     <b>怎么完成付款：</b>淘宝 / 天猫不开放对外结算接口，网页只能帮你把商品页一个个打开。
     在弹出来的每个页面点「加入购物车」，最后进购物车一起结算，运费和优惠也在那边算。
@@ -179,6 +194,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
       <div class="acts" style="margin-top:10px">
         <button id="btnCopy">复制采购单文本</button>
         <button id="btnPrint">打印采购单</button>
+        <button id="btnShare">发给他人代付</button>
       </div>
       <div class="acts" style="margin-top:10px">
         <button id="btnClear">清空购物车</button>
@@ -201,6 +217,49 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
       <div class="c"><span id="cnt">0</span> 件</div>
     </div>
     <button id="pay" disabled>去付款</button>
+    <button id="qrPay" disabled>扫码付款</button>
+  </div>
+</div>
+
+<div id="qrMask">
+  <div class="qr-card">
+    <h3>扫码付款</h3>
+    <div class="who" id="qrFrom">WGDZ 物料清单</div>
+    <div class="qr-amount"><small>¥</small><span id="qrAmt">0.00</span></div>
+    <div class="qr-cnt"><span id="qrCnt2">0</span> 件物料</div>
+    <div class="qr-img-wrap">
+      <img id="qrImg" src="qrcode.png" alt="收款二维码"
+           onerror="this.style.display='none';document.getElementById('qrPh').style.display=''">
+      <div class="qr-placeholder" id="qrPh" style="display:none">
+        还没有收款码图片<br>
+        请把支付宝 / 微信收款码截图保存为<br>
+        <b>qrcode.png</b>，放在本页面同目录
+      </div>
+    </div>
+    <div class="qr-steps">
+      1. 打开支付宝 / 微信「扫一扫」扫描二维码<br>
+      2. 按<b id="qrAmt2">上方金额</b>输入转账金额<br>
+      3. 付款后点击下方按钮，并保留转账记录
+    </div>
+    <div class="qr-btns">
+      <button id="qrDone">我已完成付款</button>
+      <button id="qrClose">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div id="shMask">
+  <div class="sh-card">
+    <h3>代付链接</h3>
+    <div class="sub">把下面这个链接发给要代付的人（微信 / QQ 直接发文字即可）。<br>
+      对方打开后看到的就是你现在勾选的物料、数量和合计，点「去付款」用自己的淘宝账号下单付款，规格已全部锁定。</div>
+    <textarea id="shLink" readonly></textarea>
+    <div class="sh-btns">
+      <button id="shCopy">复制链接</button>
+      <button id="shClose">关闭</button>
+    </div>
+    <div class="sh-tip" id="shTip"><b>注意：</b>此链接仅是清单，不包含你的任何账号信息；对方付款走他自己的淘宝账号。<br>
+      链接生成后 3 天内让对方打开比较稳妥（商品价格可能变动）。</div>
   </div>
 </div>
 
@@ -208,9 +267,20 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
 
 <script>
 var KEY = 'wgdz_cart_v1';
-var PW = '123456', LOCK = 'wgdz_lock';
 
-var cart = load();
+/* URL 代付链接优先（?cart=base64），其次读本地购物车 */
+var urlCart = null;
+(function(){
+  var m = /[?&]cart=([^&]+)/.exec(location.search);
+  if (!m) return;
+  try {
+    var raw = decodeURIComponent(m[1]);
+    var json = decodeURIComponent(escape(atob(raw)));
+    var arr = JSON.parse(json);
+    if (Array.isArray(arr) && arr.length) urlCart = arr;
+  } catch (e) { urlCart = null; }
+})();
+var cart = urlCart || load();
 
 // 演示用：checkout.html?demo=1 且购物车为空时，塞入几条真实物料方便看效果
 if (!cart.length && /[?&]demo=1/.test(location.search)) {
@@ -269,7 +339,6 @@ function render(){
   bottom.style.display = '';
   tip.style.display = '';
 
-  // 按来源分组
   var groups = {};
   cart.forEach(function(it, i){
     var k = it.from || '物料清单';
@@ -359,6 +428,11 @@ function refresh(){
   var pay = document.getElementById('pay');
   pay.disabled = sel.length === 0;
   pay.textContent = sel.length ? '去付款 (' + sel.length + ')' : '去付款';
+  var qrPay = document.getElementById('qrPay');
+  if (qrPay) {
+    qrPay.disabled = sel.length === 0;
+    qrPay.textContent = sel.length ? '扫码付款' : '扫码付款';
+  }
 
   var all = document.getElementById('allChk');
   all.checked = cart.length > 0 && sel.length === cart.length;
@@ -380,7 +454,6 @@ function renderOpened(){
   });
 }
 
-// 事件
 document.getElementById('allChk').addEventListener('change', function(){
   var on = this.checked;
   cart.forEach(function(it){ it.sel = on; });
@@ -450,31 +523,83 @@ document.getElementById('pay').addEventListener('click', function(){
   if (op) op.scrollIntoView({behavior:'smooth', block:'center'});
 });
 
-render();
 
-// ---- 密码门 ----
+/* ---- 扫码付款 ---- */
 (function(){
-  var gate = document.getElementById('gate');
-  var app = document.getElementById('app');
-  function unlock(){
-    if (app) app.style.display = '';
-    if (gate) gate.remove();
+  var mask = document.getElementById('qrMask');
+  var sel = function(){ return cart.filter(function(it){ return it.sel !== false; }); };
+
+  function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
+
+  function openQr(){
+    var list = sel();
+    if (!list.length) { toast('请先勾选要付款的物料'); return; }
+    var total = 0, unknown = false;
+    list.forEach(function(it){
+      if (it.price !== null && it.price !== undefined && !isNaN(it.price)) total += it.price * it.qty;
+      else unknown = true;
+    });
+    var cnt = list.reduce(function(s, it){ return s + it.qty; }, 0);
+    document.getElementById('qrAmt').textContent = money(total) + (unknown ? '+' : '');
+    document.getElementById('qrAmt2').textContent = '¥' + money(total) + (unknown ? '（以实际为准）' : '');
+    document.getElementById('qrCnt2').textContent = cnt;
+    mask.classList.add('on');
   }
-  window.wgdzLogin = function(ev){
-    ev.preventDefault();
-    if (document.getElementById('gatePw').value === PW) {
-      try { localStorage.setItem(LOCK, PW); } catch(e) {}
-      unlock();
-    } else {
-      document.getElementById('gateErr').style.display = 'block';
-    }
-    return false;
-  };
-  try {
-    if (localStorage.getItem(LOCK) === PW) { unlock(); return; }
-  } catch(e) {}
-  gate.style.display = 'flex';
+
+  document.getElementById('qrPay').addEventListener('click', openQr);
+  document.getElementById('qrClose').addEventListener('click', function(){ mask.classList.remove('on'); });
+  mask.addEventListener('click', function(e){ if (e.target === mask) mask.classList.remove('on'); });
+  document.getElementById('qrDone').addEventListener('click', function(){
+    mask.classList.remove('on');
+    toast('已登记。请保留支付宝 / 微信的转账记录作为凭证');
+  });
 })();
+
+
+/* ---- 发给他人代付 ---- */
+(function(){
+  var mask = document.getElementById('shMask');
+  var ta = document.getElementById('shLink');
+  var tip = document.getElementById('shTip');
+  var isLocal = location.protocol === 'file:';
+
+  function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
+
+  document.getElementById('btnShare').addEventListener('click', function(){
+    var sel = cart.filter(function(it){ return it.sel !== false; });
+    if (!sel.length) { toast('请先勾选要代付的物料'); return; }
+    var data = sel.map(function(it){
+      return { name: it.name, spec: it.spec || '', price: it.price, url: it.url,
+               qty: it.qty, from: it.from || '物料清单' };
+    });
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    var base = isLocal
+      ? 'https://shenlaomu.github.io/wgdz-list/checkout.html'
+      : location.origin + location.pathname;
+    ta.value = base + '?cart=' + encodeURIComponent(b64);
+    tip.innerHTML = isLocal
+      ? '<b>注意：</b>现在是在本地预览，此链接指向的是线上地址——<b>要先把本页传上 GitHub 才能真正打开</b>。<br>对方打开后看到你现在勾选的物料与合计，用他自己的淘宝账号付款，规格已锁定。'
+      : '<b>注意：</b>此链接仅是清单，不包含你的任何账号信息；对方付款走他自己的淘宝账号。<br>建议 3 天内让对方打开（商品价格可能变动）。';
+    mask.classList.add('on');
+    ta.focus(); ta.select();
+  });
+
+  document.getElementById('shClose').addEventListener('click', function(){ mask.classList.remove('on'); });
+  mask.addEventListener('click', function(e){ if (e.target === mask) mask.classList.remove('on'); });
+  document.getElementById('shCopy').addEventListener('click', function(){
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    if (!ok && navigator.clipboard) {
+      navigator.clipboard.writeText(ta.value).then(function(){ toast('链接已复制'); },
+        function(){ toast('复制失败，请手动全选复制'); });
+      return;
+    }
+    toast(ok ? '链接已复制' : '复制失败，请手动全选复制');
+  });
+})();
+
+render();
 </script>
 </body>
 </html>
