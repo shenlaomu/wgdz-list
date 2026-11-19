@@ -200,7 +200,7 @@
   <div id="list"></div>
 
   <div class="note">
-    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>
+    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>打开的商品页购买数量默认是 1：数量大于 1 时，请在淘宝页把数量改成清单里的数字再下单。<br>
     标注 <span style="color:#b45309;font-weight:600">价格待确认</span> 的项目原链接未带价格参数，已按 0 计入合计，请以商品页实际价格为准。
   </div>
 </div>
@@ -304,6 +304,7 @@ GROUPS.forEach(g => {
 
     const input = card.querySelector('input');
     const sub = card.querySelectorAll('.sub');
+    const buyBtn = card.querySelector('.buy');
     const qty = () => Math.max(0, parseInt(input.value || '0', 10));
 
     const sync = () => {
@@ -311,6 +312,7 @@ GROUPS.forEach(g => {
       input.value = q;
       const val = hasPrice ? money(it.price * q) : (q > 0 ? '待确认' : '—');
       sub.forEach(el => el.textContent = val);
+      if (buyBtn) buyBtn.textContent = q > 1 ? ('去购买 ×' + q + ' →') : '去购买 →';
       card.classList.toggle('q0', q === 0);
       update();
     };

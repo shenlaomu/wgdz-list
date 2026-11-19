@@ -152,39 +152,25 @@
   }
 </style>
 
+
+
 <style>
-#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
-background:linear-gradient(135deg,#1f2430,#3a4152);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:20px}
-#gate .card{background:#fff;border-radius:18px;padding:40px 34px;width:100%;max-width:360px;
-box-shadow:0 20px 60px rgba(0,0,0,.28);text-align:center}
-#gate h1{font-size:19px;font-weight:700;margin-bottom:6px;color:#191b1f}
-#gate .sub{font-size:13px;color:#6b7280;margin-bottom:26px;line-height:1.6}
-#gate label{display:block;font-size:12.5px;color:#6b7280;text-align:left;margin-bottom:7px}
-#gate input{width:100%;height:46px;border:1px solid #e7e9ec;border-radius:10px;padding:0 14px;
-font-size:15px;font-family:inherit;outline:none;transition:.15s;letter-spacing:1px}
-#gate input:focus{border-color:#ff5000;box-shadow:0 0 0 3px rgba(255,80,0,.1)}
-#gate button{width:100%;height:46px;margin-top:16px;background:#ff5000;color:#fff;border:0;
-border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-#gate button:hover{background:#e64800}
-#gate .err{background:#fff1f0;border:1px solid #ffccc7;color:#cf1322;border-radius:9px;
-padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:none}
+.wgdz-bar{background:#1f2430;padding:10px 15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wgdz-bar a{color:#aab3c2;font-size:12.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.wgdz-bar a:hover{color:#fff}
+.wgdz-bar .home{color:#fff;font-size:12.5px;font-weight:600}
+.wgdz-bar .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 </style>
 </head>
 <body>
-<div id="gate">
-  <form class="card" onsubmit="return wgdzLogin(event)">
-    <div style="width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:#fff1ea;display:flex;align-items:center;justify-content:center">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff5000" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-    </div>
-    <h1>WGDZ物料清单</h1>
-    <p class="sub">该页面受访问保护<br>请输入访问密码</p>
-    <div class="err" id="gateErr">密码不正确，请重新输入</div>
-    <label for="gatePw">访问密码</label>
-    <input id="gatePw" type="password" placeholder="请输入密码" autocomplete="current-password">
-    <button type="submit">进入清单</button>
-  </form>
+<div class="wgdz-bar">
+  <div class="row">
+    <a href="./index.html">&larr; 返回清单首页</a>
+    <a class="home" href="./index.html">WGDZ物料清单</a>
+  </div>
 </div>
-<div id="app" style="display:none">
+
+<div id="app">
 
 <div class="wrap">
   <header>
@@ -214,7 +200,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
   <div id="list"></div>
 
   <div class="note">
-    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>
+    <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>打开的商品页购买数量默认是 1：数量大于 1 时，请在淘宝页把数量改成清单里的数字再下单。<br>
     标注 <span style="color:#b45309;font-weight:600">价格待确认</span> 的项目原链接未带价格参数，已按 0 计入合计，请以商品页实际价格为准。
   </div>
 </div>
@@ -228,7 +214,8 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     <div class="spacer"></div>
     <button class="bbtn" id="resetBtn">全部清零</button>
     <button class="bbtn" id="copyBtn">复制清单</button>
-    <button class="bbtn primary" id="copyLinkBtn">复制全部链接</button>
+    <button class="bbtn" id="copyLinkBtn">复制全部链接</button>
+    <button class="bbtn primary" id="cartBtn">加入购物车</button>
   </div>
 </div>
 
@@ -343,6 +330,7 @@ GROUPS.forEach(g => {
 
     const input = card.querySelector('input');
     const sub = card.querySelectorAll('.sub');
+    const buyBtn = card.querySelector('.buy');
     const qty = () => Math.max(0, parseInt(input.value || '0', 10));
 
     const sync = () => {
@@ -350,6 +338,7 @@ GROUPS.forEach(g => {
       input.value = q;
       const val = hasPrice ? money(it.price * q) : (q > 0 ? '待确认' : '—');
       sub.forEach(el => el.textContent = val);
+      if (buyBtn) buyBtn.textContent = q > 1 ? ('去购买 ×' + q + ' →') : '去购买 →';
       card.classList.toggle('q0', q === 0);
       update();
     };
@@ -453,30 +442,51 @@ update();
 
 <script>
 (function(){
-  var PW = '123456';
-  var KEY = 'wgdz_lock';
-  try {
-    if (localStorage.getItem(KEY) === PW) { unlock(); return; }
-  } catch(e) {}
-  function unlock(){
-    var app = document.getElementById('app');
-    var gate = document.getElementById('gate');
-    if (app) app.style.display = '';
-    if (gate) gate.remove();
-  }
-  window.wgdzLogin = function(ev){
-    ev.preventDefault();
-    var v = document.getElementById('gatePw').value;
-    if (v === PW) {
-      try { localStorage.setItem(KEY, PW); } catch(e) {}
-      unlock();
-    } else {
-      document.getElementById('gateErr').style.display = 'block';
+  var KEY = 'wgdz_cart_v1';
+  var btn = document.getElementById('cartBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var picked = ITEMS.filter(function(it){ return it._qty() > 0; });
+    if (!picked.length) { alert('请先给要采购的物料设置数量'); return; }
+    wgdzPushCart(picked.map(function(it){
+      return {
+        name: it.name,
+        spec: it.spec || '',
+        price: (it.price === null || it.price === undefined) ? null : it.price,
+        url: it.url,
+        qty: it._qty()
+      };
+    }));
+  });
+
+function wgdzPushCart(list){
+  var KEY = 'wgdz_cart_v1';
+  var cart = [];
+  try { cart = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ cart = []; }
+  if (!Array.isArray(cart)) cart = [];
+  var from = document.title || '物料清单';
+  var added = 0;
+  list.forEach(function(it){
+    var idx = -1;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].url === it.url) { idx = i; break; }
     }
-    return false;
-  };
+    if (idx >= 0) {
+      cart[idx].qty = Math.min(99, cart[idx].qty + it.qty);
+      cart[idx].sel = true;
+    } else {
+      cart.push({ name: it.name, spec: it.spec || '', price: it.price,
+                  url: it.url, qty: it.qty, sel: true, from: from });
+    }
+    added += it.qty;
+  });
+  try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch(e) {}
+  location.href = './checkout.html';
+}
+
 })();
 </script>
+</div>
 </body>
 
 </html>

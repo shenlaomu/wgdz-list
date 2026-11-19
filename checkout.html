@@ -156,7 +156,11 @@
   #shClose{background:#eef0f3;color:#5b6472}
   .sh-tip{margin-top:12px;font-size:12px;color:#8a93a3;line-height:1.8}
   .sh-tip b{color:#b45309}
+
+  .qbadge{display:inline-block;background:#fff1ea;color:#ff5000;font-weight:700;font-size:12px;
+    border-radius:10px;padding:1px 8px;margin-left:2px}
 </style>
+
 
 
 </head>
@@ -170,7 +174,7 @@
 <div class="wrap" id="app">
   <div class="tip" id="tip" style="display:none">
     <b>怎么完成付款：</b>淘宝 / 天猫不开放对外结算接口，网页只能帮你把商品页一个个打开。
-    在弹出来的每个页面点「加入购物车」，最后进购物车一起结算，运费和优惠也在那边算。
+    在弹出来的每个页面点「加入购物车」，最后进购物车一起结算，运费和优惠也在那边算。注意：商品页数量默认是 1，记得按清单数量修改。
   </div>
 
   <div id="empty" class="empty" style="display:none">
@@ -202,7 +206,7 @@
     </div>
 
     <div class="opened" id="opened" style="display:none">
-      <h4>逐个打开（浏览器若拦截弹窗，就从这里点）</h4>
+      <h4>逐个打开（打开后请把淘宝页的数量改成这里的 ×N，再点「加入购物车」）</h4>
       <div id="openedList"></div>
     </div>
   </div>
@@ -448,7 +452,7 @@ function renderOpened(){
   sel.forEach(function(it, i){
     var d = document.createElement('div');
     d.className = 'lk';
-    d.innerHTML = '<span>' + (i + 1) + '. ' + esc(it.name) + ' × ' + it.qty + '</span>' +
+    d.innerHTML = '<span>' + (i + 1) + '. ' + esc(it.name) + ' <b class="qbadge">×' + it.qty + '</b></span>' +
                   '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">打开 →</a>';
     wrap.appendChild(d);
   });
@@ -473,7 +477,7 @@ document.getElementById('btnOpenAll').addEventListener('click', function(){
   toast('正在打开 ' + sel.length + ' 个页面…');
   setTimeout(function(){
     if (blocked) toast('弹窗被拦截了，下面列表里手动点吧');
-    else toast('已打开，逐个点「加入购物车」');
+    else toast('已打开：每页把数量改成清单数字，再点加入购物车');
   }, sel.length * 700 + 400);
 });
 
