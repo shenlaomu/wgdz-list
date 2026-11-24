@@ -79,6 +79,18 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     <p class="sub">请选择要查看的清单版本</p>
   </header>
   <div class="cards">
+    <a class="card" href="./150kv-import.html?v=1" style="--c:#2563eb;--soft:#e8effd">
+      <span class="badge">150kv · 进口版</span>
+      <div class="name">150kv进口版机柜物料购买清单</div>
+      <div class="desc">欧姆龙 PLC 方案，含控制、继电器、电源滤波、气动元件及通信连接器。</div>
+      <div class="foot"><span>46 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
+    <a class="card" href="./150kv-gc.html?v=1" style="--c:#ff5000;--soft:#fff1ea">
+      <span class="badge">150kv · 国产版</span>
+      <div class="name">150kv国产版机柜物料购买清单</div>
+      <div class="desc">汇川 PLC 方案，新增输出模块、ADDA 混合模块、气泵及五金结构件。</div>
+      <div class="foot"><span>47 项物料</span><span class="go">进入清单 →</span></div>
+    </a>
     <a class="card" href="./300kv-import.html" style="--c:#0891b2;--soft:#e0f5fb">
       <span class="badge">300kv · 进口版</span>
       <div class="name">300kv进口版控制柜物料购买清单</div>
@@ -128,8 +140,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
 <script>
 (function(){
   var PW = '123456';
-  var PW_SECRET = '654321';
-  var SECRET_PAGE = './150kv.html?v=1';
+  var PW_OLD = '654321'; // 旧隐藏入口密码，现同样进入正常清单
   var KEY = 'wgdz_lock';
   function unlock(){
     var app = document.getElementById('app');
@@ -140,11 +151,7 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
   window.wgdzLogin = function(ev){
     ev.preventDefault();
     var v = document.getElementById('gatePw').value;
-    if (v === PW_SECRET) {
-      location.replace(SECRET_PAGE);
-      return false;
-    }
-    if (v === PW) {
+    if (v === PW || v === PW_OLD) {
       unlock();
     } else {
       document.getElementById('gateErr').style.display = 'block';

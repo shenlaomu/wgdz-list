@@ -97,6 +97,54 @@
   }
   .acts button:hover{border-color:#ff5000;color:#ff5000}
 
+  .addr-card{padding:15px;margin-bottom:14px}
+  .addr-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .addr-hd h4{font-size:13px;color:#3d4652;margin:0}
+  .addr-tag{font-size:11px;color:#ff5000;background:#fff3ec;padding:2px 8px;border-radius:99px}
+  .addr-row{display:flex;gap:9px;margin-bottom:9px}
+  .addr-row input{flex:1;min-width:0}
+  .addr-card input,.addr-card textarea{
+    width:100%;box-sizing:border-box;border:1px solid #e2e5ea;border-radius:9px;padding:10px 12px;
+    font-size:13px;font-family:inherit;color:#2f353d;background:#fbfcfd;outline:none;transition:.15s;
+  }
+  .addr-card input:focus,.addr-card textarea:focus{border-color:#ffb08a;background:#fff;box-shadow:0 0 0 3px rgba(255,80,0,.07)}
+  .addr-card textarea{resize:vertical;line-height:1.6;margin-bottom:9px}
+  .addr-acts{display:flex;align-items:center;gap:8px}
+  .addr-acts button{
+    border:1px solid #e2e5ea;background:#fff;padding:7px 14px;border-radius:18px;font-size:12px;
+    cursor:pointer;color:#4a515a;font-family:inherit;transition:.15s;
+  }
+  .addr-acts button:hover{border-color:#ffb08a;color:#ff5000}
+  .addr-hint{font-size:11px;color:#a8b0ba;margin-left:auto}
+  .addr-mode{margin-top:14px;padding-top:13px;border-top:1px dashed #edf0f3}
+  .am-lbl{font-size:11px;color:#98a1ad;margin-bottom:8px;letter-spacing:.3px}
+  .am{display:flex;align-items:flex-start;gap:8px;padding:7px 0;cursor:pointer;font-size:13px;color:#3d4652}
+  .am input{margin:2px 0 0;accent-color:#ff5000;width:15px;height:15px;flex:0 0 15px}
+  .am span{display:block;line-height:1.45}
+  .am span b{font-weight:600}
+  .am span em{display:block;font-style:normal;font-size:11px;color:#a2aab5;margin-top:2px}
+  .addr-pwd{margin-top:9px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .addr-pwd input{flex:1;min-width:180px}
+  .pwd-tip{font-size:11px;color:#c98a5f}
+  .pwd-tip b{color:#e05a1a}
+  #addrBar.locked{background:linear-gradient(135deg,#f6f7fb,#fbfbff);border-color:#e0e4ee;color:#4a5262}
+  #addrBar.locked .ab-lbl{color:#7b8497}
+  .lock-in{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+  .lock-in input{flex:1;min-width:140px;border:1px solid #dfe3ec;border-radius:9px;padding:9px 12px;
+    font-size:13px;font-family:inherit;background:#fff;outline:none}
+  .lock-in input:focus{border-color:#ffb08a;box-shadow:0 0 0 3px rgba(255,80,0,.07)}
+  .lock-in button{border:0;background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;font-size:13px;
+    font-weight:600;padding:9px 18px;border-radius:9px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .lock-in button:disabled{opacity:.6;cursor:default}
+  .lock-msg{font-size:12px;color:#d9534f;margin-top:7px;min-height:15px}
+  #addrBar{
+    display:none;background:linear-gradient(135deg,#fff7f2,#fffaf7);border:1px solid #ffe0cd;
+    border-radius:14px;padding:13px 16px;margin-bottom:14px;font-size:13px;color:#5a4536;line-height:1.7;
+  }
+  #addrBar b{color:#c2410c}
+  #addrBar .ab-lbl{font-size:11px;color:#c98a5f;letter-spacing:.5px;margin-bottom:3px}
+  #addrBar .ab-act{float:right;color:#ff5000;font-size:12px;cursor:pointer;font-weight:600}
+
   .opened{background:#fff;border:1px solid #eceef2;border-radius:14px;padding:15px;margin-bottom:14px}
   .opened h4{font-size:13px;margin-bottom:10px;color:#3d4652}
   .opened .lk{
@@ -104,6 +152,43 @@
     padding:9px 0;border-bottom:1px dashed #f0f2f5;font-size:13px;
   }
   .opened .lk:last-child{border-bottom:0}
+  .opened .bulk-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+  .opened .bulk-head h4{margin:0}
+  .opened .bulk-prog{font-size:12px;color:#8a929e;font-variant-numeric:tabular-nums}
+  .opened .bulk-prog b{color:#ff5000;font-size:16px;margin-right:1px}
+  .opened .bulk-bar{height:6px;background:#f1f3f6;border-radius:99px;overflow:hidden;margin-bottom:11px}
+  .opened .bulk-bar i{display:block;height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,#ff9a4d,#ff5000);transition:width .3s ease}
+  .opened .bulk-tip{font-size:12px;color:#8a929e;line-height:1.75;margin-bottom:6px}
+  .opened .bulk-tip b{color:#ff5000}
+  .opened .lk{cursor:pointer;transition:background .15s;border-radius:8px;padding:9px 6px}
+  .opened .lk:hover{background:#fafbfc}
+  .opened .lk.done{opacity:.5}
+  .opened .lk.done .lk-t{text-decoration:line-through;text-decoration-color:#b9c0c9}
+  .opened .lk-n{flex:0 0 18px;color:#a8b0ba;font-size:12px;text-align:center}
+  .opened .lk-t{flex:1;min-width:0;line-height:1.5}
+  .opened .lk-t em{display:block;font-style:normal;font-size:11px;color:#98a1ad;margin-top:3px}
+  .opened .lk-ck{flex:0 0 22px;width:22px;height:22px;border-radius:50%;border:1.5px solid #d7dbe1;
+    background:#fff;color:transparent;font-size:12px;line-height:1;cursor:pointer;padding:0;
+    display:flex;align-items:center;justify-content:center;font-family:inherit}
+  .opened .lk.done .lk-ck{background:#22a06b;border-color:#22a06b;color:#fff}
+  .opened .grp{margin-top:15px}
+  .opened .grp-hd{display:flex;align-items:center;gap:8px;padding:7px 9px;background:#f6f7f9;border-radius:9px;margin-bottom:5px}
+  .opened .grp-n{flex:1;min-width:0;font-size:12px;font-weight:600;color:#3d4652;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .opened .grp-s{font-size:11px;color:#8a929e;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .opened .grp-ck{border:1px solid #e2e5ea;background:#fff;color:#5b6472;font-size:11px;border-radius:14px;
+    padding:3px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+  .opened .grp-ck:hover{border-color:#ffb08a;color:#ff5000}
+  .opened .grp-ck.on{background:#22a06b;border-color:#22a06b;color:#fff}
+  .opened .bulk-foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid #f0f2f5}
+  .opened .bulk-foot button{border:1px solid #e2e5ea;background:#fff;padding:9px 15px;border-radius:20px;
+    font-size:13px;cursor:pointer;color:#41474f;font-family:inherit;transition:.15s}
+  .opened .bulk-foot button:hover{border-color:#ffb08a;color:#ff5000}
+  .opened .bulk-foot button.go{background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;border:0;font-weight:600}
+  .opened .bulk-foot button.go:hover{filter:brightness(1.05)}
+  .opened .bulk-foot button.go:disabled{background:#e9ecf0;color:#9aa3af;opacity:1;filter:none;font-weight:500}
+  .opened .bulk-foot button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.3)}
+  .opened .bulk-foot button:disabled:hover{border-color:#e2e5ea;color:#41474f}
   .opened .lk a{color:#ff5000;font-weight:600;white-space:nowrap}
 
   #toast{
@@ -189,10 +274,44 @@
 
   <div id="list"></div>
 
+  <div id="addrBar"></div>
+
   <div id="tools" style="display:none">
+    <div class="card addr-card">
+      <div class="addr-hd">
+        <h4>📦 收货信息</h4>
+        <span class="addr-tag">跟着清单走</span>
+      </div>
+      <div class="addr-row">
+        <input id="adName" type="text" placeholder="收货人姓名" autocomplete="name">
+        <input id="adTel" type="tel" placeholder="手机号" autocomplete="tel">
+      </div>
+      <textarea id="adText" rows="2" placeholder="省 / 市 / 区 + 详细地址（例：浙江省杭州市余杭区文一西路 969 号 3 幢 501）"></textarea>
+      <div class="addr-acts">
+        <button id="btnAddrCopy" type="button">复制地址</button>
+        <button id="btnAddrClear" type="button">清空</button>
+        <span class="addr-hint" id="addrHint">输入即自动保存</span>
+      </div>
+
+      <div class="addr-mode">
+        <div class="am-lbl">发给别人时，地址怎么带</div>
+        <label class="am"><input type="radio" name="addrMode" value="lock" checked>
+          <span><b>加口令</b>（推荐）<em>没口令的人看不到地址</em></span></label>
+        <label class="am"><input type="radio" name="addrMode" value="off">
+          <span><b>不放进链接</b><em>对方需要单独问你</em></span></label>
+        <label class="am"><input type="radio" name="addrMode" value="open">
+          <span><b>明文</b><em>谁打开链接谁都能看到</em></span></label>
+      </div>
+
+      <div class="addr-pwd" id="pwdWrap">
+        <input id="adPwd" type="text" placeholder="设置查看口令（长度不限，建议 4 位以上）" autocomplete="off">
+        <span class="pwd-tip">口令<b>不要</b>和链接发在同一条消息里，分开发</span>
+      </div>
+    </div>
+
     <div class="card" style="padding:15px">
       <div class="acts">
-        <button id="btnOpenAll">依次打开已选商品页</button>
+        <button id="btnOpenAll">⚡ 一键批量加购</button>
         <button id="btnCart">打开淘宝购物车</button>
       </div>
       <div class="acts" style="margin-top:10px">
@@ -206,8 +325,19 @@
     </div>
 
     <div class="opened" id="opened" style="display:none">
-      <h4>逐个打开（打开后请把淘宝页的数量改成这里的 ×N，再点「加入购物车」）</h4>
+      <div class="bulk-head">
+        <h4>⚡ 一键批量加购</h4>
+        <div class="bulk-prog"><b id="bulkDone">0</b> / <span id="bulkAll">0</span> 已加购</div>
+      </div>
+      <div class="bulk-bar"><i id="bulkBar"></i></div>
+      <p class="bulk-tip">点「一键批量加购」自动打开全部商品页（规格已锁定，不会买错型号）。每页把数量改成 <b>×N</b>，点淘宝的「加入购物车」，回来打勾。<b>下面按采购清单分了组</b>，和淘宝购物车里的分组一一对应，哪一组加完了点该组的「✓ 整组」，不用一个个点。全部打勾后，底部按钮直接跳去淘宝结算。</p>
       <div id="openedList"></div>
+      <div class="bulk-foot">
+        <button id="btnBulkOpen" type="button">⚡ 一键批量加购</button>
+        <button id="btnOnlyUndone" type="button">只看未加购</button>
+        <button id="btnBulkReset" type="button">重置进度</button>
+        <button id="btnTbCheckout" class="go" type="button" disabled>去淘宝结算</button>
+      </div>
     </div>
   </div>
 </div>
@@ -274,17 +404,125 @@ var KEY = 'wgdz_cart_v1';
 
 /* URL 代付链接优先（?cart=base64），其次读本地购物车 */
 var urlCart = null;
+var urlAddr = null;
+var urlAddrEnc = null;      // 链接里加密过的地址包 {e:1,s,i,c}
+var unlockedAddr = null;    // 输入口令解密后的地址
 (function(){
   var m = /[?&]cart=([^&]+)/.exec(location.search);
   if (!m) return;
   try {
     var raw = decodeURIComponent(m[1]);
     var json = decodeURIComponent(escape(atob(raw)));
-    var arr = JSON.parse(json);
-    if (Array.isArray(arr) && arr.length) urlCart = arr;
+    var obj = JSON.parse(json);
+    if (Array.isArray(obj) && obj.length) {
+      urlCart = obj;                       // 老格式：纯数组
+    } else if (obj && obj.v === 3 && Array.isArray(obj.i) && obj.i.length) {
+      // 紧凑格式：每个物料是 [名称,型号,价格分,数量,域名,商品id,sku,分组序号]
+      urlCart = obj.i.map(function(r){
+        var head = (r[4] === 't')
+          ? 'https://detail.tmall.com/item.htm?id='
+          : 'https://item.taobao.com/item.htm?id=';
+        return {
+          name: r[0] || '物料',
+          model: r[1] || '',
+          spec: '',
+          price: (typeof r[2] === 'number' && r[2] >= 0) ? r[2] / 100 : null,
+          qty: r[3] || 1,
+          url: r[5] ? head + r[5] + (r[6] ? '&skuId=' + r[6] : '') : '',
+          sel: true,
+          from: (obj.g && obj.g[r[7]]) || '物料清单'
+        };
+      });
+      if (Array.isArray(obj.a) && (obj.a[0] || obj.a[1] || obj.a[2])) {
+        urlAddr = { n: obj.a[0] || '', t: obj.a[1] || '', a: obj.a[2] || '' };
+      } else if (obj.a && obj.a.e === 1) {
+        urlAddrEnc = obj.a;   // 加密地址，需要口令
+      }
+    } else if (obj && Array.isArray(obj.items) && obj.items.length) {
+      urlCart = obj.items;                 // v2：{ v:2, items:[], addr:{} }
+      if (obj.addr && (obj.addr.n || obj.addr.t || obj.addr.a)) urlAddr = obj.addr;
+    }
   } catch (e) { urlCart = null; }
 })();
 var cart = urlCart || load();
+
+/* ---- 收货信息 ---- */
+var ADDR_KEY = 'wgdz_addr_v1';
+function loadAddr(){
+  try {
+    var o = JSON.parse(localStorage.getItem(ADDR_KEY) || '{}');
+    return (o && typeof o === 'object') ? o : {};
+  } catch (e) { return {}; }
+}
+function saveAddr(o){
+  try { localStorage.setItem(ADDR_KEY, JSON.stringify(o)); } catch (e) {}
+}
+var addr = loadAddr();
+var viewAddr = (urlAddr && (urlAddr.a || urlAddr.n || urlAddr.t)) ? urlAddr : addr;
+function addrOneLine(a){
+  if (!a) return '';
+  var t = [];
+  if (a.n) t.push(a.n);
+  if (a.t) t.push(a.t);
+  if (a.a) t.push(a.a);
+  return t.join('  ');
+}
+function addrHas(a){ return !!(a && (a.n || a.t || a.a)); }
+
+/* ---- 地址口令保护 ---- */
+var MODE_KEY = 'wgdz_addrmode_v1';
+var PWD_KEY = 'wgdz_addrpwd_v1';
+function addrMode(){
+  try { return localStorage.getItem(MODE_KEY) || 'lock'; } catch (e) { return 'lock'; }
+}
+function setAddrMode(m){ try { localStorage.setItem(MODE_KEY, m); } catch (e) {} }
+function savedPwd(){
+  try { return localStorage.getItem(PWD_KEY) || ''; } catch (e) { return ''; }
+}
+function setSavedPwd(p){ try { localStorage.setItem(PWD_KEY, p); } catch (e) {} }
+
+function b64buf(buf){
+  var b = new Uint8Array(buf), t = '';
+  for (var i = 0; i < b.length; i++) t += String.fromCharCode(b[i]);
+  return btoa(t);
+}
+function buf64(str){
+  var raw = atob(str), a = new Uint8Array(raw.length);
+  for (var i = 0; i < raw.length; i++) a[i] = raw.charCodeAt(i);
+  return a;
+}
+function cryptoOK(){ return !!(window.crypto && window.crypto.subtle && window.TextEncoder); }
+
+function deriveKey(pwd, salt){
+  var enc = new TextEncoder();
+  return crypto.subtle.importKey('raw', enc.encode(pwd), 'PBKDF2', false, ['deriveKey'])
+    .then(function(km){
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: salt, iterations: 120000, hash: 'SHA-256' },
+        km, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    });
+}
+function encAddr(obj, pwd){
+  if (!cryptoOK()) return Promise.reject(new Error('nocrypto'));
+  var enc = new TextEncoder();
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  return deriveKey(pwd, salt).then(function(key){
+    return crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key,
+      enc.encode(JSON.stringify(obj)));
+  }).then(function(ct){
+    return { e: 1, s: b64buf(salt), i: b64buf(iv), c: b64buf(ct) };
+  });
+}
+function decAddr(pack, pwd){
+  if (!cryptoOK()) return Promise.reject(new Error('nocrypto'));
+  var dec = new TextDecoder();
+  return deriveKey(pwd, buf64(pack.s)).then(function(key){
+    return crypto.subtle.decrypt({ name: 'AES-GCM', iv: buf64(pack.i) }, key, buf64(pack.c));
+  }).then(function(pt){
+    return JSON.parse(dec.decode(pt));
+  });
+}
 
 // 演示用：checkout.html?demo=1 且购物车为空时，塞入几条真实物料方便看效果
 if (!cart.length && /[?&]demo=1/.test(location.search)) {
@@ -336,6 +574,7 @@ function render(){
     tools.style.display = 'none';
     bottom.style.display = 'none';
     tip.style.display = '';
+    renderAddrBar();
     return;
   }
   empty.style.display = 'none';
@@ -366,6 +605,7 @@ function render(){
 
   refresh();
   renderOpened();
+  renderAddrBar();
 }
 
 function esc(s){
@@ -383,7 +623,7 @@ function rowEl(it, idx){
     '<input type="checkbox" data-idx="' + idx + '"' + (it.sel === false ? '' : ' checked') + '>' +
     '<div class="info">' +
       '<div class="nm">' + esc(it.name) + '</div>' +
-      (it.spec ? '<div class="sp">' + esc(it.spec) + '</div>' : '') +
+      '<div class="sp">' + (it.model ? '型号：<b>' + esc(it.model) + '</b> &nbsp;·&nbsp; ' : '') + '规格：' + esc(it.spec || '见商品页') + ' &nbsp;·&nbsp; SKU：' + esc((String(it.url || '').match(/[?&]skuId=(\d+)/) || [])[1] || '见商品页') + '</div>' +
       '<div class="pr">单价 ' + (hasPrice ? '¥' + money(it.price) : '以商品页为准') + '</div>' +
       '<div class="qty">' +
         '<button data-a="-1" data-i="' + idx + '">−</button>' +
@@ -442,19 +682,107 @@ function refresh(){
   all.checked = cart.length > 0 && sel.length === cart.length;
 }
 
+var BULK_KEY = 'wgdz_bulk_v1';
+function bulkLoad(){
+  try {
+    var o = JSON.parse(localStorage.getItem(BULK_KEY) || '{}');
+    return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {};
+  } catch (e) { return {}; }
+}
+function bulkSave(o){
+  try { localStorage.setItem(BULK_KEY, JSON.stringify(o)); } catch (e) {}
+}
+function itemKey(it){ return (it.url || '') + '||' + (it.name || ''); }
+
+var onlyUndone = false;
+
 function renderOpened(){
   var sel = selected();
   var box = document.getElementById('opened');
   var wrap = document.getElementById('openedList');
   if (!sel.length) { box.style.display = 'none'; return; }
   box.style.display = '';
-  wrap.innerHTML = '';
-  sel.forEach(function(it, i){
-    var d = document.createElement('div');
-    d.className = 'lk';
-    d.innerHTML = '<span>' + (i + 1) + '. ' + esc(it.name) + ' <b class="qbadge">×' + it.qty + '</b></span>' +
-                  '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">打开 →</a>';
-    wrap.appendChild(d);
+
+  var done = bulkLoad();
+  var n = 0;
+  sel.forEach(function(it){ if (done[itemKey(it)]) n++; });
+
+  // ---- 顶栏进度 ----
+  var dn = document.getElementById('bulkDone');
+  var al = document.getElementById('bulkAll');
+  if (dn) dn.textContent = n;
+  if (al) al.textContent = sel.length;
+  var bar = document.getElementById('bulkBar');
+  if (bar) bar.style.width = (n / sel.length * 100) + '%';
+
+  var go = document.getElementById('btnTbCheckout');
+  if (go) {
+    go.disabled = n < sel.length;
+    go.textContent = n < sel.length
+      ? ('还差 ' + (sel.length - n) + ' 件 · 去淘宝结算')
+      : '✓ 全部加购完成 → 去淘宝结算';
+  }
+  var bo = document.getElementById('btnBulkOpen');
+  if (bo) {
+    var left = sel.length - n;
+    bo.textContent = left === 0 ? '⚡ 重新打开全部 ' + sel.length + ' 件' : ('⚡ 一键加购 ' + left + ' 件');
+  }
+  var ou = document.getElementById('btnOnlyUndone');
+  if (ou) {
+    var rest = sel.length - n;
+    ou.textContent = onlyUndone ? '显示全部' : ('只看未加购' + (rest ? ' (' + rest + ')' : ''));
+    ou.classList.toggle('on', onlyUndone);
+  }
+
+  // ---- 按清单分组 ----
+  var groups = [];
+  var gmap = {};
+  sel.forEach(function(it){
+    var g = it.from || '物料清单';
+    if (!gmap[g]) { gmap[g] = { name: g, rows: [] }; groups.push(gmap[g]); }
+    gmap[g].rows.push(it);
+  });
+
+  var html = '';
+  var idx = 0;
+  groups.forEach(function(grp, gi){
+    var sum = 0, gdone = 0;
+    grp.rows.forEach(function(it){
+      sum += (Number(it.price) || 0) * it.qty;
+      if (done[itemKey(it)]) gdone++;
+    });
+    var allOn = gdone >= grp.rows.length;
+    if (onlyUndone && allOn) { idx += grp.rows.length; return; }
+
+    html += '<div class="grp">' +
+      '<div class="grp-hd">' +
+        '<span class="grp-n">' + esc(grp.name) + '</span>' +
+        '<span class="grp-s">' + grp.rows.length + ' 种 · ¥' + money(sum) + ' · ' + gdone + '/' + grp.rows.length + '</span>' +
+        '<button class="grp-ck' + (allOn ? ' on' : '') + '" type="button" data-g="' + gi + '">' +
+          (allOn ? '↺ 取消整组' : '✓ 整组') + '</button>' +
+      '</div>';
+
+    grp.rows.forEach(function(it){
+      var k = itemKey(it);
+      var on = !!done[k];
+      idx++;
+      if (onlyUndone && on) return;
+      html += '<div class="lk' + (on ? ' done' : '') + '" data-k="' + k + '">' +
+        '<span class="lk-n">' + idx + '</span>' +
+        '<span class="lk-t">' + esc(it.name) + ' <b class="qbadge">×' + it.qty + '</b>' +
+          (it.model ? '<em>型号：' + esc(it.model) + '</em>' : '') + '</span>' +
+        '<a href="' + esc(it.url) + '" target="_blank" rel="noopener">重开</a>' +
+        '<button class="lk-ck" type="button" title="标记为已加购">✓</button>' +
+      '</div>';
+    });
+
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+
+  // 存一份分组索引，供组级按钮使用
+  window.__grpRows = groups.map(function(g){
+    return g.rows.map(function(it){ return itemKey(it); });
   });
 }
 
@@ -464,26 +792,230 @@ document.getElementById('allChk').addEventListener('change', function(){
   save(); render();
 });
 
-document.getElementById('btnOpenAll').addEventListener('click', function(){
+function bulkOpen(){
   var sel = selected();
   if (!sel.length) return;
-  var blocked = false;
-  sel.forEach(function(it, i){
+  var st = bulkLoad();
+  var todo = sel.filter(function(it){ return !st[itemKey(it)]; });
+  if (!todo.length) { toast('未加购的已全部打开过了，去淘宝结算吧'); return; }
+  var blocked = 0;
+  todo.forEach(function(it, i){
     setTimeout(function(){
       var w = window.open(it.url, '_blank');
-      if (!w) blocked = true;
-    }, i * 700);
+      if (!w) blocked++;
+    }, i * 900);
   });
-  toast('正在打开 ' + sel.length + ' 个页面…');
+  toast('正在打开 ' + todo.length + ' 个商品页（规格已锁定）');
   setTimeout(function(){
-    if (blocked) toast('弹窗被拦截了，下面列表里手动点吧');
-    else toast('已打开：每页把数量改成清单数字，再点加入购物车');
-  }, sel.length * 700 + 400);
+    if (blocked) toast('有 ' + blocked + ' 个被浏览器拦了，在列表里点「重开」');
+    else toast('每页把数量改成 ×N，点「加入购物车」，回来打勾');
+  }, todo.length * 900 + 500);
+  var op = document.getElementById('opened');
+  if (op) op.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+document.getElementById('btnOpenAll').addEventListener('click', function(){
+  bulkOpen();
+});
+
+document.getElementById('openedList').addEventListener('click', function(e){
+  var gb = e.target.closest('.grp-ck');
+  if (gb) {
+    var gi = Number(gb.getAttribute('data-g'));
+    var rows = (window.__grpRows || [])[gi] || [];
+    var st = bulkLoad();
+    var allOn = rows.length > 0 && rows.every(function(k){ return st[k]; });
+    rows.forEach(function(k){ if (allOn) { delete st[k]; } else { st[k] = 1; } });
+    bulkSave(st);
+    renderOpened();
+    toast(allOn ? '已取消该组全部勾选' : ('该组 ' + rows.length + ' 件已标记为已加购'));
+    return;
+  }
+  if (e.target.closest('a')) return;
+  var row = e.target.closest('.lk');
+  if (!row) return;
+  var k = row.getAttribute('data-k');
+  if (!k) return;
+  var st = bulkLoad();
+  if (st[k]) { delete st[k]; } else { st[k] = 1; }
+  bulkSave(st);
+  renderOpened();
+});
+
+document.getElementById('btnBulkOpen').addEventListener('click', function(){
+  bulkOpen();
+});
+
+document.getElementById('btnOnlyUndone').addEventListener('click', function(){
+  onlyUndone = !onlyUndone;
+  renderOpened();
+  if (onlyUndone) {
+    var rest = document.querySelectorAll('#openedList .lk:not(.done)').length;
+    if (!rest) toast('全部已加购，去淘宝结算吧');
+  }
+});
+
+document.getElementById('btnBulkReset').addEventListener('click', function(){
+  bulkSave({});
+  renderOpened();
+  toast('进度已重置');
+});
+
+document.getElementById('btnTbCheckout').addEventListener('click', function(){
+  if (this.disabled) return;
+  window.open('https://cart.taobao.com/cart.htm', '_blank');
+  toast('淘宝购物车已打开，全选后点「结算」');
 });
 
 document.getElementById('btnCart').addEventListener('click', function(){
   window.open('https://cart.taobao.com/cart.htm', '_blank');
 });
+
+function copyText(txt){
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(function(){ toast('已复制'); }, function(){ fallbackCopy(txt); });
+  } else {
+    fallbackCopy(txt);
+  }
+}
+function fallbackCopy(txt){
+  var ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  toast(ok ? '已复制' : '复制失败，请手动选择');
+}
+
+function renderAddrBar(){
+  var bar = document.getElementById('addrBar');
+  if (!bar) return;
+  if (!cart.length) { bar.style.display = 'none'; return; }
+
+  /* ① 链接里是加密地址，还没解锁 */
+  if (urlAddrEnc && !unlockedAddr) {
+    bar.className = 'locked';
+    bar.innerHTML = '<div class="ab-lbl">📦 本单收货地址 · 已加密</div>' +
+      '发单方设置了查看口令，输入后才能看到收货地址。' +
+      '<div class="lock-in">' +
+        '<input id="abPwd" type="password" placeholder="输入查看口令" autocomplete="off">' +
+        '<button id="abUnlock" type="button">查看地址</button>' +
+      '</div>' +
+      '<div class="lock-msg" id="abMsg"></div>';
+    bar.style.display = '';
+    var inp = document.getElementById('abPwd');
+    var btn = document.getElementById('abUnlock');
+    var msg = document.getElementById('abMsg');
+    var busy = false;
+    function doUnlock(){
+      if (busy) return;
+      var p = (inp.value || '').trim();
+      if (!p) { msg.textContent = '请输入口令'; return; }
+      busy = true;
+      btn.disabled = true; btn.textContent = '验证中…'; msg.textContent = '';
+      decAddr(urlAddrEnc, p).then(function(o){
+        unlockedAddr = o;
+        viewAddr = o;
+        renderAddrBar();
+        toast('地址已解锁');
+      }).catch(function(){
+        busy = false;
+        btn.disabled = false; btn.textContent = '查看地址';
+        msg.textContent = '口令不对，或当前浏览器不支持解密';
+      });
+    }
+    btn.addEventListener('click', doUnlock);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); doUnlock(); } });
+    return;
+  }
+
+  /* ② 没有地址 */
+  if (!addrHas(viewAddr)) { bar.className = ''; bar.style.display = 'none'; return; }
+
+  /* ③ 正常显示 */
+  bar.className = '';
+  var fromLink = !!(urlAddr || urlAddrEnc);
+  var who = [];
+  if (viewAddr.n) who.push('<b>' + esc(viewAddr.n) + '</b>');
+  if (viewAddr.t) who.push(esc(viewAddr.t));
+  bar.innerHTML = '<span class="ab-act" id="abCopy">复制地址</span>' +
+    '<div class="ab-lbl">' + (fromLink ? '本单收货地址 · 发单方已填好' : '本单收货地址') + '</div>' +
+    (who.length ? who.join(' &nbsp; ') + '<br>' : '') +
+    esc(viewAddr.a || '（未填详细地址）');
+  bar.style.display = '';
+  var c = document.getElementById('abCopy');
+  if (c) {
+    c.addEventListener('click', function(){
+      var t = addrOneLine(viewAddr);
+      if (!t) { toast('还没填地址'); return; }
+      copyText(t);
+    });
+  }
+}
+
+(function(){
+  var n = document.getElementById('adName');
+  var tel = document.getElementById('adTel');
+  var ta2 = document.getElementById('adText');
+  var hint = document.getElementById('addrHint');
+  if (!n || !tel || !ta2) return;
+  n.value = addr.n || '';
+  tel.value = addr.t || '';
+  ta2.value = addr.a || '';
+
+  function persist(){
+    addr = { n: n.value.trim(), t: tel.value.trim(), a: ta2.value.trim() };
+    saveAddr(addr);
+    if (!urlAddr && !urlAddrEnc) { viewAddr = addr; renderAddrBar(); }
+    if (hint) {
+      hint.textContent = '已保存';
+      clearTimeout(hint.__t);
+      hint.__t = setTimeout(function(){ hint.textContent = '输入即自动保存'; }, 1200);
+    }
+  }
+  [n, tel, ta2].forEach(function(el){ el.addEventListener('input', persist); });
+
+  /* ---- 链接里的地址怎么带 ---- */
+  var radios = document.querySelectorAll('input[name="addrMode"]');
+  var pwdWrap = document.getElementById('pwdWrap');
+  var pwdEl = document.getElementById('adPwd');
+
+  function syncModeUI(){
+    var m = addrMode();
+    for (var i = 0; i < radios.length; i++) radios[i].checked = (radios[i].value === m);
+    if (pwdWrap) pwdWrap.style.display = (m === 'lock') ? 'flex' : 'none';
+  }
+  for (var i = 0; i < radios.length; i++) {
+    radios[i].addEventListener('change', function(){
+      if (!this.checked) return;
+      setAddrMode(this.value);
+      syncModeUI();
+      if (this.value === 'lock' && pwdEl && !pwdEl.value.trim()) pwdEl.focus();
+    });
+  }
+  if (pwdEl) {
+    pwdEl.value = savedPwd();
+    pwdEl.addEventListener('input', function(){ setSavedPwd(pwdEl.value.trim()); });
+  }
+  syncModeUI();
+
+  var cb = document.getElementById('btnAddrCopy');
+  if (cb) cb.addEventListener('click', function(){
+    var t = addrOneLine(addr);
+    if (!t) { toast('还没填地址，先在上面输入'); return; }
+    copyText(t);
+  });
+  var cc = document.getElementById('btnAddrClear');
+  if (cc) cc.addEventListener('click', function(){
+    n.value = ''; tel.value = ''; ta2.value = '';
+    addr = {}; saveAddr({});
+    if (!urlAddr && !urlAddrEnc) { viewAddr = {}; renderAddrBar(); }
+    toast('地址已清空');
+  });
+})();
 
 document.getElementById('btnCopy').addEventListener('click', function(){
   var sel = selected();
@@ -492,13 +1024,21 @@ document.getElementById('btnCopy').addEventListener('click', function(){
   sel.forEach(function(it, i){
     var has = it.price !== null && it.price !== undefined && !isNaN(it.price);
     if (has) total += it.price * it.qty; else unknown = true;
-    lines.push((i + 1) + '. ' + it.name + (it.spec ? '（' + it.spec + '）' : '') +
+    lines.push((i + 1) + '. ' + it.name + (it.model ? '【型号 ' + it.model + '】' : '') + (it.spec ? '（' + it.spec + '）' : '') +
                '  ×' + it.qty + '  单价 ' + (has ? '¥' + money(it.price) : '待确认') +
                '  小计 ' + (has ? '¥' + money(it.price * it.qty) : '待确认'));
   });
   lines.push('');
   lines.push('合计：¥' + money(total) + (unknown ? ' + 待确认项' : '') +
              '（' + sel.reduce(function(s, it){ return s + it.qty; }, 0) + ' 件）');
+  var copyAddr = addrHas(addr) ? addr : (addrHas(viewAddr) ? viewAddr : null);
+  if (copyAddr) {
+    lines.push('');
+    lines.push('—— 收货信息 ——');
+    if (copyAddr.n) lines.push('收货人：' + copyAddr.n);
+    if (copyAddr.t) lines.push('电话：' + copyAddr.t);
+    if (copyAddr.a) lines.push('地址：' + copyAddr.a);
+  }
   if (navigator.clipboard) {
     navigator.clipboard.writeText(lines.join('\n')).then(function(){ toast('采购单已复制'); },
       function(){ toast('复制失败，请手动选择'); });
@@ -520,11 +1060,14 @@ document.getElementById('btnClear').addEventListener('click', function(){
 document.getElementById('pay').addEventListener('click', function(){
   var sel = selected();
   if (!sel.length) return;
-  var ok = confirm('接下来会依次打开 ' + sel.length + ' 个商品页。\n\n在每个页面点「加入购物车」，全部加完后回到淘宝购物车，勾选结算即可。\n\n继续？');
-  if (!ok) return;
-  document.getElementById('btnOpenAll').click();
-  var op = document.getElementById('opened');
-  if (op) op.scrollIntoView({behavior:'smooth', block:'center'});
+  var st = bulkLoad();
+  var left = sel.filter(function(it){ return !st[itemKey(it)]; });
+  if (!left.length) {
+    window.open('https://cart.taobao.com/cart.htm', '_blank');
+    toast('全部已加购，已打开淘宝购物车，全选结算即可');
+    return;
+  }
+  bulkOpen();
 });
 
 
@@ -572,21 +1115,82 @@ document.getElementById('pay').addEventListener('click', function(){
   document.getElementById('btnShare').addEventListener('click', function(){
     var sel = cart.filter(function(it){ return it.sel !== false; });
     if (!sel.length) { toast('请先勾选要代付的物料'); return; }
-    var data = sel.map(function(it){
-      return { name: it.name, spec: it.spec || '', price: it.price, url: it.url,
-               qty: it.qty, from: it.from || '物料清单' };
+
+    var mode = addrMode();
+    var pwdEl = document.getElementById('adPwd');
+    var pwd = pwdEl ? pwdEl.value.trim() : '';
+
+    if (!addrHas(addr) || mode === 'off') {
+      buildShare(0, addrHas(addr) ? 'off' : 'none');
+      return;
+    }
+    if (mode === 'open') {
+      buildShare([addr.n || '', addr.t || '', addr.a || ''], 'open');
+      return;
+    }
+    /* mode === 'lock' */
+    if (!pwd) {
+      toast('请先在「📦 收货信息」里设置查看口令');
+      if (pwdEl) { pwdEl.focus(); pwdEl.scrollIntoView({behavior:'smooth', block:'center'}); }
+      return;
+    }
+    if (!cryptoOK()) {
+      toast('当前浏览器不支持加密，请改成「明文」或「不放进链接」');
+      return;
+    }
+    toast('正在加密地址…');
+    encAddr({ n: addr.n || '', t: addr.t || '', a: addr.a || '' }, pwd).then(function(pack){
+      setSavedPwd(pwd);
+      buildShare(pack, 'lock');
+    }).catch(function(){
+      toast('加密失败，请改用「明文」或「不放进链接」');
     });
-    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  });
+
+  function buildShare(aField, aMode){
+    var sel = cart.filter(function(it){ return it.sel !== false; });
+    var gNames = [], gIdx = {};
+    var compact = sel.map(function(it){
+      var u = it.url || '';
+      var iid = (/[?&]id=(\d+)/.exec(u) || [])[1] || '';
+      var sku = (/[?&]skuId=(\d+)/.exec(u) || [])[1] || '';
+      var host = /tmall\.com/.test(u) ? 't' : 'b';
+      var g = it.from || '物料清单';
+      if (!(g in gIdx)) { gIdx[g] = gNames.length; gNames.push(g); }
+      var pc = (it.price === null || it.price === undefined || isNaN(it.price))
+        ? -1 : Math.round(it.price * 100);
+      return [it.name, it.model || '', pc, it.qty, host, iid, sku, gIdx[g]];
+    });
+    var payload = {
+      v: 3,
+      g: gNames,
+      a: aField || 0,
+      i: compact
+    };
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     var base = isLocal
       ? 'https://shenlaomu.github.io/wgdz-list/checkout.html'
       : location.origin + location.pathname;
     ta.value = base + '?cart=' + encodeURIComponent(b64);
-    tip.innerHTML = isLocal
+    var addrNote;
+    if (aMode === 'lock') {
+      addrNote = '<br><b>🔒 地址已加密带进链接：</b>对方打开只看到「已加密」，必须输入口令才能看到你的收货信息。' +
+                 '<br><b>口令请单独发给他</b>（不要和链接放在同一条消息），这样就算链接被转发，没有口令的人依旧看不到地址。';
+    } else if (aMode === 'open') {
+      addrNote = '<br><b>⚠️ 地址是明文带进链接的：</b>' + esc(addrOneLine(addr)) +
+                 '<br>任何拿到这条链接的人都能看到，转发前想清楚发给谁。';
+    } else if (aMode === 'off') {
+      addrNote = '<br><b>地址未放进链接：</b>对方打开只能看到物料清单，收货地址需要你另行告知。';
+    } else {
+      addrNote = '<br><b>提示：</b>你还没填收货信息，对方打开后不知道寄哪。回上面「📦 收货信息」填一下。';
+    }
+    tip.innerHTML = (isLocal
       ? '<b>注意：</b>现在是在本地预览，此链接指向的是线上地址——<b>要先把本页传上 GitHub 才能真正打开</b>。<br>对方打开后看到你现在勾选的物料与合计，用他自己的淘宝账号付款，规格已锁定。'
-      : '<b>注意：</b>此链接仅是清单，不包含你的任何账号信息；对方付款走他自己的淘宝账号。<br>建议 3 天内让对方打开（商品价格可能变动）。';
+      : '<b>注意：</b>此链接仅是清单，不包含你的任何账号信息；对方付款走他自己的淘宝账号。<br>建议 3 天内让对方打开（商品价格可能变动）。') + addrNote +
+      '<br><b>想让对方「点开就直接付」：</b>先自己在淘宝把单下好（选好地址）→ 收银台点「找人代付」→ 把淘宝生成的代付链接发他，他点开就能直接付款。';
     mask.classList.add('on');
     ta.focus(); ta.select();
-  });
+  }
 
   document.getElementById('shClose').addEventListener('click', function(){ mask.classList.remove('on'); });
   mask.addEventListener('click', function(e){ if (e.target === mask) mask.classList.remove('on'); });

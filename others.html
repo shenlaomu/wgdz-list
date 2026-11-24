@@ -137,6 +137,19 @@
   .bbtn.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
   .bbtn.primary:hover{background:#e64800;color:#fff}
 
+  .cart-hint{
+    background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #ff5000;
+    border-radius:10px;padding:12px 16px;margin:0 0 16px;font-size:13.5px;
+    color:#7c2d12;line-height:1.8;
+  }
+  .cart-hint b{color:#c2410c}
+  .cart-hint a{color:#ea580c;font-weight:700;text-decoration:none;white-space:nowrap}
+  .cart-hint a:hover{text-decoration:underline}
+  #cartCnt{
+    display:inline-block;min-width:20px;padding:1px 6px;border-radius:20px;
+    background:#ff5000;color:#fff;font-size:12px;font-weight:700;text-align:center;
+    margin-left:3px;
+  }
   .note{
     margin-top:22px;font-size:12.5px;color:var(--sub);line-height:1.95;
     background:#fff;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;
@@ -150,6 +163,10 @@
     .group-head{top:60px}
     h1{font-size:21px}
   }
+  .model{
+    font-size:12.5px;color:#6b7280;margin-top:5px;line-height:1.6;
+  }
+  .model b{color:#b45309;font-weight:600;letter-spacing:.2px}
 </style>
 
 
@@ -199,6 +216,7 @@
 
   <div id="list"></div>
 
+  <div class="cart-hint">🛒 <b>本页支持加入购物车</b>：给物料设好数量，点右下角橙色「加入购物车」就会进入结算页；可和 150kv / 300kv / 2MV / 其他采购等清单合并成一张单。<a href="./checkout.html">查看购物车 →</a></div>
   <div class="note">
     <b>说明：</b>淘宝 / 天猫未开放对外的结算接口，网页无法直接完成付款。按钮打开的是<strong>已锁定对应 SKU 规格</strong>的商品页，登录后点「立即购买」即可下单；想合并一单付款，把所有商品都「加入购物车」再到购物车结算。<br>打开的商品页购买数量默认是 1：数量大于 1 时，请在淘宝页把数量改成清单里的数字再下单。<br>
     标注 <span style="color:#b45309;font-weight:600">价格待确认</span> 的项目原链接未带价格参数，已按 0 计入合计，请以商品页实际价格为准。
@@ -215,6 +233,7 @@
     <button class="bbtn" id="resetBtn">全部清零</button>
     <button class="bbtn" id="copyBtn">复制清单</button>
     <button class="bbtn" id="copyLinkBtn">复制全部链接</button>
+    <button class="bbtn" id="goCartBtn">🛒 购物车 <b id="cartCnt">0</b></button>
     <button class="bbtn primary" id="cartBtn">加入购物车</button>
   </div>
 </div>
@@ -229,29 +248,29 @@ const GROUPS = [
 ];
 
 const ITEMS = [
-  { g:'pneu', name:"不锈钢快拧三通", spec:"气动快插三通接头", price:1.42, sku:'3187819439790', url:"https://item.taobao.com/item.htm?id=534409596920&skuId=3187819439790" },
-  { g:'pneu', name:"CV-02 单向阀 + 2 个 6mm 快拧接头", spec:"气路单向阀组件", price:5.70, sku:'6024116027497', url:"https://item.taobao.com/item.htm?id=805770167165&skuId=6024116027497" },
-  { g:'pneu', name:"PA11-6 尼龙气管 6*1 100 米白色", spec:"6mm 外径 × 1mm 壁厚，100 米", price:71.90, sku:'4351618557267', url:"https://item.taobao.com/item.htm?id=616556145207&skuId=4351618557267" },
-  { g:'pneu', name:"电磁阀支架组件", spec:"电磁阀安装支架", price:2.89, sku:'4309033408356', url:"https://item.taobao.com/item.htm?id=612754499724&skuId=4309033408356" },
-  { g:'pneu', name:"不锈钢快拧直通", spec:"气动快插直通接头", price:3.22, sku:'6234911871470', url:"https://item.taobao.com/item.htm?id=1045150030149&skuId=6234911871470" },
+  { g:'pneu', name:"不锈钢快拧三通", model:"快拧三通 6", spec:"气动快插三通接头", price:1.42, sku:'3187819439790', url:"https://item.taobao.com/item.htm?id=534409596920&skuId=3187819439790" },
+  { g:'pneu', name:"CV-02 单向阀 + 2 个 6mm 快拧接头", model:"CV-02", spec:"气路单向阀组件", price:5.70, sku:'6024116027497', url:"https://item.taobao.com/item.htm?id=805770167165&skuId=6024116027497" },
+  { g:'pneu', name:"PA11-6 尼龙气管 6*1 100 米白色", model:"PA11-6 6×1", spec:"6mm 外径 × 1mm 壁厚，100 米", price:71.90, sku:'4351618557267', url:"https://item.taobao.com/item.htm?id=616556145207&skuId=4351618557267" },
+  { g:'pneu', name:"电磁阀支架组件", model:"3V1-P32", spec:"电磁阀安装支架", price:2.89, sku:'4309033408356', url:"https://item.taobao.com/item.htm?id=612754499724&skuId=4309033408356" },
+  { g:'pneu', name:"不锈钢快拧直通", model:"B-PM-6", spec:"气动快插直通接头", price:3.22, sku:'6234911871470', url:"https://item.taobao.com/item.htm?id=1045150030149&skuId=6234911871470" },
   { g:'pneu', name:"2 分外丝快插 6mm 不锈钢迷你球阀", spec:"DN8 外丝转 6mm 快插", price:22.40, sku:'5056799066283', url:"https://item.taobao.com/item.htm?id=683577651153&skuId=5056799066283" },
-  { g:'pneu', name:"气管快插螺纹直通", spec:"螺纹直通快插接头", price:0.76, sku:'75318137852', url:"https://detail.tmall.com/item.htm?id=43228818204&skuId=75318137852" },
+  { g:'pneu', name:"气管快插螺纹直通", model:"PC6-02", spec:"螺纹直通快插接头", price:0.76, sku:'75318137852', url:"https://detail.tmall.com/item.htm?id=43228818204&skuId=75318137852" },
 
-  { g:'hw', name:"316 不锈钢丝杆 M8*140", spec:"M8 × 140mm，316 材质", price:3.16, sku:'4800292236966', url:"https://item.taobao.com/item.htm?id=19516240281&skuId=4800292236966" },
-  { g:'hw', name:"04 不锈钢对丝 DN8 2 分加厚高压", spec:"DN8 / 2 分，加厚高压型", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
-  { g:'hw', name:"304 不锈钢对丝 2 分 DN8 双头外丝直通", spec:"DN8 / 2 分，双头外丝", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
-  { g:'hw', name:"G1/4（2 分）304 不锈钢内丝四通", spec:"G1/4 内丝四通", price:15.68, sku:'5762319743867', url:"https://item.taobao.com/item.htm?id=836048303213&skuId=5762319743867" },
-  { g:'hw', name:"304 不锈钢细牙薄螺母根母", spec:"细牙薄螺母 / 根母", price:4.07, sku:'5595469595017', url:"https://detail.tmall.com/item.htm?id=18848050599&skuId=5595469595017" },
-  { g:'hw', name:"压力表转换接头", spec:"压力表螺纹转换", price:4.00, sku:'5918018026061', url:"https://item.taobao.com/item.htm?id=898030985539&skuId=5918018026061" },
-  { g:'hw', name:"VV 型橡胶减震器", spec:"设备减震脚垫", price:1.70, sku:'5005545767157', url:"https://detail.tmall.com/item.htm?id=671052621120&skuId=5005545767157" },
+  { g:'hw', name:"316 不锈钢丝杆 M8*140", model:"M8×140", spec:"M8 × 140mm，316 材质", price:3.16, sku:'4800292236966', url:"https://item.taobao.com/item.htm?id=19516240281&skuId=4800292236966" },
+  { g:'hw', name:"04 不锈钢对丝 DN8 2 分加厚高压", model:"304-DN8", spec:"DN8 / 2 分，加厚高压型", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
+  { g:'hw', name:"304 不锈钢对丝 2 分 DN8 双头外丝直通", model:"304-DN8", spec:"DN8 / 2 分，双头外丝", price:2.83, sku:'6081338164651', url:"https://item.taobao.com/item.htm?id=1052028836418&skuId=6081338164651" },
+  { g:'hw', name:"G1/4（2 分）304 不锈钢内丝四通", model:"G1/4", spec:"G1/4 内丝四通", price:15.68, sku:'5762319743867', url:"https://item.taobao.com/item.htm?id=836048303213&skuId=5762319743867" },
+  { g:'hw', name:"304 不锈钢细牙薄螺母根母", model:"M20×1.5", spec:"细牙薄螺母 / 根母", price:4.07, sku:'5595469595017', url:"https://detail.tmall.com/item.htm?id=18848050599&skuId=5595469595017" },
+  { g:'hw', name:"压力表转换接头", model:"内G1/2-外ZG1/4", spec:"压力表螺纹转换", price:4.00, sku:'5918018026061', url:"https://item.taobao.com/item.htm?id=898030985539&skuId=5918018026061" },
+  { g:'hw', name:"VV 型橡胶减震器", model:"20×25 M6×18", spec:"设备减震脚垫", price:1.70, sku:'5005545767157', url:"https://detail.tmall.com/item.htm?id=671052621120&skuId=5005545767157" },
 
-  { g:'power', name:"电源防雷器", spec:"电源浪涌保护", price:38.00, sku:'', url:"https://detail.tmall.com/item.htm?id=831050261418" },
-  { g:'power', name:"单相单级电源滤波器", spec:"单相 EMI 滤波器", price:34.00, sku:'3806707808837', url:"https://item.taobao.com/item.htm?id=563089710634&skuId=3806707808837" },
+  { g:'power', name:"电源防雷器", model:"HM2-40/2-1.8kV", spec:"电源浪涌保护", price:38.00, sku:'', url:"https://detail.tmall.com/item.htm?id=831050261418" },
+  { g:'power', name:"单相单级电源滤波器", model:"SJD210D-10A", spec:"单相 EMI 滤波器", price:34.00, sku:'3806707808837', url:"https://item.taobao.com/item.htm?id=563089710634&skuId=3806707808837" },
 
-  { g:'relay', name:"中间继电器", spec:"中间继电器 / 电磁继电器", price:16.10, sku:'5742847225838', url:"https://detail.tmall.com/item.htm?id=893220969030&skuId=5742847225838" },
+  { g:'relay', name:"中间继电器", model:"HH54P 8脚 DC24V", spec:"中间继电器 / 电磁继电器", price:16.10, sku:'5742847225838', url:"https://detail.tmall.com/item.htm?id=893220969030&skuId=5742847225838" },
 
-  { g:'comm', name:"航空插头", spec:"航空插头 / 连接器", price:5.94, sku:'5780094367885', url:"https://item.taobao.com/item.htm?id=841215499226&skuId=5780094367885" },
-  { g:'comm', name:"DB9 公头", spec:"DB9 串口公头", price:3.99, sku:'4209330208649', url:"https://detail.tmall.com/item.htm?id=601508320698&skuId=4209330208649" }
+  { g:'comm', name:"航空插头", model:"WS20-3 母插座", spec:"航空插头 / 连接器", price:5.94, sku:'5780094367885', url:"https://item.taobao.com/item.htm?id=841215499226&skuId=5780094367885" },
+  { g:'comm', name:"DB9 公头", model:"DB9 免焊接 公头", spec:"DB9 串口公头", price:3.99, sku:'4209330208649', url:"https://detail.tmall.com/item.htm?id=601508320698&skuId=4209330208649" }
 ];
 
 const money = n => '¥' + n.toFixed(2);
@@ -284,10 +303,10 @@ GROUPS.forEach(g => {
     card.dataset.sku = it.sku;
     card.innerHTML = `
       <div>
-        <div class="title">${it.name} <span class="tag">${it.spec}</span>${hasPrice ? '' : '<span class="tag gray">价格待确认</span>'}</div>
+        <div class="title">${it.name}${hasPrice ? '' : ' <span class="tag gray">价格待确认</span>'}</div>
+        <div class="model">${it.model ? '型号：<b>' + it.model + '</b> &nbsp;·&nbsp; 规格：' + (it.spec || '见商品页') : '型号 / 规格：<b>' + (it.spec || '见商品页') + '</b>'} &nbsp;·&nbsp; 锁定规格 SKU：<b>${it.sku || '—'}</b></div>
         <div class="meta">
-          ${hasPrice ? '单价 ' + money(it.price) : '单价 <span class="unknown">—</span>'} &nbsp;·&nbsp;
-          ${it.sku ? 'SKU <span class="sku">' + it.sku + '</span>' : 'SKU <span class="sku">未指定</span>'}<br>
+          ${hasPrice ? '单价 ' + money(it.price) : '单价 <span class="unknown">—</span>'}<br>
           小计 <b class="sub">—</b>
         </div>
       </div>
@@ -425,6 +444,7 @@ update();
     wgdzPushCart(picked.map(function(it){
       return {
         name: it.name,
+        model: it.model || '',
         spec: it.spec || '',
         price: (it.price === null || it.price === undefined) ? null : it.price,
         url: it.url,
@@ -449,7 +469,7 @@ function wgdzPushCart(list){
       cart[idx].qty = Math.min(99, cart[idx].qty + it.qty);
       cart[idx].sel = true;
     } else {
-      cart.push({ name: it.name, spec: it.spec || '', price: it.price,
+      cart.push({ name: it.name, model: it.model || '', spec: it.spec || '', price: it.price,
                   url: it.url, qty: it.qty, sel: true, from: from });
     }
     added += it.qty;
@@ -461,6 +481,23 @@ function wgdzPushCart(list){
 })();
 </script>
 </div>
+<script>
+(function(){
+  var KEY = 'wgdz_cart_v1';
+  function count(){
+    var c = [];
+    try { c = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ c = []; }
+    if (!Array.isArray(c)) c = [];
+    var n = 0;
+    c.forEach(function(it){ n += (Number(it.qty) || 0); });
+    return n;
+  }
+  var badge = document.getElementById('cartCnt');
+  if (badge) badge.textContent = count();
+  var go = document.getElementById('goCartBtn');
+  if (go) go.addEventListener('click', function(){ location.href = './checkout.html'; });
+})();
+</script>
 </body>
 
 </html>

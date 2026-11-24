@@ -50,6 +50,10 @@
   #buyAll:disabled { background: #ccc; cursor: not-allowed; }
   .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: rgba(0,0,0,.82); color: #fff; padding: 9px 18px; border-radius: 18px; font-size: 12.5px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 200; }
   .toast.show { opacity: 1; }
+  .model{
+    font-size:12.5px;color:#6b7280;margin-top:5px;line-height:1.6;
+  }
+  .model b{color:#b45309;font-weight:600;letter-spacing:.2px}
 </style>
 
 <style>
@@ -96,31 +100,31 @@
 
 <script>
 const items = [
-  { name: "PLC", price: 1223.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=925807782781&skuId=5805889320895" },
-  { name: "扩展模块", price: 218.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=1082190489448&skuId=6299440711869" },
-  { name: "DO-R 模块", price: 650.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=927322562695&skuId=5808973136758" },
-  { name: "信号隔离器", price: 237.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=794705407037&skuId=5595117567575" },
-  { name: "DB9", price: 24.24, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=769881372386&skuId=5280227501101" },
-  { name: "RS232 转光纤", price: 373.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=706303513983&skuId=6041050038519" },
-  { name: "DBL 放大板", price: null, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=20438387531&skuId=5627834333518" },
-  { name: "继电器模组", price: 128.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=537869665345&skuId=5620008974557" },
-  { name: "DCDC 隔离电源模块", price: 23.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=4175918250&skuId=4112823764841" },
-  { name: "隔离变压器", price: 179.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=588726981966&skuId=4189219651033" },
-  { name: "隔离变压器", price: 120.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=598350685349" },
-  { name: "电源变压器", price: 48.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=546641176962" },
-  { name: "熔断器", price: 23.18, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=750796886842&skuId=5349201431363" },
-  { name: "中间继电器", price: 20.30, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1047894148027&skuId=6236971107735" },
-  { name: "信号隔离器", price: 100.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=551709559532&skuId=3537087998117" },
-  { name: "单相交流电源滤波器", price: 19.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=776571601999&skuId=5478305918692" },
-  { name: "单相直流电源滤波器", price: 33.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=530497882919&skuId=3975565896983" },
-  { name: "电源滤波器", price: 17.89, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=814192684552&skuId=5676660082015" },
-  { name: "电动调压器", price: 228.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=642125156058&skuId=4624824097383" },
-  { name: "EMI 电源滤波器", price: 56.20, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1077936061953&skuId=6293739174068" },
-  { name: "开关电源", price: 73.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=684323954762&skuId=5065419387234" },
+  { name: "PLC", model: "CP1H-XA40DT-D", price: 1223.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=925807782781&skuId=5805889320895" },
+  { name: "扩展模块", model: "CP1W-8ET", price: 218.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=1082190489448&skuId=6299440711869" },
+  { name: "DO-R 模块", model: "CP1W-AD041", price: 650.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=927322562695&skuId=5808973136758" },
+  { name: "信号隔离器", model: "SUP-602S", price: 237.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=794705407037&skuId=5595117567575" },
+  { name: "DB9", model: "DB9", price: 24.24, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=769881372386&skuId=5280227501101" },
+  { name: "RS232 转光纤", model: "UT-2077", price: 373.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=706303513983&skuId=6041050038519" },
+  { name: "DBL 放大板", model: "DBL-20AG-DC", price: null, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=20438387531&skuId=5627834333518" },
+  { name: "继电器模组", model: "DBL-8L1-24V", price: 128.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=537869665345&skuId=5620008974557" },
+  { name: "DCDC 隔离电源模块", model: "GODSEND", price: 23.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=4175918250&skuId=4112823764841" },
+  { name: "隔离变压器", model: "DZ-300", price: 179.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=588726981966&skuId=4189219651033" },
+  { name: "隔离变压器", model: "DB-50VA", price: 120.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=598350685349" },
+  { name: "电源变压器", model: "DZ-200", price: 48.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=546641176962" },
+  { name: "熔断器", model: "RT18-32", price: 23.18, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=750796886842&skuId=5349201431363" },
+  { name: "中间继电器", model: "MY2N-GS", price: 20.30, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1047894148027&skuId=6236971107735" },
+  { name: "信号隔离器", model: "WS1522E", price: 100.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=551709559532&skuId=3537087998117" },
+  { name: "单相交流电源滤波器", model: "CW4L2-6A-T", price: 19.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=776571601999&skuId=5478305918692" },
+  { name: "单相直流电源滤波器", model: "SJD410D-3", price: 33.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=530497882919&skuId=3975565896983" },
+  { name: "电源滤波器", model: "CW4L2-3A-T", price: 17.89, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=814192684552&skuId=5676660082015" },
+  { name: "电动调压器", model: "TDGC2-0.5KVA", price: 228.00, plat: "天猫", url: "https://detail.tmall.com/item.htm?id=642125156058&skuId=4624824097383" },
+  { name: "EMI 电源滤波器", model: "SJ4L2-10A-T", price: 56.20, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=1077936061953&skuId=6293739174068" },
+  { name: "开关电源", model: "HX-150H-24", price: 73.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=684323954762&skuId=5065419387234" },
   { name: "急停按钮", price: 7.26, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=657022258362&skuId=4909779394057" },
-  { name: "空气开关", price: 33.49, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=913551813369&skuId=5814332941958" },
-  { name: "指示灯", price: 12.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=591633319215&skuId=4060227956038" },
-  { name: "气压传感器", price: 343.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=675835655850&skuId=6101273880658" },
+  { name: "空气开关", model: "OSMC32N2D10", price: 33.49, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=913551813369&skuId=5814332941958" },
+  { name: "指示灯", model: "ND16-22DS", price: 12.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=591633319215&skuId=4060227956038" },
+  { name: "气压传感器", model: "SUP-P300", price: 343.00, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=675835655850&skuId=6101273880658" },
   { name: "电磁阀线圈", price: 49.50, plat: "淘宝", url: "https://item.taobao.com/item.htm?id=816048132316&skuId=5697226366859" }
 ];
 
@@ -141,6 +145,7 @@ items.forEach((it, idx) => {
         <span class="name">${it.name}</span>
         <span class="plat ${it.plat === "天猫" ? "tm" : ""}">${it.plat}</span>
       </div>
+      <div class="model">${it.model ? '型号：<b>' + it.model + '</b> &nbsp;·&nbsp; 规格：已锁定所选规格' : '型号 / 规格：已锁定所选规格'} &nbsp;·&nbsp; SKU：<b>${(String(it.url).match(/[?&]skuId=(\d+)/) || [])[1] || '见商品页'}</b></div>
       <div class="row2">
         ${priceHtml}
         <div class="qty">
@@ -244,6 +249,7 @@ window.wgdzAddCart = function(){
     var q = (typeof qtyState !== 'undefined' && qtyState[i]) ? qtyState[i] : 1;
     return {
       name: it.name,
+      model: it.model || '',
       spec: it.desc || '',
       price: (it.price === null || it.price === undefined) ? null : it.price,
       url: it.url,
