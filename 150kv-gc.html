@@ -324,7 +324,7 @@ GROUPS.forEach(g => {
   items.forEach(it => {
     const hasPrice = typeof it.price === 'number';
     const card = document.createElement('div');
-    card.className = 'card q0';
+    card.className = 'card';
     card.dataset.name = (it.name + ' ' + it.spec).toLowerCase();
     card.dataset.sku = it.sku;
     card.innerHTML = `
@@ -338,7 +338,7 @@ GROUPS.forEach(g => {
       </div>
       <div class="stepper">
         <button data-a="-1" aria-label="减少">−</button>
-        <input type="number" min="0" max="999" value="0" aria-label="数量">
+        <input type="number" min="0" max="999" value="1" aria-label="数量">
         <button data-a="1" aria-label="增加">+</button>
       </div>
       <div class="right">
@@ -456,6 +456,7 @@ document.getElementById('copyLinkBtn').addEventListener('click', function () {
   copy(lines.join('\n'), this);
 });
 
+ITEMS.forEach(function(x){ if (x._sync) x._sync(); });
 update();
 </script>
 

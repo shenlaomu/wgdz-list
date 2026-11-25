@@ -208,7 +208,7 @@ function render() {
       const div = document.createElement("div");
       div.className = "item";
       div.innerHTML = `
-        <input type="checkbox" data-idx="${idx}">
+        <input type="checkbox" data-idx="${idx}" checked>
         <div class="item-info">
           <div class="item-name">${item.name}</div>
           <div class="model">${item.model ? '型号：<b>' + item.model + '</b> &nbsp;·&nbsp; 规格：<b>' + item.desc + '</b>' : '型号 / 规格：<b>' + item.desc + '</b>'} &nbsp;·&nbsp; 锁定规格 SKU：<b>${(String(item.url).match(/[?&]skuId=(\d+)/) || [])[1] || '见商品页'}</b></div>

@@ -244,6 +244,152 @@
 
   .qbadge{display:inline-block;background:#fff1ea;color:#ff5000;font-weight:700;font-size:12px;
     border-radius:10px;padding:1px 8px;margin-left:2px}
+
+  /* 逐件加购 · 当前件卡 */
+  .now-one{border:2px solid #ff5000;border-radius:14px;padding:14px;margin:2px 0 15px;
+    background:linear-gradient(180deg,#fff8f3,#fff)}
+  .now-one.ok{border-color:#0f9d58;background:#f2fbf6}
+  .now-one .no-k{font-size:11.5px;color:#ff5000;font-weight:700;letter-spacing:.3px}
+  .now-one .no-t{font-size:16.5px;font-weight:800;line-height:1.4;margin-top:6px}
+  .now-one .no-m{display:inline-block;margin-top:8px;background:#fff1e9;color:#d94a00;
+    font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:8px;word-break:break-all}
+  .now-one .no-b{display:block;width:100%;border:0;border-radius:11px;font-family:inherit;
+    font-size:15px;font-weight:700;padding:13px;margin-top:10px;cursor:pointer;color:#fff;
+    background:linear-gradient(135deg,#ff5000,#ff7a2f);box-shadow:0 4px 12px rgba(255,80,0,.25)}
+  .now-one .no-b.ok{background:linear-gradient(135deg,#0f9d58,#12b76a);box-shadow:0 4px 12px rgba(15,157,88,.25)}
+  .now-one .no-b:active{transform:scale(.985)}
+  .now-one .no-h{font-size:11.5px;color:#98a1ad;line-height:1.7;margin-top:10px}
+
+  /* 「已买」标记 */
+  .row.bought{background:#fafbfc}
+  .row.bought .nm{color:#9aa3af;text-decoration:line-through;text-decoration-color:#c4cbd4}
+  .row.bought .sp,.row.bought .pr,.row.bought .sub{opacity:.5}
+  .bmark{
+    border:1px solid #dfe3e9;background:#fff;color:#6b7480;font-size:11px;border-radius:14px;
+    padding:3px 9px;cursor:pointer;font-family:inherit;margin-top:8px;transition:.15s;white-space:nowrap;
+  }
+  .bmark:hover{border-color:#22a06b;color:#22a06b}
+  .bmark.on{background:#22a06b;border-color:#22a06b;color:#fff}
+  .bmark.on:hover{background:#1a8f5d}
+
+  /* ================= 买家代买模式（?buy=1） ================= */
+  body.buy{background:#eef1f5;padding-bottom:0}
+  body.buy .bar{display:none}
+  body.buy #toast{bottom:auto;top:50%}
+  .bwrap{max-width:560px;margin:0 auto;padding:0 0 130px}
+
+  .bhero{
+    background:linear-gradient(160deg,#ff6a00,#ff3d00 72%);color:#fff;
+    padding:22px 20px 24px;border-radius:0 0 26px 26px;
+    box-shadow:0 8px 24px rgba(255,80,0,.22);
+  }
+  .bhero .k{font-size:11.5px;opacity:.82;letter-spacing:1.5px;font-weight:600}
+  .bhero h1{font-size:21px;margin:9px 0 0;font-weight:800;letter-spacing:-.3px}
+  .bhero .sub{font-size:12.5px;opacity:.88;margin-top:6px;line-height:1.6}
+  .bhero .stats{display:flex;gap:0;margin-top:16px;background:rgba(255,255,255,.15);
+    border-radius:14px;padding:12px 0;backdrop-filter:blur(6px)}
+  .bhero .st{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.22)}
+  .bhero .st:last-child{border-right:0}
+  .bhero .st b{display:block;font-size:20px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}
+  .bhero .st span{font-size:11px;opacity:.85}
+
+  .bsec{margin:14px 12px 0;background:#fff;border-radius:16px;padding:16px;
+    box-shadow:0 1px 3px rgba(20,25,40,.07)}
+  .bsec h2{font-size:13.5px;margin:0 0 12px;display:flex;align-items:center;gap:7px;font-weight:700}
+
+  .baddr{font-size:13.5px;line-height:1.75;color:#2f353d}
+  .baddr .who{font-weight:700}
+  .baddr .tel{color:#5b6472;margin-left:8px}
+  .baddr .txt{color:#4a515a;margin-top:3px}
+  .baddr .btns{display:flex;gap:9px;margin-top:12px}
+  .baddr .btns button{
+    flex:1;border:1px solid #e2e6ec;background:#fff;border-radius:11px;padding:10px 0;
+    font-size:13px;color:#41474f;font-family:inherit;cursor:pointer;
+  }
+  .baddr .btns button:active{background:#f3f5f8}
+  .blocked{background:linear-gradient(135deg,#f6f7fb,#fbfbff);border:1px dashed #dfe4ee;
+    border-radius:12px;padding:13px;font-size:12.5px;color:#4a5262;line-height:1.7}
+  .blocked .li{display:flex;gap:8px;margin-top:9px}
+  .blocked input{flex:1;min-width:0;border:1px solid #dfe3ec;border-radius:10px;padding:11px 12px;
+    font-size:14px;font-family:inherit;outline:none;background:#fff}
+  .blocked input:focus{border-color:#ffb08a;box-shadow:0 0 0 3px rgba(255,80,0,.07)}
+  .blocked button{border:0;background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;
+    font-size:13.5px;font-weight:600;padding:0 16px;border-radius:10px;cursor:pointer;
+    font-family:inherit;white-space:nowrap}
+  .blocked button:disabled{opacity:.6}
+  .bmsg{font-size:12px;color:#d9534f;margin-top:7px;min-height:14px}
+
+  .prog{height:8px;background:#f0f2f6;border-radius:99px;overflow:hidden;margin:12px 0 8px}
+  .prog i{display:block;height:100%;border-radius:99px;width:0;
+    background:linear-gradient(90deg,#ffa04d,#ff5000);transition:width .35s ease}
+  .pg-txt{font-size:12.5px;color:#8b93a1;display:flex;justify-content:space-between}
+  .pg-txt b{color:#ff5000;font-size:15px;font-variant-numeric:tabular-nums}
+
+  .now{border:2px solid #ff5000;border-radius:16px;padding:16px;margin-top:4px;
+    background:linear-gradient(180deg,#fff9f5,#fff)}
+  .now .idx{font-size:11.5px;color:#ff5000;font-weight:700;letter-spacing:.5px}
+  .now .nm2{font-size:18px;font-weight:800;line-height:1.4;margin:7px 0 0;letter-spacing:-.2px}
+  .now .mdl{display:inline-block;margin-top:9px;background:#fff1e9;color:#d94a00;
+    font-size:13px;font-weight:700;padding:4px 10px;border-radius:8px;word-break:break-all}
+  .now .spec2{font-size:12.5px;color:#8b93a1;margin-top:8px;line-height:1.6}
+  .now .nums{display:flex;gap:10px;margin-top:13px}
+  .now .nm-box{flex:1;background:#f6f7fa;border-radius:11px;padding:10px 12px;text-align:center}
+  .now .nm-box span{display:block;font-size:11px;color:#98a1ad;margin-bottom:3px}
+  .now .nm-box b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+  .now .nm-box.hot b{color:#ff5000}
+  .now .how{font-size:12.5px;color:#7c8592;line-height:1.8;margin-top:13px;background:#f7f8fb;
+    border-radius:10px;padding:10px 12px}
+  .now .how b{color:#d94a00}
+
+  .big{display:block;width:100%;border:0;border-radius:14px;font-size:16.5px;font-weight:700;
+    padding:16px;cursor:pointer;font-family:inherit;margin-top:11px;text-align:center;
+    transition:transform .1s,filter .15s}
+  .big:active{transform:scale(.985)}
+  .big.pri{background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;box-shadow:0 5px 16px rgba(255,80,0,.3)}
+  .big.ok{background:linear-gradient(135deg,#0f9d58,#12b76a);color:#fff;box-shadow:0 5px 16px rgba(15,157,88,.28)}
+  .big.ghost{background:#f2f4f7;color:#3d4652;font-size:15px;font-weight:600}
+  .big:disabled{background:#dfe3e9;color:#98a1ad;box-shadow:none;cursor:default}
+
+  .blist .bitem{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #f4f6f9;
+    font-size:13.5px;align-items:flex-start;line-height:1.5}
+  .blist .bitem:last-child{border-bottom:0}
+  .blist .bc{width:20px;height:20px;border-radius:50%;border:1.6px solid #dde1e8;flex:0 0 20px;
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;
+    background:#fff;margin-top:1px;font-weight:700}
+  .blist .bitem.on .bc{background:#0f9d58;border-color:#0f9d58;color:#fff}
+  .blist .bitem.on .bt{color:#a6adb8;text-decoration:line-through;text-decoration-color:#c9cfd8}
+  .blist .bt{flex:1;min-width:0}
+  .blist .bt em{display:block;font-style:normal;font-size:11.5px;color:#98a1ad;margin-top:3px}
+  .blist .bp{flex:0 0 auto;text-align:right;font-size:12.5px;color:#6b7480;
+    font-variant-numeric:tabular-nums;padding-top:1px}
+  .blist .bp b{display:block;color:#1a1d22;font-size:13.5px}
+  .bgrp{margin-top:14px}
+  .bgrp-hd{font-size:11.5px;color:#8b93a1;font-weight:600;padding:0 0 7px;
+    letter-spacing:.3px;display:flex;justify-content:space-between}
+
+  .bdone{text-align:center;padding:26px 16px}
+  .bdone .ic{width:62px;height:62px;border-radius:50%;background:#e7f8ef;color:#0f9d58;
+    font-size:31px;line-height:62px;margin:0 auto 14px;font-weight:700}
+  .bdone h3{font-size:18px;margin-bottom:7px}
+  .bdone p{font-size:13px;color:#7c8592;line-height:1.8}
+
+  .bfoot{position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(255,255,255,.97);backdrop-filter:blur(12px);
+    border-top:1px solid #e9ecf1;box-shadow:0 -4px 18px rgba(20,25,40,.07);
+    padding:11px 12px calc(11px + env(safe-area-inset-bottom))}
+  .bfoot-in{max-width:560px;margin:0 auto;display:flex;gap:11px;align-items:center}
+  .bfoot .left{flex:1;min-width:0;line-height:1.35}
+  .bfoot .left .t1{font-size:11.5px;color:#8b93a1}
+  .bfoot .left .t2{font-size:14px;font-weight:700;color:#1a1d22;
+    font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bfoot button{border:0;border-radius:22px;padding:14px 22px;font-size:15.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;white-space:nowrap;color:#fff;
+    background:linear-gradient(135deg,#ff5000,#ff7a2f);
+    box-shadow:0 4px 14px rgba(255,80,0,.3)}
+  .bfoot button.green{background:linear-gradient(135deg,#0f9d58,#12b76a);
+    box-shadow:0 4px 14px rgba(15,157,88,.28)}
+  .bfoot button:disabled{background:#dfe3e9;color:#98a1ad;box-shadow:none;cursor:default}
+  .bfoot button:active{transform:scale(.98)}
 </style>
 
 
@@ -262,6 +408,8 @@
     在弹出来的每个页面点「加入购物车」，最后进购物车一起结算，运费和优惠也在那边算。注意：商品页数量默认是 1，记得按清单数量修改。
   </div>
 
+  <div id="boughtBar" style="display:none"></div>
+
   <div id="empty" class="empty" style="display:none">
     <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#c9ced8" stroke-width="1.6">
       <path d="M3 5h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"/>
@@ -270,6 +418,7 @@
     <h3>购物车是空的</h3>
     <p>回到任意一个清单页，勾选物料后点「加入购物车」。</p>
     <a href="./index.html">去挑清单</a>
+    <p id="emptyDiag" style="font-size:11.5px;color:#b3bac4;margin-top:22px;line-height:1.9"></p>
   </div>
 
   <div id="list"></div>
@@ -311,29 +460,32 @@
 
     <div class="card" style="padding:15px">
       <div class="acts">
-        <button id="btnOpenAll">⚡ 一键批量加购</button>
+        <button id="btnOpenAll">📂 逐件加购（按顺序）</button>
         <button id="btnCart">打开淘宝购物车</button>
+      </div>
+      <div class="acts" style="margin-top:10px">
+        <button id="btnShare">📤 生成代买链接</button>
+        <button id="btnPreviewBuy">👀 预览买家页面</button>
       </div>
       <div class="acts" style="margin-top:10px">
         <button id="btnCopy">复制采购单文本</button>
         <button id="btnPrint">打印采购单</button>
-        <button id="btnShare">发给他人代付</button>
-      </div>
-      <div class="acts" style="margin-top:10px">
-        <button id="btnClear">清空购物车</button>
+        <button id="btnMarkBought">✓ 标记已买</button>
+        <button id="btnClear">清空</button>
       </div>
     </div>
 
     <div class="opened" id="opened" style="display:none">
       <div class="bulk-head">
-        <h4>⚡ 一键批量加购</h4>
+        <h4>⚡ 逐件加购</h4>
         <div class="bulk-prog"><b id="bulkDone">0</b> / <span id="bulkAll">0</span> 已加购</div>
       </div>
       <div class="bulk-bar"><i id="bulkBar"></i></div>
-      <p class="bulk-tip">点「一键批量加购」自动打开全部商品页（规格已锁定，不会买错型号）。每页把数量改成 <b>×N</b>，点淘宝的「加入购物车」，回来打勾。<b>下面按采购清单分了组</b>，和淘宝购物车里的分组一一对应，哪一组加完了点该组的「✓ 整组」，不用一个个点。全部打勾后，底部按钮直接跳去淘宝结算。</p>
+      <p class="bulk-tip">浏览器只允许一次开一个标签页，所以改成<b>一件一件走</b>：点①打开这件 → 在淘宝页把数量改成 <b>×N</b> 点「加入购物车」→ 回来点②，会自动打开下一件。下面按采购清单分了组，和淘宝购物车的分组一一对应，哪组加完了点该组的「✓ 整组」。</p>
+      <div id="nowOne"></div>
       <div id="openedList"></div>
       <div class="bulk-foot">
-        <button id="btnBulkOpen" type="button">⚡ 一键批量加购</button>
+        <button id="btnBulkOpen" type="button">📂 打开这件</button>
         <button id="btnOnlyUndone" type="button">只看未加购</button>
         <button id="btnBulkReset" type="button">重置进度</button>
         <button id="btnTbCheckout" class="go" type="button" disabled>去淘宝结算</button>
@@ -384,9 +536,10 @@
 
 <div id="shMask">
   <div class="sh-card">
-    <h3>代付链接</h3>
-    <div class="sub">把下面这个链接发给要代付的人（微信 / QQ 直接发文字即可）。<br>
-      对方打开后看到的就是你现在勾选的物料、数量和合计，点「去付款」用自己的淘宝账号下单付款，规格已全部锁定。</div>
+    <h3>代买链接·发给别人</h3>
+    <div class="sub">把下面这条链接发微信给对方即可。<br>
+      对方打开是一个<b>只剩「下一步」的引导页</b>：收货地址、第几件、型号、数量、价格，一个大按钮打开商品页加购，一个绿色按钮点完自动跳下一件，全部加完直接跳淘宝结算。<br>
+      已标记「已买」的物料不会出现在链接里。规格型号全部锁定，对方不用挑。</div>
     <textarea id="shLink" readonly></textarea>
     <div class="sh-btns">
       <button id="shCopy">复制链接</button>
@@ -396,6 +549,8 @@
       链接生成后 3 天内让对方打开比较稳妥（商品价格可能变动）。</div>
   </div>
 </div>
+
+<div id="buyRoot" style="display:none"></div>
 
 <div id="toast"></div>
 
@@ -444,6 +599,8 @@ var unlockedAddr = null;    // 输入口令解密后的地址
     }
   } catch (e) { urlCart = null; }
 })();
+/* ?buy=1 → 买家代购视图（发给别人时用这个链接） */
+var BUY = /[?&]buy=1/.test(location.search);
 var cart = urlCart || load();
 
 /* ---- 收货信息 ---- */
@@ -552,6 +709,31 @@ function load(){
 function save(){
   try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {}
 }
+
+/* ---- 已买标记：买过的不会再出现在发给别人的清单里 ---- */
+var BOUGHT_KEY = 'wgdz_bought_v1';
+var __bought = null;
+function boughtLoad(){
+  if (__bought) return __bought;
+  try {
+    var o = JSON.parse(localStorage.getItem(BOUGHT_KEY) || '{}');
+    __bought = (o && typeof o === 'object' && !Array.isArray(o)) ? o : {};
+  } catch (e) { __bought = {}; }
+  return __bought;
+}
+function boughtSave(o){
+  __bought = o;
+  try { localStorage.setItem(BOUGHT_KEY, JSON.stringify(o)); } catch (e) {}
+}
+function isBought(it){
+  if (urlCart) return false;                 // 别人发来的清单，不读本地已买状态
+  return !!boughtLoad()[itemKey(it)];
+}
+function boughtCount(list){
+  var b = boughtLoad(), n = 0;
+  list.forEach(function(it){ if (b[itemKey(it)]) n++; });
+  return n;
+}
 function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
 function toast(m){
   var t = document.getElementById('toast');
@@ -560,7 +742,257 @@ function toast(m){
   window.__tt = setTimeout(function(){ t.classList.remove('on'); }, 1800);
 }
 
+/* ==================== 买家代买视图（?buy=1） ==================== */
+function buyMark(it){
+  var st = bulkLoad();
+  st[itemKey(it)] = 1;
+  bulkSave(st);
+  renderBuy();
+}
+
+function renderBuy(){
+  document.body.classList.add('buy');
+  var app = document.getElementById('app');
+  if (app) app.style.display = 'none';
+  var bot = document.getElementById('bottom');
+  if (bot) bot.style.display = 'none';
+  var root = document.getElementById('buyRoot');
+  root.style.display = '';
+
+  var items = cart;
+  if (!items.length) {
+    root.innerHTML = '<div class="bwrap"><div class="bsec" style="margin-top:36px;text-align:center;padding:44px 20px">' +
+      '<div style="font-size:34px;margin-bottom:12px">🛒</div>' +
+      '<h3 style="font-size:16px;margin-bottom:8px">这份清单是空的</h3>' +
+      '<p style="font-size:13px;color:#8b93a1;line-height:1.8">链接里没有物料，可能是发单时一件都没勾选。</p>' +
+      '</div></div>';
+    return;
+  }
+
+  var total = 0, qtySum = 0, unknown = false;
+  items.forEach(function(it){
+    qtySum += it.qty;
+    if (it.price === null || it.price === undefined || isNaN(it.price)) unknown = true;
+    else total += it.price * it.qty;
+  });
+
+  var done = bulkLoad(), nDone = 0, cur = null, curIdx = -1;
+  items.forEach(function(it, i){
+    if (done[itemKey(it)]) { nDone++; }
+    else if (!cur) { cur = it; curIdx = i; }
+  });
+  var pct = items.length ? (nDone / items.length * 100) : 0;
+
+  /* ---- 头部 ---- */
+  var h = '<div class="bwrap">' +
+    '<div class="bhero">' +
+      '<div class="k">WGDZ · 代买清单</div>' +
+      '<h1>帮我买一下这些物料</h1>' +
+      '<div class="sub">这是一份已经选好型号和规格的采购清单。按下面顺序，一件一件加进你的淘宝购物车就行。</div>' +
+      '<div class="stats">' +
+        '<div class="st"><b>' + items.length + '</b><span>种</span></div>' +
+        '<div class="st"><b>' + qtySum + '</b><span>件</span></div>' +
+        '<div class="st"><b>¥' + money(total) + (unknown ? '+' : '') + '</b><span>预计合计</span></div>' +
+      '</div>' +
+    '</div>';
+
+  /* ---- 收货地址 ---- */
+  h += '<div class="bsec"><h2>📦 收货地址</h2><div id="bAddrBox"></div></div>';
+
+  /* ---- 进度 + 当前件 ---- */
+  h += '<div class="bsec"><h2>⚡ 加购进度</h2>' +
+    '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
+    '<div class="pg-txt"><span>已加好 <b>' + nDone + '</b> / ' + items.length + ' 种</span>' +
+      '<span>' + (items.length - nDone) + ' 种待加购</span></div>';
+
+  if (cur) {
+    var hp = (cur.price !== null && cur.price !== undefined && !isNaN(cur.price));
+    h += '<div class="now">' +
+      '<div class="idx">第 ' + (curIdx + 1) + ' 件 / 共 ' + items.length + ' 件</div>' +
+      '<div class="nm2">' + esc(cur.name) + '</div>' +
+      (cur.model ? '<div class="mdl">型号 ' + esc(cur.model) + '</div>' : '') +
+      (cur.spec ? '<div class="spec2">' + esc(cur.spec) + '</div>' : '') +
+      '<div class="nums">' +
+        '<div class="nm-box hot"><span>买几个</span><b>×' + cur.qty + '</b></div>' +
+        '<div class="nm-box"><span>单价</span><b>' + (hp ? '¥' + money(cur.price) : '—') + '</b></div>' +
+        '<div class="nm-box"><span>小计</span><b>' + (hp ? '¥' + money(cur.price * cur.qty) : '—') + '</b></div>' +
+      '</div>' +
+      '<div class="how">在打开的淘宝页里：把<b>数量改成 ×' + cur.qty + '</b>，规格已预选好，直接点<b>「加入购物车」</b>，然后回来点下面的绿色按钮。</div>' +
+      '<div class="how" style="margin-top:8px;background:#fff8ec;color:#8a5f10">' +
+        '⚠️ 在<b>微信里</b>点开淘宝链接经常打不开（会跳首页或下载页）。打不开就点下面按钮<b>复制链接</b>，' +
+        '再打开淘宝 App 粘贴到顶部搜索框，会直接跳到这件商品。' +
+      '</div>' +
+    '</div>' +
+    '<button class="big pri" id="bOpen" type="button">① 打开商品页，去加购</button>' +
+    '<button class="big ghost" id="bCopyLink" type="button" style="font-size:14px;padding:12px">复制这件商品的链接</button>' +
+    '<button class="big ok" id="bNext" type="button">② 加好了，下一件 →</button>' +
+    '<button class="big ghost" id="bSkip" type="button">这件不用买，跳过</button>';
+  } else {
+    h += '<div class="bdone">' +
+      '<div class="ic">✓</div>' +
+      '<h3>全部加好了</h3>' +
+      '<p>共 ' + items.length + ' 种 / ' + qtySum + ' 件，预计 ¥' + money(total) + (unknown ? ' 起' : '') +
+      '<br>去淘宝购物车全选，按收货地址结算即可。</p></div>' +
+      '<button class="big ok" id="bCartBtn" type="button">✓ 去淘宝结算</button>' +
+      '<button class="big ghost" id="bResetBtn" type="button">重新检查一遍</button>';
+  }
+  h += '</div>';
+
+  /* ---- 全部清单 ---- */
+  var gmap = {}, gorder = [];
+  items.forEach(function(it, i){
+    var g = it.from || '物料清单';
+    if (!gmap[g]) { gmap[g] = { n: g, r: [] }; gorder.push(g); }
+    gmap[g].r.push(i);
+  });
+  h += '<div class="bsec"><h2>📋 全部清单 · ' + items.length + ' 种</h2><div class="blist">';
+  gorder.forEach(function(gname){
+    var g = gmap[gname];
+    var gsum = 0;
+    g.r.forEach(function(i){ gsum += (Number(items[i].price) || 0) * items[i].qty; });
+    h += '<div class="bgrp"><div class="bgrp-hd"><span>' + esc(gname) + '</span>' +
+      '<span>' + g.r.length + ' 种 · ¥' + money(gsum) + '</span></div>';
+    g.r.forEach(function(i){
+      var it = items[i], on = !!done[itemKey(it)], hp2 = (it.price !== null && it.price !== undefined && !isNaN(it.price));
+      h += '<div class="bitem' + (on ? ' on' : '') + '" data-i="' + i + '">' +
+        '<div class="bc">✓</div>' +
+        '<div class="bt">' + esc(it.name) + ' <b class="qbadge">×' + it.qty + '</b>' +
+          (it.model ? '<em>型号 ' + esc(it.model) + '</em>' : '') + '</div>' +
+        '<div class="bp">' + (hp2 ? '<b>¥' + money(it.price * it.qty) + '</b>' + '¥' + money(it.price) + '/个' : '<b>—</b>') + '</div>' +
+      '</div>';
+    });
+    h += '</div>';
+  });
+  h += '</div></div></div>';
+
+  /* ---- 底部固定条 ---- */
+  if (cur) {
+    h += '<div class="bfoot"><div class="bfoot-in">' +
+      '<div class="left"><div class="t1">还差 ' + (items.length - nDone) + ' 种</div>' +
+      '<div class="t2">' + esc(cur.name) + ' ×' + cur.qty + '</div></div>' +
+      '<button id="bFoot" type="button">打开加购</button></div></div>';
+  } else {
+    h += '<div class="bfoot"><div class="bfoot-in">' +
+      '<div class="left"><div class="t1">全部已加好</div>' +
+      '<div class="t2">¥' + money(total) + ' · ' + qtySum + ' 件</div></div>' +
+      '<button class="green" id="bFoot" type="button">去淘宝结算</button></div></div>';
+  }
+
+  root.innerHTML = h;
+  renderBuyAddr();
+
+  /* ---- 事件 ---- */
+  function openCur(){
+    if (!cur) { window.open('https://cart.taobao.com/cart.htm', '_blank'); return; }
+    if (!cur.url) { toast('这件没有商品链接，请联系发单方'); return; }
+    window.open(cur.url, '_blank');
+  }
+
+  root.onclick = function(e){
+    var t = e.target.closest('button, .bitem');
+    if (!t) return;
+    if (t.id === 'bOpen' || t.id === 'bFoot') {
+      if (!cur) { window.open('https://cart.taobao.com/cart.htm', '_blank'); return; }
+      openCur(); return;
+    }
+    if (t.id === 'bNext') { if (cur) { buyMark(cur); toast('已记下，继续下一件'); } return; }
+    if (t.id === 'bCopyLink') {
+      if (!cur) return;
+      if (!cur.url) { toast('这件没有链接'); return; }
+      copyText(cur.url);
+      return;
+    }
+    if (t.id === 'bSkip') { if (cur) buyMark(cur); return; }
+    if (t.id === 'bCartBtn') { window.open('https://cart.taobao.com/cart.htm', '_blank'); return; }
+    if (t.id === 'bResetBtn') {
+      if (confirm('把加购进度清零，重新走一遍？')) { bulkSave({}); renderBuy(); }
+      return;
+    }
+    if (t.classList.contains('bitem')) {
+      var i = +t.dataset.i;
+      if (items[i] && items[i].url) window.open(items[i].url, '_blank');
+    }
+  };
+}
+
+function renderBuyAddr(){
+  var box = document.getElementById('bAddrBox');
+  if (!box) return;
+
+  /* 加密地址，待解锁 */
+  if (urlAddrEnc && !unlockedAddr) {
+    box.innerHTML = '<div class="blocked">发单方给收货地址加了查看口令，输入后才会显示。' +
+      '<div class="li"><input id="bPwd" type="password" placeholder="输入查看口令" autocomplete="off">' +
+      '<button id="bUnlock" type="button">查看</button></div>' +
+      '<div class="bmsg" id="bMsg"></div></div>';
+    var inp = document.getElementById('bPwd');
+    var btn = document.getElementById('bUnlock');
+    var msg = document.getElementById('bMsg');
+    var busy = false;
+    function go(){
+      if (busy) return;
+      var p = (inp.value || '').trim();
+      if (!p) { msg.textContent = '请输入口令'; return; }
+      busy = true; btn.disabled = true; btn.textContent = '…'; msg.textContent = '';
+      decAddr(urlAddrEnc, p).then(function(o){
+        unlockedAddr = o; viewAddr = o;
+        renderBuyAddr();
+        toast('地址已解锁');
+      }).catch(function(){
+        busy = false; btn.disabled = false; btn.textContent = '查看';
+        msg.textContent = '口令不对，或浏览器不支持解密';
+      });
+    }
+    btn.addEventListener('click', go);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); go(); } });
+    return;
+  }
+
+  if (!addrHas(viewAddr)) {
+    box.innerHTML = '<div class="blocked">发单方没有把收货地址放进链接，<b>下单前问他要一下收货信息</b>。</div>';
+    return;
+  }
+
+  box.innerHTML = '<div class="baddr">' +
+    '<div><span class="who">' + esc(viewAddr.n || '') + '</span>' +
+    '<span class="tel">' + esc(viewAddr.t || '') + '</span></div>' +
+    '<div class="txt">' + esc(viewAddr.a || '') + '</div>' +
+    '<div class="btns"><button id="bAddrCopy" type="button">一键复制地址</button>' +
+    '<button id="bAddrTel" type="button">复制手机号</button></div></div>';
+  var c1 = document.getElementById('bAddrCopy');
+  if (c1) c1.addEventListener('click', function(){ copyText(addrOneLine(viewAddr)); });
+  var c2 = document.getElementById('bAddrTel');
+  if (c2) c2.addEventListener('click', function(){
+    if (!viewAddr.t) { toast('没有手机号'); return; }
+    copyText(viewAddr.t);
+  });
+}
+
+function emptyDiag(){
+  var el = document.getElementById('emptyDiag');
+  if (!el) return;
+  var raw = null, n = 0, err = '';
+  try {
+    raw = localStorage.getItem(KEY);
+    var o = JSON.parse(raw || '[]');
+    n = Array.isArray(o) ? o.length : -1;
+  } catch (e) { err = e.name; }
+  if (n > 0) {
+    el.innerHTML = '⚠️ 本地存了 <b>' + n + '</b> 条，但没能载入（可能是旧格式或数据损坏）。' +
+      '<br><a href="./index.html">回首页重新加一次</a>';
+    return;
+  }
+  el.innerHTML =
+    '存储：' + (raw === null ? '空 · 从没写入过' : '空数组') +
+    ' &nbsp;|&nbsp; 协议：' + location.protocol +
+    (err ? ' &nbsp;|&nbsp; 读取异常：' + err : '') +
+    '<br>如果刚从清单页点「加入购物车」跳过来仍是空的，说明这台浏览器<b>不保存本地数据</b>' +
+    '（无痕模式、微信内置浏览器、或关闭了网站数据）。换 Chrome / Edge 打开即可。';
+}
+
 function render(){
+  if (BUY) { renderBuy(); return; }
+
   var list = document.getElementById('list');
   var empty = document.getElementById('empty');
   var tools = document.getElementById('tools');
@@ -574,6 +1006,7 @@ function render(){
     tools.style.display = 'none';
     bottom.style.display = 'none';
     tip.style.display = '';
+    emptyDiag();
     renderAddrBar();
     return;
   }
@@ -581,6 +1014,8 @@ function render(){
   tools.style.display = '';
   bottom.style.display = '';
   tip.style.display = '';
+
+  renderBoughtBar();
 
   var groups = {};
   cart.forEach(function(it, i){
@@ -608,6 +1043,25 @@ function render(){
   renderAddrBar();
 }
 
+function renderBoughtBar(){
+  var el = document.getElementById('boughtBar');
+  if (!el) return;
+  var n = boughtCount(cart);
+  if (urlCart || !n) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.style.cssText = 'display:block;background:#eefaf2;border:1px solid #c6ebd4;color:#137a45;' +
+    'border-radius:12px;padding:11px 13px;font-size:12.5px;line-height:1.75;margin-bottom:14px;';
+  el.innerHTML = '✅ 已标记 <b>' + n + '</b> 种为「已买」，这 ' + n + ' 种不会出现在发给别人的链接里（还剩 ' +
+    (cart.length - n) + ' 种待买）。' +
+    '<span style="float:right;color:#0f9d58;font-weight:600;cursor:pointer" id="boughtClear">全部取消标记</span>';
+  var c = document.getElementById('boughtClear');
+  if (c) c.addEventListener('click', function(){
+    if (!confirm('取消所有「已买」标记？')) return;
+    boughtSave({});
+    render();
+  });
+}
+
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
@@ -616,11 +1070,12 @@ function esc(s){
 
 function rowEl(it, idx){
   var row = document.createElement('div');
-  row.className = 'row';
+  var bought = isBought(it);
+  row.className = 'row' + (bought ? ' bought' : '');
   var hasPrice = (it.price !== null && it.price !== undefined && !isNaN(it.price));
   var sub = hasPrice ? money(it.price * it.qty) : '待确认';
   row.innerHTML =
-    '<input type="checkbox" data-idx="' + idx + '"' + (it.sel === false ? '' : ' checked') + '>' +
+    '<input type="checkbox" data-idx="' + idx + '"' + (it.sel === false || bought ? '' : ' checked') + (bought ? ' disabled' : '') + '>' +
     '<div class="info">' +
       '<div class="nm">' + esc(it.name) + '</div>' +
       '<div class="sp">' + (it.model ? '型号：<b>' + esc(it.model) + '</b> &nbsp;·&nbsp; ' : '') + '规格：' + esc(it.spec || '见商品页') + ' &nbsp;·&nbsp; SKU：' + esc((String(it.url || '').match(/[?&]skuId=(\d+)/) || [])[1] || '见商品页') + '</div>' +
@@ -633,7 +1088,8 @@ function rowEl(it, idx){
     '</div>' +
     '<div class="right">' +
       '<div class="sub">' + (hasPrice ? '¥' + sub : '—') + '</div>' +
-      '<button class="del" data-del="' + idx + '">删除</button>' +
+      (urlCart ? '' : '<button class="bmark' + (bought ? ' on' : '') + '" data-buy="' + idx + '">' + (bought ? '✓ 已买' : '标记已买') + '</button>') +
+      '<div><button class="del" data-del="' + idx + '">删除</button></div>' +
     '</div>';
 
   row.querySelector('input').addEventListener('change', function(){
@@ -651,11 +1107,21 @@ function rowEl(it, idx){
     cart.splice(+this.dataset.del, 1);
     save(); render();
   });
+  var bm = row.querySelector('.bmark');
+  if (bm) bm.addEventListener('click', function(){
+    var i2 = +this.dataset.buy;
+    var b = boughtLoad();
+    var k = itemKey(cart[i2]);
+    if (b[k]) { delete b[k]; toast('已取消「已买」标记'); }
+    else { b[k] = 1; toast('已标记为买过，不会再发给别人'); }
+    boughtSave(b);
+    render();
+  });
   return row;
 }
 
 function selected(){
-  return cart.filter(function(it){ return it.sel !== false; });
+  return cart.filter(function(it){ return it.sel !== false && !isBought(it); });
 }
 
 function refresh(){
@@ -679,7 +1145,8 @@ function refresh(){
   }
 
   var all = document.getElementById('allChk');
-  all.checked = cart.length > 0 && sel.length === cart.length;
+  var buyable = cart.filter(function(it){ return !isBought(it); });
+  all.checked = buyable.length > 0 && sel.length === buyable.length;
 }
 
 var BULK_KEY = 'wgdz_bulk_v1';
@@ -724,14 +1191,36 @@ function renderOpened(){
   }
   var bo = document.getElementById('btnBulkOpen');
   if (bo) {
-    var left = sel.length - n;
-    bo.textContent = left === 0 ? '⚡ 重新打开全部 ' + sel.length + ' 件' : ('⚡ 一键加购 ' + left + ' 件');
+    bo.textContent = n >= sel.length ? '✓ 全部加好了' : ('📂 打开第 ' + (n + 1) + ' 件');
   }
   var ou = document.getElementById('btnOnlyUndone');
   if (ou) {
     var rest = sel.length - n;
     ou.textContent = onlyUndone ? '显示全部' : ('只看未加购' + (rest ? ' (' + rest + ')' : ''));
     ou.classList.toggle('on', onlyUndone);
+  }
+
+  // ---- 当前这一件 ----
+  var nw = document.getElementById('nowOne');
+  if (nw) {
+    var c = null;
+    for (var ci = 0; ci < sel.length; ci++) {
+      if (!done[itemKey(sel[ci])]) { c = sel[ci]; break; }
+    }
+    if (c) {
+      nw.innerHTML = '<div class="now-one">' +
+        '<div class="no-k">还有 ' + (sel.length - n) + ' 件没加 · 当前第 ' + (n + 1) + ' 件</div>' +
+        '<div class="no-t">' + esc(c.name) + ' <b class="qbadge">×' + c.qty + '</b></div>' +
+        (c.model ? '<div class="no-m">型号 ' + esc(c.model) + '</div>' : '') +
+        '<button class="no-b" type="button" id="btnOpenOne">① 打开这件商品页</button>' +
+        '<button class="no-b ok" type="button" id="btnNextOne">② 加好了 → 打开下一件</button>' +
+        '<div class="no-h">在打开的淘宝页里把数量改成 ×' + c.qty + '，点「加入购物车」，再回来点②。</div>' +
+      '</div>';
+    } else {
+      nw.innerHTML = '<div class="now-one ok">' +
+        '<div class="no-t">✓ 全部 ' + sel.length + ' 件都加好了</div>' +
+        '<button class="no-b ok" type="button" id="btnGoCart">去淘宝购物车结算</button></div>';
+    }
   }
 
   // ---- 按清单分组 ----
@@ -792,27 +1281,46 @@ document.getElementById('allChk').addEventListener('change', function(){
   save(); render();
 });
 
-function bulkOpen(){
-  var sel = selected();
-  if (!sel.length) return;
-  var st = bulkLoad();
-  var todo = sel.filter(function(it){ return !st[itemKey(it)]; });
-  if (!todo.length) { toast('未加购的已全部打开过了，去淘宝结算吧'); return; }
-  var blocked = 0;
-  todo.forEach(function(it, i){
-    setTimeout(function(){
-      var w = window.open(it.url, '_blank');
-      if (!w) blocked++;
-    }, i * 900);
-  });
-  toast('正在打开 ' + todo.length + ' 个商品页（规格已锁定）');
-  setTimeout(function(){
-    if (blocked) toast('有 ' + blocked + ' 个被浏览器拦了，在列表里点「重开」');
-    else toast('每页把数量改成 ×N，点「加入购物车」，回来打勾');
-  }, todo.length * 900 + 500);
-  var op = document.getElementById('opened');
-  if (op) op.scrollIntoView({behavior:'smooth', block:'center'});
+function currentTodo(){
+  var sel = selected(), done = bulkLoad();
+  for (var i = 0; i < sel.length; i++) {
+    if (!done[itemKey(sel[i])]) return sel[i];
+  }
+  return null;
 }
+
+/* 只打开当前这一件：同步调用，在点击手势内，不会被浏览器拦截 */
+function openCurrent(){
+  var it = currentTodo();
+  if (!it) { toast('全部加购好了，去淘宝结算吧'); return; }
+  if (!it.url) { toast('这件没有商品链接'); return; }
+  window.open(it.url, '_blank');
+}
+
+/* 标记当前件 + 打开下一件（同一个点击里完成，仍然合法） */
+function markCurrentThenNext(){
+  var it = currentTodo();
+  if (!it) { toast('已经全部加好了'); return; }
+  var st = bulkLoad();
+  st[itemKey(it)] = 1;
+  bulkSave(st);
+  var nx = currentTodo();
+  if (nx && nx.url) window.open(nx.url, '_blank');   // 先开窗，保持在点击手势里
+  render();
+  toast(nx ? ('已记下 ' + it.name + '，打开了下一件') : '✓ 全部加好了，去淘宝结算');
+}
+
+function bulkOpen(){
+  openCurrent();
+}
+
+document.getElementById('opened').addEventListener('click', function(e){
+  var b = e.target.closest('button');
+  if (!b) return;
+  if (b.id === 'btnOpenOne') { openCurrent(); return; }
+  if (b.id === 'btnNextOne') { markCurrentThenNext(); return; }
+  if (b.id === 'btnGoCart') { window.open('https://cart.taobao.com/cart.htm', '_blank'); return; }
+});
 
 document.getElementById('btnOpenAll').addEventListener('click', function(){
   bulkOpen();
@@ -1057,6 +1565,17 @@ document.getElementById('btnClear').addEventListener('click', function(){
   cart = []; save(); render();
 });
 
+document.getElementById('btnMarkBought').addEventListener('click', function(){
+  var sel = selected();
+  if (!sel.length) { toast('先把要标记的物料勾上'); return; }
+  if (!confirm('把勾选的 ' + sel.length + ' 种标记为「已买」？\n它们会从合计里扣掉，也不会出现在发给别人的链接里。')) return;
+  var b = boughtLoad();
+  sel.forEach(function(it){ b[itemKey(it)] = 1; });
+  boughtSave(b);
+  render();
+  toast('已标记 ' + sel.length + ' 种为已买');
+});
+
 document.getElementById('pay').addEventListener('click', function(){
   var sel = selected();
   if (!sel.length) return;
@@ -1074,7 +1593,7 @@ document.getElementById('pay').addEventListener('click', function(){
 /* ---- 扫码付款 ---- */
 (function(){
   var mask = document.getElementById('qrMask');
-  var sel = function(){ return cart.filter(function(it){ return it.sel !== false; }); };
+  var sel = function(){ return selected(); };
 
   function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
 
@@ -1113,8 +1632,8 @@ document.getElementById('pay').addEventListener('click', function(){
   function money(n){ return (Math.round(n * 100) / 100).toFixed(2); }
 
   document.getElementById('btnShare').addEventListener('click', function(){
-    var sel = cart.filter(function(it){ return it.sel !== false; });
-    if (!sel.length) { toast('请先勾选要代付的物料'); return; }
+    var sel = selected();
+    if (!sel.length) { toast('没有待买的物料（勾选 / 已买状态检查一下）'); return; }
 
     var mode = addrMode();
     var pwdEl = document.getElementById('adPwd');
@@ -1147,8 +1666,8 @@ document.getElementById('pay').addEventListener('click', function(){
     });
   });
 
-  function buildShare(aField, aMode){
-    var sel = cart.filter(function(it){ return it.sel !== false; });
+  function packUrl(aField, localBase){
+    var sel = selected();
     var gNames = [], gIdx = {};
     var compact = sel.map(function(it){
       var u = it.url || '';
@@ -1161,17 +1680,23 @@ document.getElementById('pay').addEventListener('click', function(){
         ? -1 : Math.round(it.price * 100);
       return [it.name, it.model || '', pc, it.qty, host, iid, sku, gIdx[g]];
     });
-    var payload = {
-      v: 3,
-      g: gNames,
-      a: aField || 0,
-      i: compact
-    };
+    var payload = { v: 3, g: gNames, a: aField || 0, i: compact };
     var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-    var base = isLocal
-      ? 'https://shenlaomu.github.io/wgdz-list/checkout.html'
-      : location.origin + location.pathname;
-    ta.value = base + '?cart=' + encodeURIComponent(b64);
+    var base;
+    if (localBase) {
+      base = location.href.split('?')[0].split('#')[0];   // 就地预览
+    } else {
+      base = isLocal
+        ? 'https://shenlaomu.github.io/wgdz-list/checkout.html'
+        : location.origin + location.pathname;
+    }
+    return base + '?cart=' + encodeURIComponent(b64) + '&buy=1';
+  }
+
+  function buildShare(aField, aMode){
+    var sel = selected();
+    ta.value = packUrl(aField, false);
+    var nBought = boughtCount(cart);
     var addrNote;
     if (aMode === 'lock') {
       addrNote = '<br><b>🔒 地址已加密带进链接：</b>对方打开只看到「已加密」，必须输入口令才能看到你的收货信息。' +
@@ -1184,10 +1709,15 @@ document.getElementById('pay').addEventListener('click', function(){
     } else {
       addrNote = '<br><b>提示：</b>你还没填收货信息，对方打开后不知道寄哪。回上面「📦 收货信息」填一下。';
     }
+    var boughtNote = nBought
+      ? '<br><b>✅ 已买的 ' + nBought + ' 种已自动剔除：</b>对方只会看到剩下 ' + sel.length + ' 种，不会重复买。'
+      : '';
     tip.innerHTML = (isLocal
-      ? '<b>注意：</b>现在是在本地预览，此链接指向的是线上地址——<b>要先把本页传上 GitHub 才能真正打开</b>。<br>对方打开后看到你现在勾选的物料与合计，用他自己的淘宝账号付款，规格已锁定。'
-      : '<b>注意：</b>此链接仅是清单，不包含你的任何账号信息；对方付款走他自己的淘宝账号。<br>建议 3 天内让对方打开（商品价格可能变动）。') + addrNote +
-      '<br><b>想让对方「点开就直接付」：</b>先自己在淘宝把单下好（选好地址）→ 收银台点「找人代付」→ 把淘宝生成的代付链接发他，他点开就能直接付款。';
+      ? '<b>注意：</b>现在是在本地预览，此链接指向的是线上地址——<b>要先把本页传上 GitHub 才能真正打开</b>。<br>'
+      : '') +
+      '<b>对方打开会看到什么：</b>一个只剩「下一步」的引导页——收货地址、第几件、型号数量价格，' +
+      '一个大按钮打开商品页、一个绿色按钮点完自动跳下一件，全部加完直接跳淘宝结算。' +
+      '<br>用他的淘宝账号下单，不涉及你的账号信息。' + boughtNote + addrNote;
     mask.classList.add('on');
     ta.focus(); ta.select();
   }
@@ -1204,6 +1734,13 @@ document.getElementById('pay').addEventListener('click', function(){
       return;
     }
     toast(ok ? '链接已复制' : '复制失败，请手动全选复制');
+  });
+
+  /* 就地预览：对方打开会看到的买家引导页（地址按明文带，方便自己核对） */
+  document.getElementById('btnPreviewBuy').addEventListener('click', function(){
+    if (!selected().length) { toast('没有待买的物料可预览'); return; }
+    var a = addrHas(addr) ? [addr.n || '', addr.t || '', addr.a || ''] : 0;
+    window.open(packUrl(a, true), '_blank');
   });
 })();
 
