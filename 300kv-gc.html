@@ -489,7 +489,7 @@ function wgdzPushCart(list){
   list.forEach(function(it){
     var idx = -1;
     for (var i = 0; i < cart.length; i++) {
-      if (cart[i].url === it.url) { idx = i; break; }
+      if (cart[i].url === it.url && (cart[i].from || '') === from) { idx = i; break; }
     }
     if (idx >= 0) {
       cart[idx].qty = Math.min(99, cart[idx].qty + it.qty);
@@ -522,6 +522,36 @@ function wgdzPushCart(list){
   if (badge) badge.textContent = count();
   var go = document.getElementById('goCartBtn');
   if (go) go.addEventListener('click', function(){ location.href = './checkout.html'; });
+})();
+</script>
+<style>
+#floatCart{position:fixed;right:16px;bottom:88px;z-index:9990;display:flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;text-decoration:none;
+  padding:11px 16px;border-radius:26px;box-shadow:0 6px 18px rgba(255,80,0,.30);
+  font-size:13px;font-weight:600;font-family:inherit;line-height:1;-webkit-tap-highlight-color:transparent}
+#floatCart:active{transform:scale(.97)}
+#fcNum{background:#fff;color:#ff5000;border-radius:99px;padding:2px 7px;font-size:11px;line-height:1.35;min-width:14px;text-align:center}
+@media (max-width:560px){
+  #floatCart{right:12px;bottom:96px;width:52px;height:52px;padding:0;border-radius:50%;
+    justify-content:center;gap:0}
+  #floatCart{display:none}
+  #floatCart .fc-ico{font-size:21px;line-height:1}
+  #fcNum{position:absolute;top:-3px;right:-3px;border:2px solid #fff;font-size:10px;padding:0 4px}
+}
+</style>
+<a id="floatCart" href="./checkout.html" title="打开我的采购车">
+  <span class="fc-ico">🛒</span><span class="fc-txt">采购车</span><b id="fcNum" style="display:none">0</b>
+</a>
+<script>
+(function(){
+  try{
+    var d = JSON.parse(localStorage.getItem('wgdz_cart_v1') || '[]');
+    if (!Array.isArray(d)) return;
+    var n = 0;
+    d.forEach(function(x){ if (x.sel !== false) n += (Number(x.qty) || 1); });
+    var el = document.getElementById('fcNum');
+    if (el && n > 0) { el.textContent = n > 99 ? '99+' : n; el.style.display = 'inline-block'; }
+  }catch(e){}
 })();
 </script>
 </body>

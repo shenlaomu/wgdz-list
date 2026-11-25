@@ -78,6 +78,27 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     <h1>机柜物料购买清单</h1>
     <p class="sub">请选择要查看的清单版本</p>
   </header>
+  <a href="./checkout.html" style="display:flex;align-items:center;gap:8px;margin:0 0 16px;
+    background:#fff;border:1.5px solid #ffd0b8;border-radius:12px;padding:12px 16px;
+    text-decoration:none;color:#ff5000;font-size:13.5px;font-weight:600">
+    <span style="font-size:16px">🛒</span>
+    <span style="flex:1">我的采购车<b id="ceNum" style="display:none;background:#ff5000;color:#fff;
+      border-radius:99px;padding:1px 7px;font-size:11px;margin-left:6px">0</b></span>
+    <span style="color:#98a1ad;font-weight:400;font-size:12.5px">去结算 →</span>
+  </a>
+  <script>
+  (function(){
+    try{
+      var d = JSON.parse(localStorage.getItem('wgdz_cart_v1') || '[]');
+      if (!Array.isArray(d)) return;
+      var n = 0;
+      d.forEach(function(x){ if (x.sel !== false) n += (Number(x.qty) || 1); });
+      var el = document.getElementById('ceNum');
+      if (el && n > 0) { el.textContent = n; el.style.display = 'inline-block'; }
+    }catch(e){}
+  })();
+  </script>
+
   <div class="cards">
     <a class="card" href="./150kv-import.html?v=1" style="--c:#2563eb;--soft:#e8effd">
       <span class="badge">150kv · 进口版</span>
@@ -158,6 +179,36 @@ padding:9px 12px;font-size:12.5px;margin-bottom:14px;text-align:left;display:non
     }
     return false;
   };
+})();
+</script>
+<style>
+#floatCart{position:fixed;right:16px;bottom:26px;z-index:9990;display:flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#ff5000,#ff7a2f);color:#fff;text-decoration:none;
+  padding:11px 16px;border-radius:26px;box-shadow:0 6px 18px rgba(255,80,0,.30);
+  font-size:13px;font-weight:600;font-family:inherit;line-height:1;-webkit-tap-highlight-color:transparent}
+#floatCart:active{transform:scale(.97)}
+#fcNum{background:#fff;color:#ff5000;border-radius:99px;padding:2px 7px;font-size:11px;line-height:1.35;min-width:14px;text-align:center}
+@media (max-width:560px){
+  #floatCart{right:12px;bottom:96px;width:52px;height:52px;padding:0;border-radius:50%;
+    justify-content:center;gap:0}
+  #floatCart{display:none}
+  #floatCart .fc-ico{font-size:21px;line-height:1}
+  #fcNum{position:absolute;top:-3px;right:-3px;border:2px solid #fff;font-size:10px;padding:0 4px}
+}
+</style>
+<a id="floatCart" href="./checkout.html" title="打开我的采购车">
+  <span class="fc-ico">🛒</span><span class="fc-txt">采购车</span><b id="fcNum" style="display:none">0</b>
+</a>
+<script>
+(function(){
+  try{
+    var d = JSON.parse(localStorage.getItem('wgdz_cart_v1') || '[]');
+    if (!Array.isArray(d)) return;
+    var n = 0;
+    d.forEach(function(x){ if (x.sel !== false) n += (Number(x.qty) || 1); });
+    var el = document.getElementById('fcNum');
+    if (el && n > 0) { el.textContent = n > 99 ? '99+' : n; el.style.display = 'inline-block'; }
+  }catch(e){}
 })();
 </script>
 </body>

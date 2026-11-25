@@ -692,7 +692,7 @@ function bulkLoad(){
 function bulkSave(o){
   try { localStorage.setItem(BULK_KEY, JSON.stringify(o)); } catch (e) {}
 }
-function itemKey(it){ return (it.url || '') + '||' + (it.name || ''); }
+function itemKey(it){ return (it.from || '') + '||' + (it.url || '') + '||' + (it.name || ''); }
 
 var onlyUndone = false;
 
